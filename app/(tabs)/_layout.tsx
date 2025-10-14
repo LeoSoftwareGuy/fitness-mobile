@@ -1,35 +1,92 @@
+import icons from '@/constants/icons';
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { Image, ImageSourcePropType, View } from 'react-native';
 
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+interface TabIconProps {
+  icon: ImageSourcePropType;
+  color: string;
+  name: string;
+  focused: boolean;
+}
+
+const TabIcon = ({ icon, color }: TabIconProps) => {
+  return (
+    <View className="pt-2 items-center justify-center">
+      <Image
+        source={icon}
+        resizeMode="contain"
+        tintColor={color}
+        className="w-[50px] h-[50px]"
+      />
+    </View>
+  )
+};
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+    <>
+      <Tabs
+        screenOptions={{
+          tabBarShowLabel: false,
+          tabBarActiveTintColor: "#006F52",
+          tabBarInactiveTintColor: "#C4C4C4",
+          tabBarStyle: {
+            position: "absolute", // Make it overlay on top of the page background
+            backgroundColor: "#293240", // Ensures transparency
+            borderTopColor: "transparent", // Removes border color at the top
+            elevation: 0, // Removes shadow on Android
+            shadowOpacity: 0, // Removes shadow on iOS
+            borderRadius: 40,
+          },
         }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
-    </Tabs>
+      >
+        <Tabs.Screen
+          name="home"
+          options={{
+            title: "Home",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                icon={icons.home}
+                color={color}
+                focused={focused}
+                name="Home"
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="statistics"
+          options={{
+            title: "Stats",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                icon={icons.stats}
+                color={color}
+                focused={focused}
+                name="Profile"
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="diet"
+          options={{
+            title: "Diet",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                icon={icons.meal}
+                color={color}
+                focused={focused}
+                name="Diet"
+              />
+            ),
+          }}
+        />
+      </Tabs>
+    </>
   );
 }

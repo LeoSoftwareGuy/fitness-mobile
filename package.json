@@ -8,6 +8,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "pull-spec": "powershell -Command \"mkdir -Force ./api | Out-Null; curl.exe -k https://localhost:7225/swagger/v1/swagger.json -o ./api/swagger.json\"",
+    "generate-api": "npm run pull-spec && orval --config orval.config.ts",
     "lint": "expo lint"
   },
   "dependencies": {
