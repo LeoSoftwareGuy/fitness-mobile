@@ -92,7 +92,7 @@ export default function SignInScreen() {
       start={{ x: 0.5, y: 0 }}
       end={{ x: 0.5, y: 1 }}
       locations={[0, 0.35]}
-      className="flex-1"
+      style={{ flex: 1 }}
     >
       <SafeAreaView className="flex-1">
         <ScrollView contentContainerClassName="min-h-full">
