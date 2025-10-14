@@ -1,7 +1,6 @@
-// api-client.ts
+import { SecureTokenStorage } from '@/components/biometrics/secure-token-storage';
+import useAuthStore from '@/hooks/use-auth-store';
 import axios, { AxiosRequestConfig } from 'axios';
-import { SecureTokenStorage } from './biometrics/secure-token-storage';
-import useAuthStore from './hooks/use-auth-store';
 
 
 const API_BASE_URL = 'https://localhost:7225/api';

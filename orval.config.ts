@@ -51,7 +51,7 @@ export default defineConfig({
           return acc;
         }, {}),
         mutator: {
-          path: '../../api/api-client.ts', // custom axios/fetch instance
+          path: './api/api-client.ts', // custom axios/fetch instance
           name: 'customInstance',
           alias: {
             '@/api/query-client': path.resolve(__dirname, './api/query-client'),

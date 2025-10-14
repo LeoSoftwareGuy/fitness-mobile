@@ -6,17 +6,16 @@
  * OpenAPI spec version: v1
  * // @ts-nocheck
  */
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import type {
-  DataTag,
-  DefinedInitialDataOptions,
-  DefinedUseInfiniteQueryResult,
-  DefinedUseQueryResult,
-  InfiniteData,
   MutationFunction,
-  QueryClient,
   QueryFunction,
   QueryKey,
-  UndefinedInitialDataOptions,
   UseInfiniteQueryOptions,
   UseInfiniteQueryResult,
   UseMutationOptions,
@@ -25,12 +24,6 @@ import type {
   UseQueryResult,
   UseSuspenseQueryOptions,
   UseSuspenseQueryResult,
-} from "@tanstack/react-query";
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-  useSuspenseQuery,
 } from "@tanstack/react-query";
 
 import type {
@@ -64,6 +57,16 @@ export const findMuscleGroups = (
   });
 };
 
+export const getFindMuscleGroupsInfiniteQueryKey = (
+  params?: FindMuscleGroupsParams,
+) => {
+  return [
+    "infinate",
+    `/api/muscle-groups`,
+    ...(params ? [params] : []),
+  ] as const;
+};
+
 export const getFindMuscleGroupsQueryKey = (
   params?: FindMuscleGroupsParams,
 ) => {
@@ -71,47 +74,36 @@ export const getFindMuscleGroupsQueryKey = (
 };
 
 export const getFindMuscleGroupsInfiniteQueryOptions = <
-  TData = InfiniteData<
-    Awaited<ReturnType<typeof findMuscleGroups>>,
-    FindMuscleGroupsParams["page"]
-  >,
+  TData = Awaited<ReturnType<typeof findMuscleGroups>>,
   TError = ProblemDetails,
 >(
   params?: FindMuscleGroupsParams,
   options?: {
-    query?: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroups>>,
-        TError,
-        TData,
-        QueryKey,
-        FindMuscleGroupsParams["page"]
-      >
+    query?: UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof findMuscleGroups>>,
+      TError,
+      TData
     >;
   },
 ) => {
   const { query: queryOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getFindMuscleGroupsQueryKey(params);
+    queryOptions?.queryKey ?? getFindMuscleGroupsInfiniteQueryKey(params);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof findMuscleGroups>>,
-    QueryKey,
-    FindMuscleGroupsParams["page"]
+    Awaited<ReturnType<typeof findMuscleGroups>>
   > = ({ signal, pageParam }) =>
-      findMuscleGroups(
-        { ...params, page: pageParam || params?.["page"] },
-        signal,
-      );
+    findMuscleGroups(
+      { ...params, page: pageParam || params?.["page"] },
+      signal,
+    );
 
   return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
     Awaited<ReturnType<typeof findMuscleGroups>>,
     TError,
-    TData,
-    QueryKey,
-    FindMuscleGroupsParams["page"]
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+    TData
+  > & { queryKey: QueryKey };
 };
 
 export type FindMuscleGroupsInfiniteQueryResult = NonNullable<
@@ -120,124 +112,24 @@ export type FindMuscleGroupsInfiniteQueryResult = NonNullable<
 export type FindMuscleGroupsInfiniteQueryError = ProblemDetails;
 
 export function useFindMuscleGroupsInfinite<
-  TData = InfiniteData<
-    Awaited<ReturnType<typeof findMuscleGroups>>,
-    FindMuscleGroupsParams["page"]
-  >,
-  TError = ProblemDetails,
->(
-  params: undefined | FindMuscleGroupsParams,
-  options: {
-    query: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroups>>,
-        TError,
-        TData,
-        QueryKey,
-        FindMuscleGroupsParams["page"]
-      >
-    > &
-    Pick<
-      DefinedInitialDataOptions<
-        Awaited<ReturnType<typeof findMuscleGroups>>,
-        TError,
-        Awaited<ReturnType<typeof findMuscleGroups>>,
-        QueryKey
-      >,
-      "initialData"
-    >;
-  },
-  queryClient?: QueryClient,
-): DefinedUseInfiniteQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindMuscleGroupsInfinite<
-  TData = InfiniteData<
-    Awaited<ReturnType<typeof findMuscleGroups>>,
-    FindMuscleGroupsParams["page"]
-  >,
+  TData = Awaited<ReturnType<typeof findMuscleGroups>>,
   TError = ProblemDetails,
 >(
   params?: FindMuscleGroupsParams,
   options?: {
-    query?: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroups>>,
-        TError,
-        TData,
-        QueryKey,
-        FindMuscleGroupsParams["page"]
-      >
-    > &
-    Pick<
-      UndefinedInitialDataOptions<
-        Awaited<ReturnType<typeof findMuscleGroups>>,
-        TError,
-        Awaited<ReturnType<typeof findMuscleGroups>>,
-        QueryKey
-      >,
-      "initialData"
+    query?: UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof findMuscleGroups>>,
+      TError,
+      TData
     >;
   },
-  queryClient?: QueryClient,
-): UseInfiniteQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindMuscleGroupsInfinite<
-  TData = InfiniteData<
-    Awaited<ReturnType<typeof findMuscleGroups>>,
-    FindMuscleGroupsParams["page"]
-  >,
-  TError = ProblemDetails,
->(
-  params?: FindMuscleGroupsParams,
-  options?: {
-    query?: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroups>>,
-        TError,
-        TData,
-        QueryKey,
-        FindMuscleGroupsParams["page"]
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseInfiniteQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function useFindMuscleGroupsInfinite<
-  TData = InfiniteData<
-    Awaited<ReturnType<typeof findMuscleGroups>>,
-    FindMuscleGroupsParams["page"]
-  >,
-  TError = ProblemDetails,
->(
-  params?: FindMuscleGroupsParams,
-  options?: {
-    query?: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroups>>,
-        TError,
-        TData,
-        QueryKey,
-        FindMuscleGroupsParams["page"]
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseInfiniteQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getFindMuscleGroupsInfiniteQueryOptions(params, options);
 
-  const query = useInfiniteQuery(
-    queryOptions,
-    queryClient,
-  ) as UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -250,12 +142,10 @@ export const getFindMuscleGroupsQueryOptions = <
 >(
   params?: FindMuscleGroupsParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroups>>,
-        TError,
-        TData
-      >
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof findMuscleGroups>>,
+      TError,
+      TData
     >;
   },
 ) => {
@@ -272,7 +162,7 @@ export const getFindMuscleGroupsQueryOptions = <
     Awaited<ReturnType<typeof findMuscleGroups>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type FindMuscleGroupsQueryResult = NonNullable<
@@ -284,97 +174,20 @@ export function useFindMuscleGroups<
   TData = Awaited<ReturnType<typeof findMuscleGroups>>,
   TError = ProblemDetails,
 >(
-  params: undefined | FindMuscleGroupsParams,
-  options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroups>>,
-        TError,
-        TData
-      >
-    > &
-    Pick<
-      DefinedInitialDataOptions<
-        Awaited<ReturnType<typeof findMuscleGroups>>,
-        TError,
-        Awaited<ReturnType<typeof findMuscleGroups>>
-      >,
-      "initialData"
-    >;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindMuscleGroups<
-  TData = Awaited<ReturnType<typeof findMuscleGroups>>,
-  TError = ProblemDetails,
->(
   params?: FindMuscleGroupsParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroups>>,
-        TError,
-        TData
-      >
-    > &
-    Pick<
-      UndefinedInitialDataOptions<
-        Awaited<ReturnType<typeof findMuscleGroups>>,
-        TError,
-        Awaited<ReturnType<typeof findMuscleGroups>>
-      >,
-      "initialData"
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof findMuscleGroups>>,
+      TError,
+      TData
     >;
   },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindMuscleGroups<
-  TData = Awaited<ReturnType<typeof findMuscleGroups>>,
-  TError = ProblemDetails,
->(
-  params?: FindMuscleGroupsParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroups>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function useFindMuscleGroups<
-  TData = Awaited<ReturnType<typeof findMuscleGroups>>,
-  TError = ProblemDetails,
->(
-  params?: FindMuscleGroupsParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroups>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getFindMuscleGroupsQueryOptions(params, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -387,12 +200,10 @@ export const getFindMuscleGroupsSuspenseQueryOptions = <
 >(
   params?: FindMuscleGroupsParams,
   options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroups>>,
-        TError,
-        TData
-      >
+    query?: UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof findMuscleGroups>>,
+      TError,
+      TData
     >;
   },
 ) => {
@@ -409,7 +220,7 @@ export const getFindMuscleGroupsSuspenseQueryOptions = <
     Awaited<ReturnType<typeof findMuscleGroups>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type FindMuscleGroupsSuspenseQueryResult = NonNullable<
@@ -421,83 +232,21 @@ export function useFindMuscleGroupsSuspense<
   TData = Awaited<ReturnType<typeof findMuscleGroups>>,
   TError = ProblemDetails,
 >(
-  params: undefined | FindMuscleGroupsParams,
-  options: {
-    query: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroups>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindMuscleGroupsSuspense<
-  TData = Awaited<ReturnType<typeof findMuscleGroups>>,
-  TError = ProblemDetails,
->(
   params?: FindMuscleGroupsParams,
   options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroups>>,
-        TError,
-        TData
-      >
+    query?: UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof findMuscleGroups>>,
+      TError,
+      TData
     >;
   },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindMuscleGroupsSuspense<
-  TData = Awaited<ReturnType<typeof findMuscleGroups>>,
-  TError = ProblemDetails,
->(
-  params?: FindMuscleGroupsParams,
-  options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroups>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function useFindMuscleGroupsSuspense<
-  TData = Awaited<ReturnType<typeof findMuscleGroups>>,
-  TError = ProblemDetails,
->(
-  params?: FindMuscleGroupsParams,
-  options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroups>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseSuspenseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getFindMuscleGroupsSuspenseQueryOptions(params, options);
 
-  const query = useSuspenseQuery(
-    queryOptions,
-    queryClient,
-  ) as UseSuspenseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const query = useSuspenseQuery(queryOptions) as UseSuspenseQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -565,17 +314,14 @@ export type CreateMuscleGroupMutationError =
 export const useCreateMuscleGroup = <
   TError = ProblemDetails | ValidationProblemDetails,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof createMuscleGroup>>,
-      TError,
-      { data: CreateMuscleGroupRequest },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createMuscleGroup>>,
+    TError,
+    { data: CreateMuscleGroupRequest },
+    TContext
+  >;
+}): UseMutationResult<
   Awaited<ReturnType<typeof createMuscleGroup>>,
   TError,
   { data: CreateMuscleGroupRequest },
@@ -583,7 +329,7 @@ export const useCreateMuscleGroup = <
 > => {
   const mutationOptions = getCreateMuscleGroupMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };
 export const updateMuscleGroup = (
   updateMuscleGroupRequest: UpdateMuscleGroupRequest,
@@ -644,17 +390,14 @@ export type UpdateMuscleGroupMutationError =
 export const useUpdateMuscleGroup = <
   TError = ProblemDetails | ValidationProblemDetails,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof updateMuscleGroup>>,
-      TError,
-      { data: UpdateMuscleGroupRequest },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateMuscleGroup>>,
+    TError,
+    { data: UpdateMuscleGroupRequest },
+    TContext
+  >;
+}): UseMutationResult<
   Awaited<ReturnType<typeof updateMuscleGroup>>,
   TError,
   { data: UpdateMuscleGroupRequest },
@@ -662,7 +405,7 @@ export const useUpdateMuscleGroup = <
 > => {
   const mutationOptions = getUpdateMuscleGroupMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };
 export const getMuscleGroupById = (id: string, signal?: AbortSignal) => {
   return customInstance<GetMuscleGroupByIdResponse>({
@@ -682,12 +425,10 @@ export const getGetMuscleGroupByIdQueryOptions = <
 >(
   id: string,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getMuscleGroupById>>,
-        TError,
-        TData
-      >
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getMuscleGroupById>>,
+      TError,
+      TData
     >;
   },
 ) => {
@@ -708,7 +449,7 @@ export const getGetMuscleGroupByIdQueryOptions = <
     Awaited<ReturnType<typeof getMuscleGroupById>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type GetMuscleGroupByIdQueryResult = NonNullable<
@@ -721,96 +462,19 @@ export function useGetMuscleGroupById<
   TError = ProblemDetails | ProblemDetails,
 >(
   id: string,
-  options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getMuscleGroupById>>,
-        TError,
-        TData
-      >
-    > &
-    Pick<
-      DefinedInitialDataOptions<
-        Awaited<ReturnType<typeof getMuscleGroupById>>,
-        TError,
-        Awaited<ReturnType<typeof getMuscleGroupById>>
-      >,
-      "initialData"
-    >;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useGetMuscleGroupById<
-  TData = Awaited<ReturnType<typeof getMuscleGroupById>>,
-  TError = ProblemDetails | ProblemDetails,
->(
-  id: string,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getMuscleGroupById>>,
-        TError,
-        TData
-      >
-    > &
-    Pick<
-      UndefinedInitialDataOptions<
-        Awaited<ReturnType<typeof getMuscleGroupById>>,
-        TError,
-        Awaited<ReturnType<typeof getMuscleGroupById>>
-      >,
-      "initialData"
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getMuscleGroupById>>,
+      TError,
+      TData
     >;
   },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useGetMuscleGroupById<
-  TData = Awaited<ReturnType<typeof getMuscleGroupById>>,
-  TError = ProblemDetails | ProblemDetails,
->(
-  id: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getMuscleGroupById>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function useGetMuscleGroupById<
-  TData = Awaited<ReturnType<typeof getMuscleGroupById>>,
-  TError = ProblemDetails | ProblemDetails,
->(
-  id: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getMuscleGroupById>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getGetMuscleGroupByIdQueryOptions(id, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -823,12 +487,10 @@ export const getGetMuscleGroupByIdSuspenseQueryOptions = <
 >(
   id: string,
   options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getMuscleGroupById>>,
-        TError,
-        TData
-      >
+    query?: UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof getMuscleGroupById>>,
+      TError,
+      TData
     >;
   },
 ) => {
@@ -844,7 +506,7 @@ export const getGetMuscleGroupByIdSuspenseQueryOptions = <
     Awaited<ReturnType<typeof getMuscleGroupById>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type GetMuscleGroupByIdSuspenseQueryResult = NonNullable<
@@ -859,82 +521,20 @@ export function useGetMuscleGroupByIdSuspense<
   TError = ProblemDetails | ProblemDetails,
 >(
   id: string,
-  options: {
-    query: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getMuscleGroupById>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useGetMuscleGroupByIdSuspense<
-  TData = Awaited<ReturnType<typeof getMuscleGroupById>>,
-  TError = ProblemDetails | ProblemDetails,
->(
-  id: string,
   options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getMuscleGroupById>>,
-        TError,
-        TData
-      >
+    query?: UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof getMuscleGroupById>>,
+      TError,
+      TData
     >;
   },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useGetMuscleGroupByIdSuspense<
-  TData = Awaited<ReturnType<typeof getMuscleGroupById>>,
-  TError = ProblemDetails | ProblemDetails,
->(
-  id: string,
-  options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getMuscleGroupById>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function useGetMuscleGroupByIdSuspense<
-  TData = Awaited<ReturnType<typeof getMuscleGroupById>>,
-  TError = ProblemDetails | ProblemDetails,
->(
-  id: string,
-  options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getMuscleGroupById>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseSuspenseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getGetMuscleGroupByIdSuspenseQueryOptions(id, options);
 
-  const query = useSuspenseQuery(
-    queryOptions,
-    queryClient,
-  ) as UseSuspenseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const query = useSuspenseQuery(queryOptions) as UseSuspenseQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -996,17 +596,14 @@ export type DeleteMuscleGroupMutationError =
 export const useDeleteMuscleGroup = <
   TError = ProblemDetails | ValidationProblemDetails,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof deleteMuscleGroup>>,
-      TError,
-      { id: string },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteMuscleGroup>>,
+    TError,
+    { id: string },
+    TContext
+  >;
+}): UseMutationResult<
   Awaited<ReturnType<typeof deleteMuscleGroup>>,
   TError,
   { id: string },
@@ -1014,7 +611,7 @@ export const useDeleteMuscleGroup = <
 > => {
   const mutationOptions = getDeleteMuscleGroupMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };
 export const findMuscleGroupExercises = (
   id: string,
@@ -1046,12 +643,10 @@ export const getFindMuscleGroupExercisesQueryOptions = <
   id: string,
   params?: FindMuscleGroupExercisesParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroupExercises>>,
-        TError,
-        TData
-      >
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof findMuscleGroupExercises>>,
+      TError,
+      TData
     >;
   },
 ) => {
@@ -1073,7 +668,7 @@ export const getFindMuscleGroupExercisesQueryOptions = <
     Awaited<ReturnType<typeof findMuscleGroupExercises>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type FindMuscleGroupExercisesQueryResult = NonNullable<
@@ -1088,104 +683,24 @@ export function useFindMuscleGroupExercises<
   TError = ProblemDetails | ProblemDetails,
 >(
   id: string,
-  params: undefined | FindMuscleGroupExercisesParams,
-  options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroupExercises>>,
-        TError,
-        TData
-      >
-    > &
-    Pick<
-      DefinedInitialDataOptions<
-        Awaited<ReturnType<typeof findMuscleGroupExercises>>,
-        TError,
-        Awaited<ReturnType<typeof findMuscleGroupExercises>>
-      >,
-      "initialData"
-    >;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindMuscleGroupExercises<
-  TData = Awaited<ReturnType<typeof findMuscleGroupExercises>>,
-  TError = ProblemDetails | ProblemDetails,
->(
-  id: string,
   params?: FindMuscleGroupExercisesParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroupExercises>>,
-        TError,
-        TData
-      >
-    > &
-    Pick<
-      UndefinedInitialDataOptions<
-        Awaited<ReturnType<typeof findMuscleGroupExercises>>,
-        TError,
-        Awaited<ReturnType<typeof findMuscleGroupExercises>>
-      >,
-      "initialData"
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof findMuscleGroupExercises>>,
+      TError,
+      TData
     >;
   },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindMuscleGroupExercises<
-  TData = Awaited<ReturnType<typeof findMuscleGroupExercises>>,
-  TError = ProblemDetails | ProblemDetails,
->(
-  id: string,
-  params?: FindMuscleGroupExercisesParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroupExercises>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function useFindMuscleGroupExercises<
-  TData = Awaited<ReturnType<typeof findMuscleGroupExercises>>,
-  TError = ProblemDetails | ProblemDetails,
->(
-  id: string,
-  params?: FindMuscleGroupExercisesParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroupExercises>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getFindMuscleGroupExercisesQueryOptions(
     id,
     params,
     options,
   );
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -1199,12 +714,10 @@ export const getFindMuscleGroupExercisesSuspenseQueryOptions = <
   id: string,
   params?: FindMuscleGroupExercisesParams,
   options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroupExercises>>,
-        TError,
-        TData
-      >
+    query?: UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof findMuscleGroupExercises>>,
+      TError,
+      TData
     >;
   },
 ) => {
@@ -1221,7 +734,7 @@ export const getFindMuscleGroupExercisesSuspenseQueryOptions = <
     Awaited<ReturnType<typeof findMuscleGroupExercises>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type FindMuscleGroupExercisesSuspenseQueryResult = NonNullable<
@@ -1236,90 +749,25 @@ export function useFindMuscleGroupExercisesSuspense<
   TError = ProblemDetails | ProblemDetails,
 >(
   id: string,
-  params: undefined | FindMuscleGroupExercisesParams,
-  options: {
-    query: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroupExercises>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindMuscleGroupExercisesSuspense<
-  TData = Awaited<ReturnType<typeof findMuscleGroupExercises>>,
-  TError = ProblemDetails | ProblemDetails,
->(
-  id: string,
   params?: FindMuscleGroupExercisesParams,
   options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroupExercises>>,
-        TError,
-        TData
-      >
+    query?: UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof findMuscleGroupExercises>>,
+      TError,
+      TData
     >;
   },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindMuscleGroupExercisesSuspense<
-  TData = Awaited<ReturnType<typeof findMuscleGroupExercises>>,
-  TError = ProblemDetails | ProblemDetails,
->(
-  id: string,
-  params?: FindMuscleGroupExercisesParams,
-  options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroupExercises>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function useFindMuscleGroupExercisesSuspense<
-  TData = Awaited<ReturnType<typeof findMuscleGroupExercises>>,
-  TError = ProblemDetails | ProblemDetails,
->(
-  id: string,
-  params?: FindMuscleGroupExercisesParams,
-  options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof findMuscleGroupExercises>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseSuspenseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getFindMuscleGroupExercisesSuspenseQueryOptions(
     id,
     params,
     options,
   );
 
-  const query = useSuspenseQuery(
-    queryOptions,
-    queryClient,
-  ) as UseSuspenseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const query = useSuspenseQuery(queryOptions) as UseSuspenseQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -1389,17 +837,14 @@ export type CreateMuscleGroupExerciseMutationError =
 export const useCreateMuscleGroupExercise = <
   TError = ProblemDetails | ValidationProblemDetails,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof createMuscleGroupExercise>>,
-      TError,
-      { id: string; data: CreateMuscleGroupExerciseRequest },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createMuscleGroupExercise>>,
+    TError,
+    { id: string; data: CreateMuscleGroupExerciseRequest },
+    TContext
+  >;
+}): UseMutationResult<
   Awaited<ReturnType<typeof createMuscleGroupExercise>>,
   TError,
   { id: string; data: CreateMuscleGroupExerciseRequest },
@@ -1407,7 +852,7 @@ export const useCreateMuscleGroupExercise = <
 > => {
   const mutationOptions = getCreateMuscleGroupExerciseMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };
 export const getMuscleGroupExerciseById = (
   id: string,
@@ -1435,12 +880,10 @@ export const getGetMuscleGroupExerciseByIdQueryOptions = <
   id: string,
   exerciseId: string,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
-        TError,
-        TData
-      >
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
+      TError,
+      TData
     >;
   },
 ) => {
@@ -1463,7 +906,7 @@ export const getGetMuscleGroupExerciseByIdQueryOptions = <
     Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type GetMuscleGroupExerciseByIdQueryResult = NonNullable<
@@ -1479,103 +922,23 @@ export function useGetMuscleGroupExerciseById<
 >(
   id: string,
   exerciseId: string,
-  options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
-        TError,
-        TData
-      >
-    > &
-    Pick<
-      DefinedInitialDataOptions<
-        Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
-        TError,
-        Awaited<ReturnType<typeof getMuscleGroupExerciseById>>
-      >,
-      "initialData"
-    >;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useGetMuscleGroupExerciseById<
-  TData = Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
-  TError = ProblemDetails | ProblemDetails,
->(
-  id: string,
-  exerciseId: string,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
-        TError,
-        TData
-      >
-    > &
-    Pick<
-      UndefinedInitialDataOptions<
-        Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
-        TError,
-        Awaited<ReturnType<typeof getMuscleGroupExerciseById>>
-      >,
-      "initialData"
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
+      TError,
+      TData
     >;
   },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useGetMuscleGroupExerciseById<
-  TData = Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
-  TError = ProblemDetails | ProblemDetails,
->(
-  id: string,
-  exerciseId: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function useGetMuscleGroupExerciseById<
-  TData = Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
-  TError = ProblemDetails | ProblemDetails,
->(
-  id: string,
-  exerciseId: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getGetMuscleGroupExerciseByIdQueryOptions(
     id,
     exerciseId,
     options,
   );
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -1589,12 +952,10 @@ export const getGetMuscleGroupExerciseByIdSuspenseQueryOptions = <
   id: string,
   exerciseId: string,
   options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
-        TError,
-        TData
-      >
+    query?: UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
+      TError,
+      TData
     >;
   },
 ) => {
@@ -1612,7 +973,7 @@ export const getGetMuscleGroupExerciseByIdSuspenseQueryOptions = <
     Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type GetMuscleGroupExerciseByIdSuspenseQueryResult = NonNullable<
@@ -1628,89 +989,24 @@ export function useGetMuscleGroupExerciseByIdSuspense<
 >(
   id: string,
   exerciseId: string,
-  options: {
-    query: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useGetMuscleGroupExerciseByIdSuspense<
-  TData = Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
-  TError = ProblemDetails | ProblemDetails,
->(
-  id: string,
-  exerciseId: string,
   options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
-        TError,
-        TData
-      >
+    query?: UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
+      TError,
+      TData
     >;
   },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useGetMuscleGroupExerciseByIdSuspense<
-  TData = Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
-  TError = ProblemDetails | ProblemDetails,
->(
-  id: string,
-  exerciseId: string,
-  options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function useGetMuscleGroupExerciseByIdSuspense<
-  TData = Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
-  TError = ProblemDetails | ProblemDetails,
->(
-  id: string,
-  exerciseId: string,
-  options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getMuscleGroupExerciseById>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseSuspenseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getGetMuscleGroupExerciseByIdSuspenseQueryOptions(
     id,
     exerciseId,
     options,
   );
 
-  const query = useSuspenseQuery(
-    queryOptions,
-    queryClient,
-  ) as UseSuspenseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const query = useSuspenseQuery(queryOptions) as UseSuspenseQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -1772,17 +1068,14 @@ export type DeleteMuscleGroupExerciseMutationError =
 export const useDeleteMuscleGroupExercise = <
   TError = ProblemDetails | ValidationProblemDetails,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof deleteMuscleGroupExercise>>,
-      TError,
-      { id: string; exerciseId: string },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteMuscleGroupExercise>>,
+    TError,
+    { id: string; exerciseId: string },
+    TContext
+  >;
+}): UseMutationResult<
   Awaited<ReturnType<typeof deleteMuscleGroupExercise>>,
   TError,
   { id: string; exerciseId: string },
@@ -1790,5 +1083,5 @@ export const useDeleteMuscleGroupExercise = <
 > => {
   const mutationOptions = getDeleteMuscleGroupExerciseMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };

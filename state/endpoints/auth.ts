@@ -6,13 +6,12 @@
  * OpenAPI spec version: v1
  * // @ts-nocheck
  */
+import { useMutation } from "@tanstack/react-query";
 import type {
   MutationFunction,
-  QueryClient,
   UseMutationOptions,
   UseMutationResult,
 } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
 
 import type {
   LoginUserRequest,
@@ -90,17 +89,14 @@ export type RegisterUserMutationError =
 export const useRegisterUser = <
   TError = ProblemDetails | ValidationProblemDetails,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof registerUser>>,
-      TError,
-      { data: RegisterUserRequest },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof registerUser>>,
+    TError,
+    { data: RegisterUserRequest },
+    TContext
+  >;
+}): UseMutationResult<
   Awaited<ReturnType<typeof registerUser>>,
   TError,
   { data: RegisterUserRequest },
@@ -108,7 +104,7 @@ export const useRegisterUser = <
 > => {
   const mutationOptions = getRegisterUserMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };
 export const loginUser = (
   loginUserRequest: LoginUserRequest,
@@ -172,17 +168,14 @@ export type LoginUserMutationError =
 export const useLoginUser = <
   TError = ProblemDetails | ProblemDetails | ValidationProblemDetails,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof loginUser>>,
-      TError,
-      { data: LoginUserRequest },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof loginUser>>,
+    TError,
+    { data: LoginUserRequest },
+    TContext
+  >;
+}): UseMutationResult<
   Awaited<ReturnType<typeof loginUser>>,
   TError,
   { data: LoginUserRequest },
@@ -190,7 +183,7 @@ export const useLoginUser = <
 > => {
   const mutationOptions = getLoginUserMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };
 export const updateUserBio = (updateUserBioRequest: UpdateUserBioRequest) => {
   return customInstance<UpdateUserBioResponse>({
@@ -249,17 +242,14 @@ export type UpdateUserBioMutationError =
 export const useUpdateUserBio = <
   TError = ProblemDetails | ValidationProblemDetails,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof updateUserBio>>,
-      TError,
-      { data: UpdateUserBioRequest },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateUserBio>>,
+    TError,
+    { data: UpdateUserBioRequest },
+    TContext
+  >;
+}): UseMutationResult<
   Awaited<ReturnType<typeof updateUserBio>>,
   TError,
   { data: UpdateUserBioRequest },
@@ -267,7 +257,7 @@ export const useUpdateUserBio = <
 > => {
   const mutationOptions = getUpdateUserBioMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };
 export const logout = (signal?: AbortSignal) => {
   return customInstance<LogoutUserResponse>({
@@ -318,17 +308,17 @@ export type LogoutMutationResult = NonNullable<
 
 export type LogoutMutationError = ProblemDetails;
 
-export const useLogout = <TError = ProblemDetails, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof logout>>,
-      TError,
-      void,
-      TContext
-    >;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+export const useLogout = <
+  TError = ProblemDetails,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof logout>>,
+    TError,
+    void,
+    TContext
+  >;
+}): UseMutationResult<
   Awaited<ReturnType<typeof logout>>,
   TError,
   void,
@@ -336,7 +326,7 @@ export const useLogout = <TError = ProblemDetails, TContext = unknown>(
 > => {
   const mutationOptions = getLogoutMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };
 export const refresh = (signal?: AbortSignal) => {
   return customInstance<RefreshUserTokenResponse>({
@@ -387,17 +377,17 @@ export type RefreshMutationResult = NonNullable<
 
 export type RefreshMutationError = ProblemDetails;
 
-export const useRefresh = <TError = ProblemDetails, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof refresh>>,
-      TError,
-      void,
-      TContext
-    >;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+export const useRefresh = <
+  TError = ProblemDetails,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof refresh>>,
+    TError,
+    void,
+    TContext
+  >;
+}): UseMutationResult<
   Awaited<ReturnType<typeof refresh>>,
   TError,
   void,
@@ -405,5 +395,5 @@ export const useRefresh = <TError = ProblemDetails, TContext = unknown>(
 > => {
   const mutationOptions = getRefreshMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };

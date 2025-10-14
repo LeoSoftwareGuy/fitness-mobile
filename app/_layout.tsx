@@ -42,29 +42,11 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <QueryClientProvider client={queryClient}>
         <Stack>
-          <Stack.Screen name="intro" options={{ headerShown: false }} />
+          <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="(bio)" options={{ headerShown: false }} />
-          <Stack.Screen name="(calendar)" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="(todays-workout)"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="(exercise-history)/[id]"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="(muscle-group)/[id]"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="(onboarding)/onBoardingScreen"
-            options={{ headerShown: false }}
-          />
         </Stack>
       </QueryClientProvider>
-    </GestureHandlerRootView>
+    </GestureHandlerRootView >
   );
 };

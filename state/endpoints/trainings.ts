@@ -6,17 +6,16 @@
  * OpenAPI spec version: v1
  * // @ts-nocheck
  */
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import type {
-  DataTag,
-  DefinedInitialDataOptions,
-  DefinedUseInfiniteQueryResult,
-  DefinedUseQueryResult,
-  InfiniteData,
   MutationFunction,
-  QueryClient,
   QueryFunction,
   QueryKey,
-  UndefinedInitialDataOptions,
   UseInfiniteQueryOptions,
   UseInfiniteQueryResult,
   UseMutationOptions,
@@ -25,12 +24,6 @@ import type {
   UseQueryResult,
   UseSuspenseQueryOptions,
   UseSuspenseQueryResult,
-} from "@tanstack/react-query";
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-  useSuspenseQuery,
 } from "@tanstack/react-query";
 
 import type {
@@ -63,48 +56,45 @@ export const findTrainings = (
   });
 };
 
+export const getFindTrainingsInfiniteQueryKey = (
+  params?: FindTrainingsParams,
+) => {
+  return ["infinate", `/api/trainings`, ...(params ? [params] : [])] as const;
+};
+
 export const getFindTrainingsQueryKey = (params?: FindTrainingsParams) => {
   return [`/api/trainings`, ...(params ? [params] : [])] as const;
 };
 
 export const getFindTrainingsInfiniteQueryOptions = <
-  TData = InfiniteData<
-    Awaited<ReturnType<typeof findTrainings>>,
-    FindTrainingsParams["page"]
-  >,
+  TData = Awaited<ReturnType<typeof findTrainings>>,
   TError = ProblemDetails,
 >(
   params?: FindTrainingsParams,
   options?: {
-    query?: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof findTrainings>>,
-        TError,
-        TData,
-        QueryKey,
-        FindTrainingsParams["page"]
-      >
+    query?: UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof findTrainings>>,
+      TError,
+      TData
     >;
   },
 ) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getFindTrainingsQueryKey(params);
+  const queryKey =
+    queryOptions?.queryKey ?? getFindTrainingsInfiniteQueryKey(params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof findTrainings>>,
-    QueryKey,
-    FindTrainingsParams["page"]
-  > = ({ signal, pageParam }) =>
-      findTrainings({ ...params, page: pageParam || params?.["page"] }, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof findTrainings>>> = ({
+    signal,
+    pageParam,
+  }) =>
+    findTrainings({ ...params, page: pageParam || params?.["page"] }, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
     Awaited<ReturnType<typeof findTrainings>>,
     TError,
-    TData,
-    QueryKey,
-    FindTrainingsParams["page"]
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+    TData
+  > & { queryKey: QueryKey };
 };
 
 export type FindTrainingsInfiniteQueryResult = NonNullable<
@@ -113,124 +103,24 @@ export type FindTrainingsInfiniteQueryResult = NonNullable<
 export type FindTrainingsInfiniteQueryError = ProblemDetails;
 
 export function useFindTrainingsInfinite<
-  TData = InfiniteData<
-    Awaited<ReturnType<typeof findTrainings>>,
-    FindTrainingsParams["page"]
-  >,
-  TError = ProblemDetails,
->(
-  params: undefined | FindTrainingsParams,
-  options: {
-    query: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof findTrainings>>,
-        TError,
-        TData,
-        QueryKey,
-        FindTrainingsParams["page"]
-      >
-    > &
-    Pick<
-      DefinedInitialDataOptions<
-        Awaited<ReturnType<typeof findTrainings>>,
-        TError,
-        Awaited<ReturnType<typeof findTrainings>>,
-        QueryKey
-      >,
-      "initialData"
-    >;
-  },
-  queryClient?: QueryClient,
-): DefinedUseInfiniteQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindTrainingsInfinite<
-  TData = InfiniteData<
-    Awaited<ReturnType<typeof findTrainings>>,
-    FindTrainingsParams["page"]
-  >,
+  TData = Awaited<ReturnType<typeof findTrainings>>,
   TError = ProblemDetails,
 >(
   params?: FindTrainingsParams,
   options?: {
-    query?: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof findTrainings>>,
-        TError,
-        TData,
-        QueryKey,
-        FindTrainingsParams["page"]
-      >
-    > &
-    Pick<
-      UndefinedInitialDataOptions<
-        Awaited<ReturnType<typeof findTrainings>>,
-        TError,
-        Awaited<ReturnType<typeof findTrainings>>,
-        QueryKey
-      >,
-      "initialData"
+    query?: UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof findTrainings>>,
+      TError,
+      TData
     >;
   },
-  queryClient?: QueryClient,
-): UseInfiniteQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindTrainingsInfinite<
-  TData = InfiniteData<
-    Awaited<ReturnType<typeof findTrainings>>,
-    FindTrainingsParams["page"]
-  >,
-  TError = ProblemDetails,
->(
-  params?: FindTrainingsParams,
-  options?: {
-    query?: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof findTrainings>>,
-        TError,
-        TData,
-        QueryKey,
-        FindTrainingsParams["page"]
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseInfiniteQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function useFindTrainingsInfinite<
-  TData = InfiniteData<
-    Awaited<ReturnType<typeof findTrainings>>,
-    FindTrainingsParams["page"]
-  >,
-  TError = ProblemDetails,
->(
-  params?: FindTrainingsParams,
-  options?: {
-    query?: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof findTrainings>>,
-        TError,
-        TData,
-        QueryKey,
-        FindTrainingsParams["page"]
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseInfiniteQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getFindTrainingsInfiniteQueryOptions(params, options);
 
-  const query = useInfiniteQuery(
-    queryOptions,
-    queryClient,
-  ) as UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -243,8 +133,10 @@ export const getFindTrainingsQueryOptions = <
 >(
   params?: FindTrainingsParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof findTrainings>>, TError, TData>
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof findTrainings>>,
+      TError,
+      TData
     >;
   },
 ) => {
@@ -260,7 +152,7 @@ export const getFindTrainingsQueryOptions = <
     Awaited<ReturnType<typeof findTrainings>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type FindTrainingsQueryResult = NonNullable<
@@ -272,81 +164,20 @@ export function useFindTrainings<
   TData = Awaited<ReturnType<typeof findTrainings>>,
   TError = ProblemDetails,
 >(
-  params: undefined | FindTrainingsParams,
-  options: {
-    query: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof findTrainings>>, TError, TData>
-    > &
-    Pick<
-      DefinedInitialDataOptions<
-        Awaited<ReturnType<typeof findTrainings>>,
-        TError,
-        Awaited<ReturnType<typeof findTrainings>>
-      >,
-      "initialData"
-    >;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindTrainings<
-  TData = Awaited<ReturnType<typeof findTrainings>>,
-  TError = ProblemDetails,
->(
   params?: FindTrainingsParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof findTrainings>>, TError, TData>
-    > &
-    Pick<
-      UndefinedInitialDataOptions<
-        Awaited<ReturnType<typeof findTrainings>>,
-        TError,
-        Awaited<ReturnType<typeof findTrainings>>
-      >,
-      "initialData"
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof findTrainings>>,
+      TError,
+      TData
     >;
   },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindTrainings<
-  TData = Awaited<ReturnType<typeof findTrainings>>,
-  TError = ProblemDetails,
->(
-  params?: FindTrainingsParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof findTrainings>>, TError, TData>
-    >;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function useFindTrainings<
-  TData = Awaited<ReturnType<typeof findTrainings>>,
-  TError = ProblemDetails,
->(
-  params?: FindTrainingsParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof findTrainings>>, TError, TData>
-    >;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getFindTrainingsQueryOptions(params, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -359,12 +190,10 @@ export const getFindTrainingsSuspenseQueryOptions = <
 >(
   params?: FindTrainingsParams,
   options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof findTrainings>>,
-        TError,
-        TData
-      >
+    query?: UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof findTrainings>>,
+      TError,
+      TData
     >;
   },
 ) => {
@@ -380,7 +209,7 @@ export const getFindTrainingsSuspenseQueryOptions = <
     Awaited<ReturnType<typeof findTrainings>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type FindTrainingsSuspenseQueryResult = NonNullable<
@@ -392,83 +221,21 @@ export function useFindTrainingsSuspense<
   TData = Awaited<ReturnType<typeof findTrainings>>,
   TError = ProblemDetails,
 >(
-  params: undefined | FindTrainingsParams,
-  options: {
-    query: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof findTrainings>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindTrainingsSuspense<
-  TData = Awaited<ReturnType<typeof findTrainings>>,
-  TError = ProblemDetails,
->(
   params?: FindTrainingsParams,
   options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof findTrainings>>,
-        TError,
-        TData
-      >
+    query?: UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof findTrainings>>,
+      TError,
+      TData
     >;
   },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindTrainingsSuspense<
-  TData = Awaited<ReturnType<typeof findTrainings>>,
-  TError = ProblemDetails,
->(
-  params?: FindTrainingsParams,
-  options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof findTrainings>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function useFindTrainingsSuspense<
-  TData = Awaited<ReturnType<typeof findTrainings>>,
-  TError = ProblemDetails,
->(
-  params?: FindTrainingsParams,
-  options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof findTrainings>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseSuspenseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getFindTrainingsSuspenseQueryOptions(params, options);
 
-  const query = useSuspenseQuery(
-    queryOptions,
-    queryClient,
-  ) as UseSuspenseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const query = useSuspenseQuery(queryOptions) as UseSuspenseQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -536,17 +303,14 @@ export type CreateTrainingMutationError =
 export const useCreateTraining = <
   TError = ProblemDetails | ValidationProblemDetails,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof createTraining>>,
-      TError,
-      { data: CreateTrainingRequest },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createTraining>>,
+    TError,
+    { data: CreateTrainingRequest },
+    TContext
+  >;
+}): UseMutationResult<
   Awaited<ReturnType<typeof createTraining>>,
   TError,
   { data: CreateTrainingRequest },
@@ -554,7 +318,7 @@ export const useCreateTraining = <
 > => {
   const mutationOptions = getCreateTrainingMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };
 export const getTrainingById = (id: string, signal?: AbortSignal) => {
   return customInstance<GetTrainingByIdResponse>({
@@ -574,12 +338,10 @@ export const getGetTrainingByIdQueryOptions = <
 >(
   id: string,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTrainingById>>,
-        TError,
-        TData
-      >
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getTrainingById>>,
+      TError,
+      TData
     >;
   },
 ) => {
@@ -600,7 +362,7 @@ export const getGetTrainingByIdQueryOptions = <
     Awaited<ReturnType<typeof getTrainingById>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type GetTrainingByIdQueryResult = NonNullable<
@@ -613,96 +375,19 @@ export function useGetTrainingById<
   TError = ProblemDetails,
 >(
   id: string,
-  options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTrainingById>>,
-        TError,
-        TData
-      >
-    > &
-    Pick<
-      DefinedInitialDataOptions<
-        Awaited<ReturnType<typeof getTrainingById>>,
-        TError,
-        Awaited<ReturnType<typeof getTrainingById>>
-      >,
-      "initialData"
-    >;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useGetTrainingById<
-  TData = Awaited<ReturnType<typeof getTrainingById>>,
-  TError = ProblemDetails,
->(
-  id: string,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTrainingById>>,
-        TError,
-        TData
-      >
-    > &
-    Pick<
-      UndefinedInitialDataOptions<
-        Awaited<ReturnType<typeof getTrainingById>>,
-        TError,
-        Awaited<ReturnType<typeof getTrainingById>>
-      >,
-      "initialData"
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getTrainingById>>,
+      TError,
+      TData
     >;
   },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useGetTrainingById<
-  TData = Awaited<ReturnType<typeof getTrainingById>>,
-  TError = ProblemDetails,
->(
-  id: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTrainingById>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function useGetTrainingById<
-  TData = Awaited<ReturnType<typeof getTrainingById>>,
-  TError = ProblemDetails,
->(
-  id: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getTrainingById>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getGetTrainingByIdQueryOptions(id, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -715,12 +400,10 @@ export const getGetTrainingByIdSuspenseQueryOptions = <
 >(
   id: string,
   options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getTrainingById>>,
-        TError,
-        TData
-      >
+    query?: UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof getTrainingById>>,
+      TError,
+      TData
     >;
   },
 ) => {
@@ -736,7 +419,7 @@ export const getGetTrainingByIdSuspenseQueryOptions = <
     Awaited<ReturnType<typeof getTrainingById>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type GetTrainingByIdSuspenseQueryResult = NonNullable<
@@ -749,82 +432,20 @@ export function useGetTrainingByIdSuspense<
   TError = ProblemDetails,
 >(
   id: string,
-  options: {
-    query: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getTrainingById>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useGetTrainingByIdSuspense<
-  TData = Awaited<ReturnType<typeof getTrainingById>>,
-  TError = ProblemDetails,
->(
-  id: string,
   options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getTrainingById>>,
-        TError,
-        TData
-      >
+    query?: UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof getTrainingById>>,
+      TError,
+      TData
     >;
   },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useGetTrainingByIdSuspense<
-  TData = Awaited<ReturnType<typeof getTrainingById>>,
-  TError = ProblemDetails,
->(
-  id: string,
-  options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getTrainingById>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function useGetTrainingByIdSuspense<
-  TData = Awaited<ReturnType<typeof getTrainingById>>,
-  TError = ProblemDetails,
->(
-  id: string,
-  options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof getTrainingById>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseSuspenseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getGetTrainingByIdSuspenseQueryOptions(id, options);
 
-  const query = useSuspenseQuery(
-    queryOptions,
-    queryClient,
-  ) as UseSuspenseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const query = useSuspenseQuery(queryOptions) as UseSuspenseQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -886,17 +507,14 @@ export type DeleteTrainingMutationError =
 export const useDeleteTraining = <
   TError = ProblemDetails | ValidationProblemDetails,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof deleteTraining>>,
-      TError,
-      { id: string },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteTraining>>,
+    TError,
+    { id: string },
+    TContext
+  >;
+}): UseMutationResult<
   Awaited<ReturnType<typeof deleteTraining>>,
   TError,
   { id: string },
@@ -904,7 +522,7 @@ export const useDeleteTraining = <
 > => {
   const mutationOptions = getDeleteTrainingMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };
 export const findTrainingsForCalendar = (
   params: FindTrainingsForCalendarParams,
@@ -918,6 +536,16 @@ export const findTrainingsForCalendar = (
   });
 };
 
+export const getFindTrainingsForCalendarInfiniteQueryKey = (
+  params?: FindTrainingsForCalendarParams,
+) => {
+  return [
+    "infinate",
+    `/api/trainings/Calendar`,
+    ...(params ? [params] : []),
+  ] as const;
+};
+
 export const getFindTrainingsForCalendarQueryKey = (
   params?: FindTrainingsForCalendarParams,
 ) => {
@@ -925,47 +553,37 @@ export const getFindTrainingsForCalendarQueryKey = (
 };
 
 export const getFindTrainingsForCalendarInfiniteQueryOptions = <
-  TData = InfiniteData<
-    Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-    FindTrainingsForCalendarParams["page"]
-  >,
+  TData = Awaited<ReturnType<typeof findTrainingsForCalendar>>,
   TError = ProblemDetails,
 >(
   params: FindTrainingsForCalendarParams,
   options?: {
-    query?: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-        TError,
-        TData,
-        QueryKey,
-        FindTrainingsForCalendarParams["page"]
-      >
+    query?: UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof findTrainingsForCalendar>>,
+      TError,
+      TData
     >;
   },
 ) => {
   const { query: queryOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getFindTrainingsForCalendarQueryKey(params);
+    queryOptions?.queryKey ??
+    getFindTrainingsForCalendarInfiniteQueryKey(params);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-    QueryKey,
-    FindTrainingsForCalendarParams["page"]
+    Awaited<ReturnType<typeof findTrainingsForCalendar>>
   > = ({ signal, pageParam }) =>
-      findTrainingsForCalendar(
-        { ...params, page: pageParam || params?.["page"] },
-        signal,
-      );
+    findTrainingsForCalendar(
+      { ...params, page: pageParam || params?.["page"] },
+      signal,
+    );
 
   return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
     Awaited<ReturnType<typeof findTrainingsForCalendar>>,
     TError,
-    TData,
-    QueryKey,
-    FindTrainingsForCalendarParams["page"]
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+    TData
+  > & { queryKey: QueryKey };
 };
 
 export type FindTrainingsForCalendarInfiniteQueryResult = NonNullable<
@@ -974,127 +592,27 @@ export type FindTrainingsForCalendarInfiniteQueryResult = NonNullable<
 export type FindTrainingsForCalendarInfiniteQueryError = ProblemDetails;
 
 export function useFindTrainingsForCalendarInfinite<
-  TData = InfiniteData<
-    Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-    FindTrainingsForCalendarParams["page"]
-  >,
-  TError = ProblemDetails,
->(
-  params: FindTrainingsForCalendarParams,
-  options: {
-    query: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-        TError,
-        TData,
-        QueryKey,
-        FindTrainingsForCalendarParams["page"]
-      >
-    > &
-    Pick<
-      DefinedInitialDataOptions<
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-        TError,
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-        QueryKey
-      >,
-      "initialData"
-    >;
-  },
-  queryClient?: QueryClient,
-): DefinedUseInfiniteQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindTrainingsForCalendarInfinite<
-  TData = InfiniteData<
-    Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-    FindTrainingsForCalendarParams["page"]
-  >,
+  TData = Awaited<ReturnType<typeof findTrainingsForCalendar>>,
   TError = ProblemDetails,
 >(
   params: FindTrainingsForCalendarParams,
   options?: {
-    query?: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-        TError,
-        TData,
-        QueryKey,
-        FindTrainingsForCalendarParams["page"]
-      >
-    > &
-    Pick<
-      UndefinedInitialDataOptions<
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-        TError,
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-        QueryKey
-      >,
-      "initialData"
+    query?: UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof findTrainingsForCalendar>>,
+      TError,
+      TData
     >;
   },
-  queryClient?: QueryClient,
-): UseInfiniteQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindTrainingsForCalendarInfinite<
-  TData = InfiniteData<
-    Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-    FindTrainingsForCalendarParams["page"]
-  >,
-  TError = ProblemDetails,
->(
-  params: FindTrainingsForCalendarParams,
-  options?: {
-    query?: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-        TError,
-        TData,
-        QueryKey,
-        FindTrainingsForCalendarParams["page"]
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseInfiniteQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function useFindTrainingsForCalendarInfinite<
-  TData = InfiniteData<
-    Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-    FindTrainingsForCalendarParams["page"]
-  >,
-  TError = ProblemDetails,
->(
-  params: FindTrainingsForCalendarParams,
-  options?: {
-    query?: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-        TError,
-        TData,
-        QueryKey,
-        FindTrainingsForCalendarParams["page"]
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseInfiniteQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getFindTrainingsForCalendarInfiniteQueryOptions(
     params,
     options,
   );
 
-  const query = useInfiniteQuery(
-    queryOptions,
-    queryClient,
-  ) as UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -1107,12 +625,10 @@ export const getFindTrainingsForCalendarQueryOptions = <
 >(
   params: FindTrainingsForCalendarParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-        TError,
-        TData
-      >
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof findTrainingsForCalendar>>,
+      TError,
+      TData
     >;
   },
 ) => {
@@ -1129,7 +645,7 @@ export const getFindTrainingsForCalendarQueryOptions = <
     Awaited<ReturnType<typeof findTrainingsForCalendar>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type FindTrainingsForCalendarQueryResult = NonNullable<
@@ -1142,96 +658,19 @@ export function useFindTrainingsForCalendar<
   TError = ProblemDetails,
 >(
   params: FindTrainingsForCalendarParams,
-  options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-        TError,
-        TData
-      >
-    > &
-    Pick<
-      DefinedInitialDataOptions<
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-        TError,
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>
-      >,
-      "initialData"
-    >;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindTrainingsForCalendar<
-  TData = Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-  TError = ProblemDetails,
->(
-  params: FindTrainingsForCalendarParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-        TError,
-        TData
-      >
-    > &
-    Pick<
-      UndefinedInitialDataOptions<
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-        TError,
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>
-      >,
-      "initialData"
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof findTrainingsForCalendar>>,
+      TError,
+      TData
     >;
   },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindTrainingsForCalendar<
-  TData = Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-  TError = ProblemDetails,
->(
-  params: FindTrainingsForCalendarParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function useFindTrainingsForCalendar<
-  TData = Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-  TError = ProblemDetails,
->(
-  params: FindTrainingsForCalendarParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getFindTrainingsForCalendarQueryOptions(params, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -1244,12 +683,10 @@ export const getFindTrainingsForCalendarSuspenseQueryOptions = <
 >(
   params: FindTrainingsForCalendarParams,
   options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-        TError,
-        TData
-      >
+    query?: UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof findTrainingsForCalendar>>,
+      TError,
+      TData
     >;
   },
 ) => {
@@ -1266,7 +703,7 @@ export const getFindTrainingsForCalendarSuspenseQueryOptions = <
     Awaited<ReturnType<typeof findTrainingsForCalendar>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type FindTrainingsForCalendarSuspenseQueryResult = NonNullable<
@@ -1279,85 +716,23 @@ export function useFindTrainingsForCalendarSuspense<
   TError = ProblemDetails,
 >(
   params: FindTrainingsForCalendarParams,
-  options: {
-    query: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindTrainingsForCalendarSuspense<
-  TData = Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-  TError = ProblemDetails,
->(
-  params: FindTrainingsForCalendarParams,
   options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-        TError,
-        TData
-      >
+    query?: UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof findTrainingsForCalendar>>,
+      TError,
+      TData
     >;
   },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useFindTrainingsForCalendarSuspense<
-  TData = Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-  TError = ProblemDetails,
->(
-  params: FindTrainingsForCalendarParams,
-  options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function useFindTrainingsForCalendarSuspense<
-  TData = Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-  TError = ProblemDetails,
->(
-  params: FindTrainingsForCalendarParams,
-  options?: {
-    query?: Partial<
-      UseSuspenseQueryOptions<
-        Awaited<ReturnType<typeof findTrainingsForCalendar>>,
-        TError,
-        TData
-      >
-    >;
-  },
-  queryClient?: QueryClient,
-): UseSuspenseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseSuspenseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getFindTrainingsForCalendarSuspenseQueryOptions(
     params,
     options,
   );
 
-  const query = useSuspenseQuery(
-    queryOptions,
-    queryClient,
-  ) as UseSuspenseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const query = useSuspenseQuery(queryOptions) as UseSuspenseQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -1426,17 +801,14 @@ export type CreateTrainingSetMutationError =
 export const useCreateTrainingSet = <
   TError = ProblemDetails | ValidationProblemDetails,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof createTrainingSet>>,
-      TError,
-      { id: string; data: CreateTrainingSetRequest },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createTrainingSet>>,
+    TError,
+    { id: string; data: CreateTrainingSetRequest },
+    TContext
+  >;
+}): UseMutationResult<
   Awaited<ReturnType<typeof createTrainingSet>>,
   TError,
   { id: string; data: CreateTrainingSetRequest },
@@ -1444,7 +816,7 @@ export const useCreateTrainingSet = <
 > => {
   const mutationOptions = getCreateTrainingSetMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };
 export const updateTrainingSet = (
   id: string,
@@ -1506,17 +878,14 @@ export type UpdateTrainingSetMutationError =
 export const useUpdateTrainingSet = <
   TError = ProblemDetails | ValidationProblemDetails,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof updateTrainingSet>>,
-      TError,
-      { id: string; data: UpdateTrainingSetRequest },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateTrainingSet>>,
+    TError,
+    { id: string; data: UpdateTrainingSetRequest },
+    TContext
+  >;
+}): UseMutationResult<
   Awaited<ReturnType<typeof updateTrainingSet>>,
   TError,
   { id: string; data: UpdateTrainingSetRequest },
@@ -1524,7 +893,7 @@ export const useUpdateTrainingSet = <
 > => {
   const mutationOptions = getUpdateTrainingSetMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };
 export const deleteApiTrainingsIdSetsSetId = (id: string, setId: string) => {
   return customInstance<unknown>({
@@ -1581,17 +950,14 @@ export type DeleteApiTrainingsIdSetsSetIdMutationError =
 export const useDeleteApiTrainingsIdSetsSetId = <
   TError = ProblemDetails | ValidationProblemDetails,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof deleteApiTrainingsIdSetsSetId>>,
-      TError,
-      { id: string; setId: string },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteApiTrainingsIdSetsSetId>>,
+    TError,
+    { id: string; setId: string },
+    TContext
+  >;
+}): UseMutationResult<
   Awaited<ReturnType<typeof deleteApiTrainingsIdSetsSetId>>,
   TError,
   { id: string; setId: string },
@@ -1600,5 +966,5 @@ export const useDeleteApiTrainingsIdSetsSetId = <
   const mutationOptions =
     getDeleteApiTrainingsIdSetsSetIdMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };
