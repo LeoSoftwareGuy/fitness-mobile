@@ -2,16 +2,12 @@ import { SecureTokenStorage } from '@/components/biometrics/secure-token-storage
 import useAuthStore from '@/hooks/use-auth-store';
 import axios, { AxiosRequestConfig } from 'axios';
 
-
-const API_BASE_URL = 'https://localhost:7225/api';
+const API_BASE_URL = 'http://192.168.1.165:7081/api';
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
   withCredentials: true,
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
 
 apiClient.interceptors.request.use(
