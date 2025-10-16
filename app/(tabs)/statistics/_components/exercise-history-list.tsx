@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import PerformanceStatisticsButton from "../performance-statistics/performance-statistics-button";
+import PerformanceStatisticsButton from "./performance-statistics-button";
 
 export default function ExerciseHistoryList() {
   const {

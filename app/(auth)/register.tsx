@@ -1,9 +1,9 @@
-
 import FitButton from "@/components/buttons/fit-button";
 import FormField from "@/components/forms/form-field";
 import useAuthStore from "@/hooks/use-auth-store";
 import { RegisterUserResponse } from "@/state/endpoints/api.schemas";
 import { useRegisterUser } from "@/state/endpoints/auth";
+import axios from "axios"; // Add this import
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import React, { useState } from "react";
@@ -33,15 +33,51 @@ export default function SignUpScreen() {
     name: "",
   });
 
+  // Add test function
+  const testDirectCall = async () => {
+    try {
+      console.log('🧪 Testing direct API call...');
+      const response = await axios.post(
+        'http://192.168.1.165:7081/api/auth/register',
+        {
+          email: 'test@test.com',
+          password: 'Test123!',
+          confirmPassword: 'Test123!',
+          name: 'Test User'
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          timeout: 10000,
+        }
+      );
+      console.log('✅ Direct call SUCCESS:', response.status, response.data);
+      Alert.alert("Success", "Direct API call worked!");
+    } catch (error: any) {
+      console.error('❌ Direct call FAILED');
+      console.error('Error message:', error.message);
+      console.error('Error code:', error.code);
+      console.error('Response status:', error.response?.status);
+      console.error('Response data:', error.response?.data);
+      console.error('Request URL:', error.config?.url);
+      Alert.alert("Error", `Direct call failed: ${error.message}`);
+    }
+  };
+
   const { mutateAsync, isPending } = useRegisterUser({
     mutation: {
       onSuccess: (data) => {
+        console.log('✅ Registration success:', data);
         const response = data as RegisterUserResponse;
         authStore(response.accessToken);
-        //   router.push("/(bio)/bioScreen");
         setForm({ email: "", password: "", confirmPassword: "", name: "" });
       },
       onError: (error: any) => {
+        console.error('❌ Registration error:', error);
+        console.error('Error message:', error.message);
+        console.error('Error response:', error.response);
+        console.error('Error config:', error.config);
         Alert.alert("Error", error.message || "Account creation failed");
       }
     },
@@ -58,6 +94,7 @@ export default function SignUpScreen() {
       return;
     }
 
+    console.log('🚀 Submitting registration...', { email: form.email, name: form.name });
     await mutateAsync({ data: form });
   }
 
@@ -75,6 +112,16 @@ export default function SignUpScreen() {
             <Text className="mt-[160px] text-emerald font-pText text-4xl font-normal">
               Create account
             </Text>
+
+            {/* Add test button */}
+            <TouchableOpacity
+              onPress={testDirectCall}
+              style={{ backgroundColor: '#FFA500', padding: 10, borderRadius: 5, marginTop: 20 }}
+            >
+              <Text style={{ color: 'white', textAlign: 'center' }}>
+                Test Direct API Call
+              </Text>
+            </TouchableOpacity>
 
             <FormField
               title="Email"

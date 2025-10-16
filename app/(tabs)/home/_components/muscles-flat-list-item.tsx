@@ -11,7 +11,7 @@ export default function MusclesFlatListItem({ muscleGroup }: MusclesFlatListItem
   return (
     <TouchableOpacity
       className={`mr-2 w-[230px] h-[103px]`}
-      onPress={() => router.push(`//${muscleGroup.id}`)}
+      onPress={() => router.push(`/(muscle-group)/${muscleGroup.id}`)}
     >
       <ImageBackground
         source={{ uri: muscleGroup.imageUrl }}

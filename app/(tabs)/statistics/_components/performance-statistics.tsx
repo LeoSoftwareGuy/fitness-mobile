@@ -4,6 +4,7 @@ import { ActivityIndicator, Text, View } from "react-native";
 import PerformanceStatisticsView from "./performance-statistics-box";
 import PerformanceStatisticsButton from "./performance-statistics-button";
 
+
 interface TimePeriod {
     title: string,
     value: string

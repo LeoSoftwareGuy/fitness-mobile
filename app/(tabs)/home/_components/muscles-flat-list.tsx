@@ -11,7 +11,7 @@ interface MusclesFlatListComponentProps {
 
 export default function MusclesFlatListComponent({ muscleGroups, title }: MusclesFlatListComponentProps) {
     if (!muscleGroups || muscleGroups.length === 0) {
-        return null; 
+        return null;
     }
     return (
         <View className="my-1 min-h-[160px]">
@@ -21,7 +21,7 @@ export default function MusclesFlatListComponent({ muscleGroups, title }: Muscle
             <FlatList
                 data={muscleGroups}
                 renderItem={({ item }) => <MuscleFlatListItem muscleGroup={item} />}
-                keyExtractor={(index) => index.toString()}
+                keyExtractor={(item) => item.id}
                 className="py-1"
                 horizontal
                 showsHorizontalScrollIndicator={false}

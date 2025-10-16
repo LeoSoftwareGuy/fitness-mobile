@@ -4,8 +4,7 @@ import { router } from 'expo-router';
 import React from 'react';
 import { Image, ImageBackground, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import PerformanceStatistics from './performance-statistics/performance-statistics';
-;
+import PerformanceStatistics from './_components/performance-statistics';
 
 export default function StatisticsScreen() {
     return (

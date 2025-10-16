@@ -7,8 +7,8 @@ import { router } from "expo-router";
 import React, { useEffect } from "react";
 import { Image, ImageBackground, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import DateSlider from "./components/date-slider";
-import MuscleFlatListComponent from "./components/muscles-flat-list";
+import DateSlider from "./_components/date-slider";
+import MuscleFlatListComponent from "./_components/muscles-flat-list";
 
 export default function HomeScreen() {
     const { data: muscleGroups, isLoading } = useFindMuscleGroups();
@@ -35,7 +35,7 @@ export default function HomeScreen() {
                             />
                         </TouchableOpacity>
                         <View className="flex-row items-center space-x-1">
-                            <TouchableOpacity onPress={() => router.push("/(auth)/sign-in")}>
+                            <TouchableOpacity onPress={() => router.push("/(todays-workout)/todays-workout")}>
                                 <Image
                                     source={icons.dumbel}
                                     resizeMode="contain"

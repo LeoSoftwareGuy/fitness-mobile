@@ -7,7 +7,7 @@ export default function todaysWorkoutLayout() {
         <>
             <Stack>
                 <Stack.Screen
-                    name="todaysWorkout"
+                    name="(todays-workout)/todays-workout"
                     options={{
                         headerShown: false,
                     }}
