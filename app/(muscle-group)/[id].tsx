@@ -1,18 +1,15 @@
-import { router, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import React, { useCallback, useRef, useState } from "react";
 import {
     ActivityIndicator,
     FlatList,
-    Image,
     ImageBackground,
     ListRenderItem,
     Text,
-    TouchableOpacity,
-    View,
+    View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import icons from "@/constants/icons";
 import images from "@/constants/images";
 import { MuscleGroupExerciseDTO } from "@/state/endpoints/api.schemas";
 import { useGetMuscleGroupById } from "@/state/endpoints/muscle-groups";
@@ -72,19 +69,9 @@ export default function MuscleGroupScreen() {
     return (
         <ImageBackground source={images.logo} className="my-0 py-0 px-2.5 flex-1">
             <SafeAreaView className="flex-1">
-                <View className="mt-3 pl-1 w-full flex-row items-center">
-                    <TouchableOpacity onPress={() => router.back()}>
-                        <Image
-                            source={icons.cross}
-                            resizeMode="contain"
-                            className="w-6 h-6"
-                        />
-                    </TouchableOpacity>
-
-                    <Text className="flex-1 text-center font-pText text-xl text-white">
-                        {muscleGroup?.name}
-                    </Text>
-                </View>
+                <Text className=" mt-3 text-center font-pText text-xl text-white">
+                    {muscleGroup?.name}
+                </Text>
 
                 <FlatList
                     data={muscleGroup?.exercises ?? []}
