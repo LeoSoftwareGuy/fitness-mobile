@@ -12,8 +12,15 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseInfiniteQueryResult,
+  DefinedUseQueryResult,
+  InfiniteData,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseInfiniteQueryOptions,
   UseInfiniteQueryResult,
   UseQueryOptions,
@@ -57,15 +64,22 @@ export const getFindPerformanceStatsQueryKey = (
 };
 
 export const getFindPerformanceStatsInfiniteQueryOptions = <
-  TData = Awaited<ReturnType<typeof findPerformanceStats>>,
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof findPerformanceStats>>,
+    FindPerformanceStatsParams["page"]
+  >,
   TError = ProblemDetails,
 >(
   params: FindPerformanceStatsParams,
   options?: {
-    query?: UseInfiniteQueryOptions<
-      Awaited<ReturnType<typeof findPerformanceStats>>,
-      TError,
-      TData
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof findPerformanceStats>>,
+        TError,
+        TData,
+        QueryKey,
+        FindPerformanceStatsParams["page"]
+      >
     >;
   },
 ) => {
@@ -75,7 +89,9 @@ export const getFindPerformanceStatsInfiniteQueryOptions = <
     queryOptions?.queryKey ?? getFindPerformanceStatsInfiniteQueryKey(params);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof findPerformanceStats>>
+    Awaited<ReturnType<typeof findPerformanceStats>>,
+    QueryKey,
+    FindPerformanceStatsParams["page"]
   > = ({ signal, pageParam }) =>
     findPerformanceStats(
       { ...params, page: pageParam || params?.["page"] },
@@ -85,8 +101,10 @@ export const getFindPerformanceStatsInfiniteQueryOptions = <
   return { queryKey, queryFn, ...queryOptions } as UseInfiniteQueryOptions<
     Awaited<ReturnType<typeof findPerformanceStats>>,
     TError,
-    TData
-  > & { queryKey: QueryKey };
+    TData,
+    QueryKey,
+    FindPerformanceStatsParams["page"]
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type FindPerformanceStatsInfiniteQueryResult = NonNullable<
@@ -95,27 +113,127 @@ export type FindPerformanceStatsInfiniteQueryResult = NonNullable<
 export type FindPerformanceStatsInfiniteQueryError = ProblemDetails;
 
 export function useFindPerformanceStatsInfinite<
-  TData = Awaited<ReturnType<typeof findPerformanceStats>>,
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof findPerformanceStats>>,
+    FindPerformanceStatsParams["page"]
+  >,
+  TError = ProblemDetails,
+>(
+  params: FindPerformanceStatsParams,
+  options: {
+    query: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof findPerformanceStats>>,
+        TError,
+        TData,
+        QueryKey,
+        FindPerformanceStatsParams["page"]
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof findPerformanceStats>>,
+          TError,
+          Awaited<ReturnType<typeof findPerformanceStats>>,
+          QueryKey
+        >,
+        "initialData"
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useFindPerformanceStatsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof findPerformanceStats>>,
+    FindPerformanceStatsParams["page"]
+  >,
   TError = ProblemDetails,
 >(
   params: FindPerformanceStatsParams,
   options?: {
-    query?: UseInfiniteQueryOptions<
-      Awaited<ReturnType<typeof findPerformanceStats>>,
-      TError,
-      TData
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof findPerformanceStats>>,
+        TError,
+        TData,
+        QueryKey,
+        FindPerformanceStatsParams["page"]
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof findPerformanceStats>>,
+          TError,
+          Awaited<ReturnType<typeof findPerformanceStats>>,
+          QueryKey
+        >,
+        "initialData"
+      >;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useFindPerformanceStatsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof findPerformanceStats>>,
+    FindPerformanceStatsParams["page"]
+  >,
+  TError = ProblemDetails,
+>(
+  params: FindPerformanceStatsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof findPerformanceStats>>,
+        TError,
+        TData,
+        QueryKey,
+        FindPerformanceStatsParams["page"]
+      >
     >;
   },
-): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } {
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useFindPerformanceStatsInfinite<
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof findPerformanceStats>>,
+    FindPerformanceStatsParams["page"]
+  >,
+  TError = ProblemDetails,
+>(
+  params: FindPerformanceStatsParams,
+  options?: {
+    query?: Partial<
+      UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof findPerformanceStats>>,
+        TError,
+        TData,
+        QueryKey,
+        FindPerformanceStatsParams["page"]
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseInfiniteQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
   const queryOptions = getFindPerformanceStatsInfiniteQueryOptions(
     params,
     options,
   );
 
-  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
-    TData,
-    TError
-  > & { queryKey: QueryKey };
+  const query = useInfiniteQuery(
+    queryOptions,
+    queryClient,
+  ) as UseInfiniteQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -128,10 +246,12 @@ export const getFindPerformanceStatsQueryOptions = <
 >(
   params: FindPerformanceStatsParams,
   options?: {
-    query?: UseQueryOptions<
-      Awaited<ReturnType<typeof findPerformanceStats>>,
-      TError,
-      TData
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof findPerformanceStats>>,
+        TError,
+        TData
+      >
     >;
   },
 ) => {
@@ -148,7 +268,7 @@ export const getFindPerformanceStatsQueryOptions = <
     Awaited<ReturnType<typeof findPerformanceStats>>,
     TError,
     TData
-  > & { queryKey: QueryKey };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type FindPerformanceStatsQueryResult = NonNullable<
@@ -161,19 +281,96 @@ export function useFindPerformanceStats<
   TError = ProblemDetails,
 >(
   params: FindPerformanceStatsParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof findPerformanceStats>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof findPerformanceStats>>,
+          TError,
+          Awaited<ReturnType<typeof findPerformanceStats>>
+        >,
+        "initialData"
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useFindPerformanceStats<
+  TData = Awaited<ReturnType<typeof findPerformanceStats>>,
+  TError = ProblemDetails,
+>(
+  params: FindPerformanceStatsParams,
   options?: {
-    query?: UseQueryOptions<
-      Awaited<ReturnType<typeof findPerformanceStats>>,
-      TError,
-      TData
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof findPerformanceStats>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof findPerformanceStats>>,
+          TError,
+          Awaited<ReturnType<typeof findPerformanceStats>>
+        >,
+        "initialData"
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useFindPerformanceStats<
+  TData = Awaited<ReturnType<typeof findPerformanceStats>>,
+  TError = ProblemDetails,
+>(
+  params: FindPerformanceStatsParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof findPerformanceStats>>,
+        TError,
+        TData
+      >
     >;
   },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useFindPerformanceStats<
+  TData = Awaited<ReturnType<typeof findPerformanceStats>>,
+  TError = ProblemDetails,
+>(
+  params: FindPerformanceStatsParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof findPerformanceStats>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
   const queryOptions = getFindPerformanceStatsQueryOptions(params, options);
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -186,10 +383,12 @@ export const getFindPerformanceStatsSuspenseQueryOptions = <
 >(
   params: FindPerformanceStatsParams,
   options?: {
-    query?: UseSuspenseQueryOptions<
-      Awaited<ReturnType<typeof findPerformanceStats>>,
-      TError,
-      TData
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof findPerformanceStats>>,
+        TError,
+        TData
+      >
     >;
   },
 ) => {
@@ -206,7 +405,7 @@ export const getFindPerformanceStatsSuspenseQueryOptions = <
     Awaited<ReturnType<typeof findPerformanceStats>>,
     TError,
     TData
-  > & { queryKey: QueryKey };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type FindPerformanceStatsSuspenseQueryResult = NonNullable<
@@ -219,23 +418,85 @@ export function useFindPerformanceStatsSuspense<
   TError = ProblemDetails,
 >(
   params: FindPerformanceStatsParams,
-  options?: {
-    query?: UseSuspenseQueryOptions<
-      Awaited<ReturnType<typeof findPerformanceStats>>,
-      TError,
-      TData
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof findPerformanceStats>>,
+        TError,
+        TData
+      >
     >;
   },
-): UseSuspenseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useFindPerformanceStatsSuspense<
+  TData = Awaited<ReturnType<typeof findPerformanceStats>>,
+  TError = ProblemDetails,
+>(
+  params: FindPerformanceStatsParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof findPerformanceStats>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useFindPerformanceStatsSuspense<
+  TData = Awaited<ReturnType<typeof findPerformanceStats>>,
+  TError = ProblemDetails,
+>(
+  params: FindPerformanceStatsParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof findPerformanceStats>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useFindPerformanceStatsSuspense<
+  TData = Awaited<ReturnType<typeof findPerformanceStats>>,
+  TError = ProblemDetails,
+>(
+  params: FindPerformanceStatsParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof findPerformanceStats>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
   const queryOptions = getFindPerformanceStatsSuspenseQueryOptions(
     params,
     options,
   );
 
-  const query = useSuspenseQuery(queryOptions) as UseSuspenseQueryResult<
-    TData,
-    TError
-  > & { queryKey: QueryKey };
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -272,10 +533,12 @@ export const getGetExerciseHistoryQueryOptions = <
   exerciseId: string,
   params: GetExerciseHistoryParams,
   options?: {
-    query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getExerciseHistory>>,
-      TError,
-      TData
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getExerciseHistory>>,
+        TError,
+        TData
+      >
     >;
   },
 ) => {
@@ -297,7 +560,7 @@ export const getGetExerciseHistoryQueryOptions = <
     Awaited<ReturnType<typeof getExerciseHistory>>,
     TError,
     TData
-  > & { queryKey: QueryKey };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetExerciseHistoryQueryResult = NonNullable<
@@ -311,23 +574,103 @@ export function useGetExerciseHistory<
 >(
   exerciseId: string,
   params: GetExerciseHistoryParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getExerciseHistory>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getExerciseHistory>>,
+          TError,
+          Awaited<ReturnType<typeof getExerciseHistory>>
+        >,
+        "initialData"
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetExerciseHistory<
+  TData = Awaited<ReturnType<typeof getExerciseHistory>>,
+  TError = ProblemDetails,
+>(
+  exerciseId: string,
+  params: GetExerciseHistoryParams,
   options?: {
-    query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getExerciseHistory>>,
-      TError,
-      TData
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getExerciseHistory>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getExerciseHistory>>,
+          TError,
+          Awaited<ReturnType<typeof getExerciseHistory>>
+        >,
+        "initialData"
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetExerciseHistory<
+  TData = Awaited<ReturnType<typeof getExerciseHistory>>,
+  TError = ProblemDetails,
+>(
+  exerciseId: string,
+  params: GetExerciseHistoryParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getExerciseHistory>>,
+        TError,
+        TData
+      >
     >;
   },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useGetExerciseHistory<
+  TData = Awaited<ReturnType<typeof getExerciseHistory>>,
+  TError = ProblemDetails,
+>(
+  exerciseId: string,
+  params: GetExerciseHistoryParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getExerciseHistory>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
   const queryOptions = getGetExerciseHistoryQueryOptions(
     exerciseId,
     params,
     options,
   );
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -341,10 +684,12 @@ export const getGetExerciseHistorySuspenseQueryOptions = <
   exerciseId: string,
   params: GetExerciseHistoryParams,
   options?: {
-    query?: UseSuspenseQueryOptions<
-      Awaited<ReturnType<typeof getExerciseHistory>>,
-      TError,
-      TData
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getExerciseHistory>>,
+        TError,
+        TData
+      >
     >;
   },
 ) => {
@@ -361,7 +706,7 @@ export const getGetExerciseHistorySuspenseQueryOptions = <
     Awaited<ReturnType<typeof getExerciseHistory>>,
     TError,
     TData
-  > & { queryKey: QueryKey };
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetExerciseHistorySuspenseQueryResult = NonNullable<
@@ -375,24 +720,89 @@ export function useGetExerciseHistorySuspense<
 >(
   exerciseId: string,
   params: GetExerciseHistoryParams,
-  options?: {
-    query?: UseSuspenseQueryOptions<
-      Awaited<ReturnType<typeof getExerciseHistory>>,
-      TError,
-      TData
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getExerciseHistory>>,
+        TError,
+        TData
+      >
     >;
   },
-): UseSuspenseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetExerciseHistorySuspense<
+  TData = Awaited<ReturnType<typeof getExerciseHistory>>,
+  TError = ProblemDetails,
+>(
+  exerciseId: string,
+  params: GetExerciseHistoryParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getExerciseHistory>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetExerciseHistorySuspense<
+  TData = Awaited<ReturnType<typeof getExerciseHistory>>,
+  TError = ProblemDetails,
+>(
+  exerciseId: string,
+  params: GetExerciseHistoryParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getExerciseHistory>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useGetExerciseHistorySuspense<
+  TData = Awaited<ReturnType<typeof getExerciseHistory>>,
+  TError = ProblemDetails,
+>(
+  exerciseId: string,
+  params: GetExerciseHistoryParams,
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getExerciseHistory>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
   const queryOptions = getGetExerciseHistorySuspenseQueryOptions(
     exerciseId,
     params,
     options,
   );
 
-  const query = useSuspenseQuery(queryOptions) as UseSuspenseQueryResult<
-    TData,
-    TError
-  > & { queryKey: QueryKey };
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   query.queryKey = queryOptions.queryKey;
 

@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
 
 const API_BASE_URL = 'http://192.168.1.165:7081';
 
@@ -8,17 +8,17 @@ export const apiClient = axios.create({
   withCredentials: true,
 });
 
-let getClerkToken: (() => Promise<string | null>) | null = null;
+let tokenGetter: (() => Promise<string | null>) | null = null;
 
-export const setupClerkToken = (getTokenFn: () => Promise<string | null>) => {
-  getClerkToken = getTokenFn;
+export const setTokenGetter = (getter: () => Promise<string | null>) => {
+  tokenGetter = getter;
 };
 
 apiClient.interceptors.request.use(
-  async (config) => {
-    if (getClerkToken) {
-      const token = await getClerkToken();
-      if (token) {
+  async (config: InternalAxiosRequestConfig) => {
+    if (tokenGetter) {
+      const token = await tokenGetter();
+      if (token && config.headers) {
         config.headers.Authorization = `Bearer ${token}`;
       }
     }
@@ -38,8 +38,8 @@ apiClient.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        if (getClerkToken) {
-          const newToken = await getClerkToken();
+        if (tokenGetter) {
+          const newToken = await tokenGetter();
           if (newToken) {
             originalRequest.headers.Authorization = `Bearer ${newToken}`;
             return apiClient(originalRequest);

@@ -40,7 +40,6 @@ export type CreateMuscleGroupResponse = {
 };
 
 export type CreateTrainingRequest = {
-  userId: string;
   trained: Date;
   /** @nullable */
   sets?: TrainingSetCommandDTO[] | null;
@@ -199,27 +198,6 @@ export type LastWorkoutSummary = {
   performedAt?: Date;
 };
 
-export type LoginUserRequest = {
-  /** @minLength 1 */
-  email: string;
-  /** @minLength 1 */
-  password: string;
-};
-
-export type LoginUserResponse = {
-  /** @minLength 1 */
-  accessToken: string;
-  /** @minLength 1 */
-  refreshToken: string;
-  isSuccess: boolean;
-  /** @minLength 1 */
-  errorMessage: string;
-};
-
-export type LogoutUserResponse = {
-  isSuccess?: boolean;
-};
-
 export type MuscleGroupExerciseDTO = {
   id: string;
   /** @minLength 1 */
@@ -247,37 +225,6 @@ export type ProblemDetails = {
   /** @nullable */
   instance?: string | null;
   [key: string]: unknown;
-};
-
-export type RefreshUserTokenResponse = {
-  /** @minLength 1 */
-  accessToken: string;
-  /** @minLength 1 */
-  refreshToken: string;
-  isSuccess: boolean;
-  /** @minLength 1 */
-  errorMessage: string;
-};
-
-export type RegisterUserRequest = {
-  /** @minLength 1 */
-  name: string;
-  /** @minLength 1 */
-  email: string;
-  /** @minLength 1 */
-  password: string;
-  /** @minLength 1 */
-  confirmPassword: string;
-};
-
-export type RegisterUserResponse = {
-  /** @minLength 1 */
-  accessToken: string;
-  /** @minLength 1 */
-  refreshToken: string;
-  isSuccess: boolean;
-  /** @minLength 1 */
-  errorMessage: string;
 };
 
 export type SetHistory = {
@@ -333,13 +280,15 @@ export type UpdateTrainingSetResponse = {
 
 export type UpdateUserBioRequest = {
   /** @nullable */
+  clerkUserId: string | null;
+  /** @nullable */
+  email: string | null;
+  /** @nullable */
   nationality: string | null;
   age?: number;
   height?: number;
   weight?: number;
   gender?: Gender;
-  /** @nullable */
-  profileImage?: Blob | null;
 };
 
 export type UpdateUserBioResponse = {

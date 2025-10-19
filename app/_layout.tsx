@@ -1,4 +1,4 @@
-import { setupClerkToken } from '@/api/api-client';
+import { setTokenGetter } from '@/api/api-client'; // Import this
 import { configureQueryClient } from '@/api/query-client';
 import tokenCache from '@/components/biometrics/secure-token-storage';
 import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
@@ -21,9 +21,10 @@ function InitialLayout() {
   const segments = useSegments();
   const router = useRouter();
 
+  // Setup token getter once when loaded
   useEffect(() => {
     if (isLoaded) {
-      setupClerkToken(getToken);
+      setTokenGetter(getToken);
     }
   }, [isLoaded, getToken]);
 

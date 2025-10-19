@@ -9,18 +9,13 @@
 import { useMutation } from "@tanstack/react-query";
 import type {
   MutationFunction,
+  QueryClient,
   UseMutationOptions,
   UseMutationResult,
 } from "@tanstack/react-query";
 
 import type {
-  LoginUserRequest,
-  LoginUserResponse,
-  LogoutUserResponse,
   ProblemDetails,
-  RefreshUserTokenResponse,
-  RegisterUserRequest,
-  RegisterUserResponse,
   UpdateUserBioRequest,
   UpdateUserBioResponse,
   ValidationProblemDetails,
@@ -28,163 +23,6 @@ import type {
 
 import { customInstance } from "../../api/api-client";
 
-export const registerUser = (
-  registerUserRequest: RegisterUserRequest,
-  signal?: AbortSignal,
-) => {
-  return customInstance<RegisterUserResponse>({
-    url: `/api/auth/register`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: registerUserRequest,
-    signal,
-  });
-};
-
-export const getRegisterUserMutationOptions = <
-  TError = ProblemDetails | ValidationProblemDetails,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof registerUser>>,
-    TError,
-    { data: RegisterUserRequest },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof registerUser>>,
-  TError,
-  { data: RegisterUserRequest },
-  TContext
-> => {
-  const mutationKey = ["registerUser"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof registerUser>>,
-    { data: RegisterUserRequest }
-  > = (props) => {
-    const { data } = props ?? {};
-
-    return registerUser(data);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type RegisterUserMutationResult = NonNullable<
-  Awaited<ReturnType<typeof registerUser>>
->;
-export type RegisterUserMutationBody = RegisterUserRequest;
-export type RegisterUserMutationError =
-  | ProblemDetails
-  | ValidationProblemDetails;
-
-export const useRegisterUser = <
-  TError = ProblemDetails | ValidationProblemDetails,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof registerUser>>,
-    TError,
-    { data: RegisterUserRequest },
-    TContext
-  >;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof registerUser>>,
-  TError,
-  { data: RegisterUserRequest },
-  TContext
-> => {
-  const mutationOptions = getRegisterUserMutationOptions(options);
-
-  return useMutation(mutationOptions);
-};
-export const loginUser = (
-  loginUserRequest: LoginUserRequest,
-  signal?: AbortSignal,
-) => {
-  return customInstance<LoginUserResponse>({
-    url: `/api/auth/login`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: loginUserRequest,
-    signal,
-  });
-};
-
-export const getLoginUserMutationOptions = <
-  TError = ProblemDetails | ProblemDetails | ValidationProblemDetails,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof loginUser>>,
-    TError,
-    { data: LoginUserRequest },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof loginUser>>,
-  TError,
-  { data: LoginUserRequest },
-  TContext
-> => {
-  const mutationKey = ["loginUser"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof loginUser>>,
-    { data: LoginUserRequest }
-  > = (props) => {
-    const { data } = props ?? {};
-
-    return loginUser(data);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type LoginUserMutationResult = NonNullable<
-  Awaited<ReturnType<typeof loginUser>>
->;
-export type LoginUserMutationBody = LoginUserRequest;
-export type LoginUserMutationError =
-  | ProblemDetails
-  | ProblemDetails
-  | ValidationProblemDetails;
-
-export const useLoginUser = <
-  TError = ProblemDetails | ProblemDetails | ValidationProblemDetails,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof loginUser>>,
-    TError,
-    { data: LoginUserRequest },
-    TContext
-  >;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof loginUser>>,
-  TError,
-  { data: LoginUserRequest },
-  TContext
-> => {
-  const mutationOptions = getLoginUserMutationOptions(options);
-
-  return useMutation(mutationOptions);
-};
 export const updateUserBio = (updateUserBioRequest: UpdateUserBioRequest) => {
   return customInstance<UpdateUserBioResponse>({
     url: `/api/auth/bio`,
@@ -242,14 +80,17 @@ export type UpdateUserBioMutationError =
 export const useUpdateUserBio = <
   TError = ProblemDetails | ValidationProblemDetails,
   TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateUserBio>>,
-    TError,
-    { data: UpdateUserBioRequest },
-    TContext
-  >;
-}): UseMutationResult<
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof updateUserBio>>,
+      TError,
+      { data: UpdateUserBioRequest },
+      TContext
+    >;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
   Awaited<ReturnType<typeof updateUserBio>>,
   TError,
   { data: UpdateUserBioRequest },
@@ -257,143 +98,5 @@ export const useUpdateUserBio = <
 > => {
   const mutationOptions = getUpdateUserBioMutationOptions(options);
 
-  return useMutation(mutationOptions);
-};
-export const logout = (signal?: AbortSignal) => {
-  return customInstance<LogoutUserResponse>({
-    url: `/api/auth/logout`,
-    method: "POST",
-    signal,
-  });
-};
-
-export const getLogoutMutationOptions = <
-  TError = ProblemDetails,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof logout>>,
-    TError,
-    void,
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof logout>>,
-  TError,
-  void,
-  TContext
-> => {
-  const mutationKey = ["logout"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof logout>>,
-    void
-  > = () => {
-    return logout();
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type LogoutMutationResult = NonNullable<
-  Awaited<ReturnType<typeof logout>>
->;
-
-export type LogoutMutationError = ProblemDetails;
-
-export const useLogout = <
-  TError = ProblemDetails,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof logout>>,
-    TError,
-    void,
-    TContext
-  >;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof logout>>,
-  TError,
-  void,
-  TContext
-> => {
-  const mutationOptions = getLogoutMutationOptions(options);
-
-  return useMutation(mutationOptions);
-};
-export const refresh = (signal?: AbortSignal) => {
-  return customInstance<RefreshUserTokenResponse>({
-    url: `/api/auth/refresh`,
-    method: "POST",
-    signal,
-  });
-};
-
-export const getRefreshMutationOptions = <
-  TError = ProblemDetails,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof refresh>>,
-    TError,
-    void,
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof refresh>>,
-  TError,
-  void,
-  TContext
-> => {
-  const mutationKey = ["refresh"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof refresh>>,
-    void
-  > = () => {
-    return refresh();
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type RefreshMutationResult = NonNullable<
-  Awaited<ReturnType<typeof refresh>>
->;
-
-export type RefreshMutationError = ProblemDetails;
-
-export const useRefresh = <
-  TError = ProblemDetails,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof refresh>>,
-    TError,
-    void,
-    TContext
-  >;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof refresh>>,
-  TError,
-  void,
-  TContext
-> => {
-  const mutationOptions = getRefreshMutationOptions(options);
-
-  return useMutation(mutationOptions);
+  return useMutation(mutationOptions, queryClient);
 };
