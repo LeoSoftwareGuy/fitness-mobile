@@ -6,15 +6,26 @@
  * OpenAPI spec version: v1
  * // @ts-nocheck
  */
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
   QueryClient,
+  QueryFunction,
+  QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
+  UseQueryOptions,
+  UseQueryResult,
+  UseSuspenseQueryOptions,
+  UseSuspenseQueryResult,
 } from "@tanstack/react-query";
 
 import type {
+  GetUserBioResponse,
   ProblemDetails,
   UpdateUserBioRequest,
   UpdateUserBioResponse,
@@ -100,3 +111,254 @@ export const useUpdateUserBio = <
 
   return useMutation(mutationOptions, queryClient);
 };
+export const getUsersBioInfo = (signal?: AbortSignal) => {
+  return customInstance<GetUserBioResponse>({
+    url: `/api/auth/bio`,
+    method: "GET",
+    signal,
+  });
+};
+
+export const getGetUsersBioInfoQueryKey = () => {
+  return [`/api/auth/bio`] as const;
+};
+
+export const getGetUsersBioInfoQueryOptions = <
+  TData = Awaited<ReturnType<typeof getUsersBioInfo>>,
+  TError = ProblemDetails,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof getUsersBioInfo>>, TError, TData>
+  >;
+}) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetUsersBioInfoQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsersBioInfo>>> = ({
+    signal,
+  }) => getUsersBioInfo(signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getUsersBioInfo>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetUsersBioInfoQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getUsersBioInfo>>
+>;
+export type GetUsersBioInfoQueryError = ProblemDetails;
+
+export function useGetUsersBioInfo<
+  TData = Awaited<ReturnType<typeof getUsersBioInfo>>,
+  TError = ProblemDetails,
+>(
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getUsersBioInfo>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUsersBioInfo>>,
+          TError,
+          Awaited<ReturnType<typeof getUsersBioInfo>>
+        >,
+        "initialData"
+      >;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetUsersBioInfo<
+  TData = Awaited<ReturnType<typeof getUsersBioInfo>>,
+  TError = ProblemDetails,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getUsersBioInfo>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUsersBioInfo>>,
+          TError,
+          Awaited<ReturnType<typeof getUsersBioInfo>>
+        >,
+        "initialData"
+      >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetUsersBioInfo<
+  TData = Awaited<ReturnType<typeof getUsersBioInfo>>,
+  TError = ProblemDetails,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getUsersBioInfo>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useGetUsersBioInfo<
+  TData = Awaited<ReturnType<typeof getUsersBioInfo>>,
+  TError = ProblemDetails,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getUsersBioInfo>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetUsersBioInfoQueryOptions(options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const getGetUsersBioInfoSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getUsersBioInfo>>,
+  TError = ProblemDetails,
+>(options?: {
+  query?: Partial<
+    UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof getUsersBioInfo>>,
+      TError,
+      TData
+    >
+  >;
+}) => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetUsersBioInfoQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsersBioInfo>>> = ({
+    signal,
+  }) => getUsersBioInfo(signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getUsersBioInfo>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetUsersBioInfoSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getUsersBioInfo>>
+>;
+export type GetUsersBioInfoSuspenseQueryError = ProblemDetails;
+
+export function useGetUsersBioInfoSuspense<
+  TData = Awaited<ReturnType<typeof getUsersBioInfo>>,
+  TError = ProblemDetails,
+>(
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getUsersBioInfo>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetUsersBioInfoSuspense<
+  TData = Awaited<ReturnType<typeof getUsersBioInfo>>,
+  TError = ProblemDetails,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getUsersBioInfo>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetUsersBioInfoSuspense<
+  TData = Awaited<ReturnType<typeof getUsersBioInfo>>,
+  TError = ProblemDetails,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getUsersBioInfo>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useGetUsersBioInfoSuspense<
+  TData = Awaited<ReturnType<typeof getUsersBioInfo>>,
+  TError = ProblemDetails,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getUsersBioInfo>>,
+        TError,
+        TData
+      >
+    >;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetUsersBioInfoSuspenseQueryOptions(options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}

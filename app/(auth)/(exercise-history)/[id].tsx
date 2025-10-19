@@ -2,7 +2,7 @@ import { icons, images } from "@/constants";
 import { ExerciseSetsByDate } from "@/state/endpoints/api.schemas";
 import { useGetExerciseHistory } from "@/state/endpoints/statistics";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
     ActivityIndicator,
     FlatList,
@@ -20,15 +20,22 @@ import TimePeriodSelector from "./components/time-period-selector";
 export type TimePeriod = "week" | "month" | "3months" | "year" | "best" | "latest";
 
 export default function ExerciseHistoryScreen() {
-    const { id } = useLocalSearchParams();
+    const params = useLocalSearchParams<{ id?: string | string[] }>();
+
+    const exerciseId = useMemo(() => {
+        const raw = params?.id;
+        if (Array.isArray(raw)) return raw[0];
+        return raw ?? undefined;
+    }, [params]);
+
     const [timePeriod, setTimePeriod] = useState<TimePeriod>("month");
 
     const {
         data: exerciseHistory,
         isLoading,
         error,
-    } = useGetExerciseHistory(id as string, {
-        exerciseId: id as string,
+    } = useGetExerciseHistory(exerciseId as string, {
+        exerciseId: exerciseId!,
         timeInterval: timePeriod,
     });
 
@@ -38,6 +45,15 @@ export default function ExerciseHistoryScreen() {
             setsInfo={item.setsInfo ?? []}
         />
     );
+
+    if (!exerciseId) {
+        return (
+            <View className="flex-1 justify-center items-center bg-primary">
+                <ActivityIndicator size="large" color="#fff" />
+                <Text className="mt-2.5 text-white">Preparing Exercise History…</Text>
+            </View>
+        );
+    }
 
     if (isLoading) {
         return (

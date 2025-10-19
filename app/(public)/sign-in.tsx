@@ -73,7 +73,7 @@ export default function SignInScreen() {
               placehorder="Password"
             />
 
-            <TouchableOpacity onPress={() => router.push("/(tabs)/home")}>
+            <TouchableOpacity onPress={() => router.push("/(public)/forgot")}>
               <View className="flex-row w-full justify-end">
                 <Text className="pt-2 font-pRegular text-[14px] text-darkGray">
                   Forgot password?
@@ -88,7 +88,7 @@ export default function SignInScreen() {
               containerStyles="w-full mt-[80px]"
             />
 
-            <TouchableOpacity onPress={() => router.push("/(auth)/register")}>
+            <TouchableOpacity onPress={() => router.push("/(public)/register")}>
               <Text className="pt-[130px] font-pRegular text-[16px] text-darkGray">
                 Register
               </Text>

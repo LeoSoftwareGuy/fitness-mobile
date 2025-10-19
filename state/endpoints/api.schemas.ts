@@ -191,6 +191,21 @@ export type GetTrainingByIdResponse = {
   sets?: TrainingSetDTO[] | null;
 };
 
+export type GetUserBioResponse = {
+  /** @nullable */
+  firstName?: string | null;
+  /** @nullable */
+  lastName?: string | null;
+  /** @nullable */
+  email?: string | null;
+  /** @nullable */
+  nationality?: string | null;
+  age?: number;
+  height?: number;
+  weight: Weight;
+  gender?: Gender;
+};
+
 export type LastWorkoutSummary = {
   totalReps?: number;
   setCount?: number;
@@ -287,7 +302,7 @@ export type UpdateUserBioRequest = {
   nationality: string | null;
   age?: number;
   height?: number;
-  weight?: number;
+  weight: Weight;
   gender?: Gender;
 };
 

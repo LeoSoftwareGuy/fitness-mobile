@@ -109,7 +109,7 @@ export default function SignUpScreen() {
                   isLoading={loading}
                 />
 
-                <TouchableOpacity onPress={() => router.push("/(auth)/sign-in")}>
+                <TouchableOpacity onPress={() => router.push("/(public)/sign-in")}>
                   <Text className="pt-[130px] font-pRegular text-[16px] text-darkGray">
                     Already have an account?
                   </Text>
@@ -122,7 +122,7 @@ export default function SignUpScreen() {
                 <FormField
                   title="Code"
                   value={code}
-                  handleChangeText={(e: string) => setCode(code)}
+                  handleChangeText={(e: string) => setCode(e)}
                   placehorder="Code..."
                   otherStyles="mt-[36px]"
                 />

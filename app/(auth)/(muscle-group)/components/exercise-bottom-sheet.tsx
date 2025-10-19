@@ -1,8 +1,8 @@
 
 import FitButton from "@/components/buttons/fit-button";
-import useAuthStore from "@/hooks/use-auth-store";
 import { useTrainingStore } from "@/hooks/use-trainings-store";
 import { MuscleGroupExerciseDTO, TrainingSetCommandDTO, Weight } from "@/state/endpoints/api.schemas";
+import { useUser } from "@clerk/clerk-expo";
 import BottomSheet, { BottomSheetBackdrop, BottomSheetView } from "@gorhom/bottom-sheet";
 import React, { forwardRef, useCallback, useMemo, useState } from "react";
 import { Alert, Image, Text, TouchableOpacity } from "react-native";
@@ -33,8 +33,7 @@ const ExerciseBottomSheetComponent = forwardRef<Ref, Props>(
         const addExerciseSets = useTrainingStore((state) => state.addExerciseSets);
         const initializeTraining = useTrainingStore((state) => state.initializeTraining);
         const currentTraining = useTrainingStore((state) => state.currentTraining);
-        const user = useAuthStore((state) => state.user);
-
+        const { user, isLoaded } = useUser();
         const [isLoading, setIsLoading] = useState(false);
 
         const onAddWorkoutToLocalStorage = useCallback(() => {

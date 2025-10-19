@@ -41,7 +41,7 @@ export default function HomeScreen() {
                                     className="mt-5 mx-auto"
                                 />
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => router.push("/(bio)/bio")}>
+                            <TouchableOpacity onPress={() => router.push("/(profile)/profile")}>
                                 <Image
                                     source={icons.bio}
                                     resizeMode="contain"

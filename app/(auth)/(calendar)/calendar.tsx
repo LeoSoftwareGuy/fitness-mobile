@@ -1,11 +1,10 @@
 
 import ErrorMessage from "@/components/error-message";
 import LoadingIndicator from "@/components/loading-indicator";
-import useAuthStore from "@/hooks/use-auth-store";
 import { TrainingDayDTO } from "@/state/endpoints/api.schemas";
 import { useFindTrainingsForCalendar } from "@/state/endpoints/trainings";
+import { useUser } from "@clerk/clerk-expo";
 import BottomSheet from "@gorhom/bottom-sheet";
-import { router } from "expo-router";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ScrollView } from "react-native";
 import { Calendar, DateData } from "react-native-calendars";
@@ -13,11 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import CalendarBottomSheet from "./components/calendar-bottom-sheet";
 
 export default function CalendarScreen() {
-    const user = useAuthStore((state) => state.user);
-    if (!user) {
-        return router.replace("/(auth)/sign-in");
-    }
-
+    const { user, isLoaded } = useUser();
     const [currentMonth, setCurrentMonth] = useState<number>(new Date().getMonth() + 1);
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
@@ -31,14 +26,14 @@ export default function CalendarScreen() {
         error,
     } = useFindTrainingsForCalendar(
         {
-            userId: user.id,
+            userId: user?.id || '',
             year: currentYear,
             month: currentMonth,
         },
         {
             query: {
                 staleTime: 5 * 60 * 1000,
-                enabled: !!user.id && currentMonth >= 1 && currentMonth <= 12,
+                enabled: !!user?.id && currentMonth >= 1 && currentMonth <= 12,
             },
         }
     );

@@ -32,7 +32,7 @@ export default function IntroScreen() {
                         </Text>
                         <FitButton
                             title="Get Started"
-                            handlePress={() => router.push("/(auth)/sign-in")}
+                            handlePress={() => router.push("/(public)/sign-in")}
                             containerStyles="w-full"
                         />
                         <Image

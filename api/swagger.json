@@ -92,6 +92,54 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "GetUsersBioInfo",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserBioResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserBioResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserBioResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/muscle-groups": {
@@ -2315,6 +2363,45 @@
         },
         "additionalProperties": false
       },
+      "GetUserBioResponse": {
+        "required": [
+          "weight"
+        ],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "nationality": {
+            "type": "string",
+            "nullable": true
+          },
+          "age": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "weight": {
+            "$ref": "#/components/schemas/Weight"
+          },
+          "gender": {
+            "$ref": "#/components/schemas/Gender"
+          }
+        },
+        "additionalProperties": false
+      },
       "LastWorkoutSummary": {
         "required": [
           "weight"
@@ -2587,7 +2674,8 @@
         "required": [
           "clerkUserId",
           "email",
-          "nationality"
+          "nationality",
+          "weight"
         ],
         "type": "object",
         "properties": {
@@ -2612,8 +2700,7 @@
             "format": "int32"
           },
           "weight": {
-            "type": "number",
-            "format": "double"
+            "$ref": "#/components/schemas/Weight"
           },
           "gender": {
             "$ref": "#/components/schemas/Gender"
