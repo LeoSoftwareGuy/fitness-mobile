@@ -16,7 +16,7 @@ export default defineConfig({
     },
     output: {
       mode: 'tags',
-      target: './state/endpoints/api.ts', // where file is going to be generated
+      target: './state/endpoints/api.ts',
       client: 'react-query',
       tslint: true,
       clean: true,
@@ -45,13 +45,13 @@ export default defineConfig({
               useSuspenseQuery: true,
               useInfinite: true,
               useSuspenseInfiniteQuery: false,
-              useInfiniteQueryParam: 'page', // or 'offset', 'cursor' depending on your API
+              useInfiniteQueryParam: 'page',
             },
           };
           return acc;
         }, {}),
         mutator: {
-          path: './api/api-client.ts', // custom axios/fetch instance
+          path: './api/api-client.ts',
           name: 'customInstance',
           alias: {
             '@/api/query-client': path.resolve(__dirname, './api/query-client'),

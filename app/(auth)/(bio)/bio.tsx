@@ -1,7 +1,8 @@
-
 import FitButton from "@/components/buttons/fit-button";
+import FormField from "@/components/forms/form-field";
 import { Gender } from "@/state/endpoints/api.schemas";
 import { useUpdateUserBio } from "@/state/endpoints/auth";
+import { useUser } from "@clerk/clerk-expo";
 import * as ImagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
@@ -14,6 +15,8 @@ import GenderSelect from "./components/gender-select";
 import HeightWeightInput from "./components/height-weight-input";
 
 interface FormState {
+    firstName: string;
+    lastName: string;
     nationality: string | null;
     age: number;
     gender: Gender;
@@ -27,7 +30,11 @@ interface FormState {
 }
 
 export default function BioScreen() {
+    const { user } = useUser();
+
     const [form, setForm] = useState<FormState>({
+        firstName: "",
+        lastName: "",
         nationality: null,
         age: 18,
         gender: Gender.NUMBER_2,
@@ -38,11 +45,11 @@ export default function BioScreen() {
     const { mutateAsync, isPending } = useUpdateUserBio({
         mutation: {
             onSuccess: () => {
-                Alert.alert("Success", "Profile updated successfully!");
-                router.push("/(tabs)/home");
+                Alert.alert("Success", "Profile created successfully!");
+                router.replace("/(tabs)/home");
             },
             onError: (error: any) => {
-                Alert.alert("Error", error.message || "Update failed");
+                Alert.alert(error.errors[0].message);
             }
         }
     });
@@ -79,27 +86,56 @@ export default function BioScreen() {
     };
 
     const handleOnSubmit = async () => {
-        if (!form.nationality || !form.age || !form.height || !form.weight) {
+        if (!form.firstName || !form.lastName || !form.nationality || !form.age || !form.height || !form.weight) {
             Alert.alert("Error", "Please fill in all fields");
             return;
         }
 
-        const formData = new FormData();
-        formData.append("nationality", form.nationality);
-        formData.append("age", form.age.toString());
-        formData.append("gender", form.gender.toString());
-        formData.append("height", form.height.toString());
-        formData.append("weight", form.weight.toString());
+        try {
+            // 1. Upload profile image and name to Clerk
+            if (form.profileImage) {
+                // Convert image to base64 for Clerk
+                const response = await fetch(form.profileImage.uri);
+                const blob = await response.blob();
+                const reader = new FileReader();
 
-        if (form.profileImage) {
-            formData.append("profileImage", {
-                uri: form.profileImage.uri,
-                name: form.profileImage.name,
-                type: form.profileImage.type,
-            } as any);
+                reader.onloadend = async () => {
+                    const base64data = reader.result as string;
+
+                    await user?.setProfileImage({
+                        file: base64data,
+                    });
+                };
+
+                reader.readAsDataURL(blob);
+            }
+
+            await user?.update({
+                firstName: form.firstName,
+                lastName: form.lastName,
+            });
+
+            const formData = new FormData();
+            formData.append("clerkUserId", user?.id || '');
+            formData.append("email", user?.primaryEmailAddress?.emailAddress || "");
+            formData.append("nationality", form.nationality);
+            formData.append("age", form.age.toString());
+            formData.append("gender", form.gender.toString());
+            formData.append("height", form.height.toString());
+            formData.append("weight", form.weight.toString());
+
+            await mutateAsync({ data: formData as any });
+
+            // 3. Store completion flag in Clerk metadata
+            await user?.update({
+                unsafeMetadata: {
+                    hasCompletedProfile: true,
+                }
+            });
+
+        } catch (error: any) {
+            Alert.alert("Error", error.message || "Something went wrong");
         }
-
-        await mutateAsync({ data: formData as any });
     };
 
     return (
@@ -136,6 +172,26 @@ export default function BioScreen() {
                         </TouchableOpacity>
 
                         <View className="w-full">
+                            <FormField
+                                title="First Name"
+                                value={form.firstName}
+                                handleChangeText={(e: string) =>
+                                    setForm({ ...form, firstName: e })
+                                }
+                                otherStyles="mb-4"
+                                placehorder="First Name"
+                            />
+
+                            <FormField
+                                title="Last Name"
+                                value={form.lastName}
+                                handleChangeText={(e: string) =>
+                                    setForm({ ...form, lastName: e })
+                                }
+                                otherStyles="mb-4"
+                                placehorder="Last Name"
+                            />
+
                             <CountrySelect
                                 onChange={(e: CountrySelectValue) =>
                                     setForm({ ...form, nationality: e.value })
@@ -170,7 +226,7 @@ export default function BioScreen() {
                         </View>
 
                         <FitButton
-                            title="Update Profile"
+                            title="Create Profile"
                             handlePress={handleOnSubmit}
                             isLoading={isPending}
                             containerStyles="w-full mt-[40px]"

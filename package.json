@@ -8,11 +8,12 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "pull-spec": "powershell -Command \"mkdir -Force ./api | Out-Null; curl.exe -k https://localhost:7225/swagger/v1/swagger.json -o ./api/swagger.json\"",
+    "pull-spec": "powershell -Command \"mkdir -Force ./api | Out-Null; curl.exe -k https://localhost:7081/swagger/v1/swagger.json -o ./api/swagger.json\"",
     "generate-api": "npm run pull-spec && orval --config orval.config.ts",
     "lint": "expo lint"
   },
   "dependencies": {
+    "@clerk/clerk-expo": "^2.17.0",
     "@expo/vector-icons": "^15.0.2",
     "@gorhom/bottom-sheet": "^5.2.6",
     "@react-native-async-storage/async-storage": "^2.2.0",
@@ -40,6 +41,7 @@
     "expo-system-ui": "~6.0.7",
     "expo-web-browser": "~15.0.8",
     "nativewind": "^4.2.1",
+    "orval": "^7.13.2",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.5.14",
     "react": "19.1.0",

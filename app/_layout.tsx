@@ -1,7 +1,10 @@
+import { setupClerkToken } from '@/api/api-client';
 import { configureQueryClient } from '@/api/query-client';
+import tokenCache from '@/components/biometrics/secure-token-storage';
+import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
 import { QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from 'expo-font';
-import { SplashScreen, Stack } from 'expo-router';
+import { Slot, SplashScreen, useRouter, useSegments } from 'expo-router';
 import React, { useEffect } from 'react';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import 'react-native-reanimated';
@@ -10,6 +13,34 @@ import '../global.css';
 SplashScreen.preventAutoHideAsync();
 
 const queryClient = configureQueryClient();
+
+const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
+function InitialLayout() {
+  const { isLoaded, isSignedIn, getToken } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoaded) {
+      setupClerkToken(getToken);
+    }
+  }, [isLoaded, getToken]);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    const inAuthGroup = segments[0] === '(auth)';
+
+    if (isSignedIn && !inAuthGroup) {
+      router.replace('/(tabs)/home');
+    } else if (!isSignedIn) {
+      router.replace('/(auth)/sign-in');
+    }
+  }, [isLoaded, isSignedIn, segments]);
+
+  return <Slot />;
+}
 
 export default function RootLayout() {
   const [fontsLoaded, error] = useFonts({
@@ -34,20 +65,13 @@ export default function RootLayout() {
     return null;
   }
 
-  if (!fontsLoaded && !error) {
-    return null;
-  }
-
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <QueryClientProvider client={queryClient}>
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="(muscle-group)/[id]" options={{ headerShown: false }} />
-        </Stack>
-      </QueryClientProvider>
-    </GestureHandlerRootView >
+    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache()}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <QueryClientProvider client={queryClient}>
+          <InitialLayout />
+        </QueryClientProvider>
+      </GestureHandlerRootView>
+    </ClerkProvider>
   );
-};
+}

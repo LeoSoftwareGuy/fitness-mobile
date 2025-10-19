@@ -2757,7 +2757,7 @@
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "RefreshUserTokenResponse": {
         "required": [
@@ -3107,7 +3107,7 @@
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "Weight": {
         "type": "object",
@@ -3135,7 +3135,7 @@
   },
   "security": [
     {
-      "Bearer": [ ]
+      "Bearer": []
     }
   ]
 }

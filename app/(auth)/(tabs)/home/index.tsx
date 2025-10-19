@@ -1,8 +1,8 @@
 import { icons, images } from "@/constants";
-import useAuthStore from "@/hooks/use-auth-store";
 import { useTrainingStore } from "@/hooks/use-trainings-store";
 import { MuscleGroupType } from "@/state/endpoints/api.schemas";
 import { useFindMuscleGroups } from "@/state/endpoints/muscle-groups";
+import { useUser } from "@clerk/clerk-expo";
 import { router } from "expo-router";
 import React, { useEffect } from "react";
 import { Image, ImageBackground, ScrollView, Text, TouchableOpacity, View } from "react-native";
@@ -11,11 +11,10 @@ import DateSlider from "./_components/date-slider";
 import MuscleFlatListComponent from "./_components/muscles-flat-list";
 
 export default function HomeScreen() {
+    const { user } = useUser();
     const { data: muscleGroups, isLoading } = useFindMuscleGroups();
     const initializeTraining = useTrainingStore((state) => state.initializeTraining);
-    const user = useAuthStore((state) => state.user);
 
-    // maybe not needed , lets see in future
     useEffect(() => {
         if (user?.id) {
             initializeTraining(user.id);
@@ -34,7 +33,7 @@ export default function HomeScreen() {
                                 className="mt-5 mx-auto"
                             />
                         </TouchableOpacity>
-                        <View className="flex-row items-center space-x-1">
+                        <View className="flex-row items-center space-x-3">
                             <TouchableOpacity onPress={() => router.push("/(todays-workout)/todays-workout")}>
                                 <Image
                                     source={icons.dumbel}
@@ -42,7 +41,7 @@ export default function HomeScreen() {
                                     className="mt-5 mx-auto"
                                 />
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => router.push("/(auth)/sign-in")}>
+                            <TouchableOpacity onPress={() => router.push("/(bio)/bio")}>
                                 <Image
                                     source={icons.bio}
                                     resizeMode="contain"
