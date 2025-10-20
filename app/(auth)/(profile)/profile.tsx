@@ -30,9 +30,10 @@ export default function ProfileScreen() {
     const { isSignedIn } = useAuth();
     const [isLoadingData, setIsLoadingData] = useState(true);
 
-    const { data: savedUserInfo, isLoading } = useGetUsersBioInfo({
+    const { data: savedUserInfo, isLoading, error } = useGetUsersBioInfo({
         query: {
             enabled: isSignedIn && isLoaded,
+            retry: false,
         }
     });
 
@@ -40,9 +41,9 @@ export default function ProfileScreen() {
         firstName: "",
         lastName: "",
         nationality: null,
-        age: 18,
+        age: 0,
         gender: Gender.NUMBER_2,
-        height: 170,
+        height: 0,
         weight: { value: 0, unit: "kg" },
     });
 
@@ -64,14 +65,24 @@ export default function ProfileScreen() {
                 firstName,
                 lastName,
                 nationality: savedUserInfo?.nationality || null,
-                age: savedUserInfo?.age || 18,
+                age: savedUserInfo?.age || 0,
                 gender: savedUserInfo?.gender || Gender.NUMBER_2,
-                height: savedUserInfo?.height || 170,
+                height: savedUserInfo?.height || 0,
                 weight: savedUserInfo?.weight || { value: 0, unit: "kg" },
                 profileImageUrl,
             });
         } catch (error) {
             console.error("Error loading user data:", error);
+            setForm({
+                firstName: user?.firstName || "",
+                lastName: user?.lastName || "",
+                nationality: null,
+                age: 0,
+                gender: Gender.NUMBER_2,
+                height: 0,
+                weight: { value: 0, unit: "kg" },
+                profileImageUrl: user?.imageUrl,
+            });
         } finally {
             setIsLoadingData(false);
         }
@@ -196,7 +207,7 @@ export default function ProfileScreen() {
         );
     };
 
-    if (!isLoaded || isLoadingData || isLoading) {
+    if (!isLoaded || (isLoading && isLoadingData)) {
         return (
             <LinearGradient
                 colors={["#3F3F3F", "#151515"]}
@@ -219,7 +230,7 @@ export default function ProfileScreen() {
             start={{ x: 0.5, y: 0 }}
             end={{ x: 0.5, y: 1 }}
             locations={[0, 0.35]}
-            className="flex-1"
+            style={{ flex: 1 }}
         >
             <SafeAreaView className="flex-1">
                 <ScrollView contentContainerClassName="pb-10">

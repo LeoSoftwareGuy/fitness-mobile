@@ -154,12 +154,12 @@ export type GetExerciseHistoryResponse = {
   exerciseId?: string;
   /** @nullable */
   exerciseName: string | null;
-  /** @nullable */
-  exerciseImageUrl: string | null;
   lastWorkout?: LastWorkoutSummary;
   bestResult?: BestResultSummary;
   /** @nullable */
   sets?: ExerciseSetsByDate[] | null;
+  /** @nullable */
+  exerciseImageUrl?: string | null;
 };
 
 export type GetMuscleGroupByIdResponse = {

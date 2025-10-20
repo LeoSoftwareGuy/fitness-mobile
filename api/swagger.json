@@ -2239,7 +2239,6 @@
       },
       "GetExerciseHistoryResponse": {
         "required": [
-          "exerciseImageUrl",
           "exerciseName"
         ],
         "type": "object",
@@ -2249,10 +2248,6 @@
             "format": "uuid"
           },
           "exerciseName": {
-            "type": "string",
-            "nullable": true
-          },
-          "exerciseImageUrl": {
             "type": "string",
             "nullable": true
           },
@@ -2267,6 +2262,10 @@
             "items": {
               "$ref": "#/components/schemas/ExerciseSetsByDate"
             },
+            "nullable": true
+          },
+          "exerciseImageUrl": {
+            "type": "string",
             "nullable": true
           }
         },
