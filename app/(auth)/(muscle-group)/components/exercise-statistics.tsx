@@ -1,8 +1,7 @@
 import { useGetExerciseHistory } from "@/state/endpoints/statistics";
-import { BottomSheetView } from "@gorhom/bottom-sheet";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useMemo } from "react";
-import { ActivityIndicator, Text } from "react-native";
+import { ActivityIndicator, Text, View } from "react-native";
 
 interface ExerciseStatisticsProps {
     resultType: "best" | "latest";
@@ -11,7 +10,7 @@ interface ExerciseStatisticsProps {
 
 export default function ExerciseStatistics({ resultType, exerciseId }: ExerciseStatisticsProps) {
     const resultName = useMemo(() => {
-        return resultType === "best" ? "Best Result" : "Last Result";
+        return resultType === "best" ? "Best result" : "Last result";
     }, [resultType]);
 
     const { data: exerciseStats, error, isLoading } = useGetExerciseHistory(
@@ -36,9 +35,8 @@ export default function ExerciseStatistics({ resultType, exerciseId }: ExerciseS
         if (resultType === "best" && exerciseStats.bestResult) {
             return {
                 reps: exerciseStats.bestResult.repsAtMaxWeight,
+                sets: exerciseStats.bestResult.maxReps,
                 weight: exerciseStats.bestResult.maxWeight,
-                maxReps: exerciseStats.bestResult.maxReps,
-                weightAtMaxReps: exerciseStats.bestResult.weightAtMaxReps,
             };
         }
 
@@ -47,56 +45,47 @@ export default function ExerciseStatistics({ resultType, exerciseId }: ExerciseS
 
     if (isLoading) {
         return (
-            <BottomSheetView className="flex-1 justify-center items-center py-4">
-                <ActivityIndicator size="large" color="#ffffff" />
-                <Text className="mt-2.5 text-white">Loading...</Text>
-            </BottomSheetView>
+            <View className="py-2 items-center">
+                <ActivityIndicator size="small" color="#ffffff" />
+            </View>
         );
     }
 
-    if (error) {
-        return (
-            <BottomSheetView className="flex-1 justify-center items-center py-4">
-                <Text className="mt-2.5 text-red-500">
-                    Failed to load data. Please try again.
-                </Text>
-            </BottomSheetView>
-        );
-    }
-
-    if (!displayData) {
-        return (
-            <BottomSheetView className="mt-2 rounded-lg border-2 border-gray-700 p-3">
-                <Text className="py-1 text-center text-lg text-white font-pRegular">
-                    {resultName}
-                </Text>
-                <Text className="text-center text-sm text-gray-400">No data available</Text>
-            </BottomSheetView>
-        );
+    if (error || !displayData) {
+        return null;
     }
 
     return (
         <LinearGradient
-            colors={["rgba(107, 107, 107, 0.1)", "rgba(107, 107, 107, 1)"]}
+            colors={["rgba(107, 107, 107, 0.2)", "rgba(107, 107, 107, 0.8)"]}
             start={{ x: 0.5, y: 0 }}
             end={{ x: 0.5, y: 1 }}
-            className="mt-2 rounded-lg border-2 border-black"
+            className="mt-0.8 rounded-lg border border-black"
         >
-            <BottomSheetView className="w-full p-3">
-                <Text className="py-1 text-center text-lg text-white font-pRegular">
+            <View className="p-1.2">
+                <Text className="text-lg text-white font-pRegular text-center mb-0.5">
                     {resultName}
                 </Text>
-                <BottomSheetView className="flex-row items-center justify-center gap-5">
-                    <Text className="pb-1 text-sm text-white font-pRegular">
+                <View className="flex-row items-center justify-center gap-0.8">
+                    <Text className="text-sm text-white font-pRegular">
                         {displayData.reps} reps
                     </Text>
-                    <Text className="pb-1 text-sm text-white font-pRegular">
+                    {displayData.sets && (
+                        <>
+                            <Text className="text-sm text-white">•</Text>
+                            <Text className="text-sm text-white font-pRegular">
+                                {displayData.sets} sets
+                            </Text>
+                        </>
+                    )}
+                    <Text className="text-sm text-white">•</Text>
+                    <Text className="text-sm text-white font-pRegular">
                         {displayData.weight.value === 0
                             ? "BW"
                             : `${displayData.weight.value}${displayData.weight.unit}`}
                     </Text>
-                </BottomSheetView>
-            </BottomSheetView>
+                </View>
+            </View>
         </LinearGradient>
     );
-};
+}

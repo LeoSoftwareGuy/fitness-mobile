@@ -31,22 +31,27 @@ export default function ExerciseInfoPicker({ onChange, parameters }: ExerciseInf
     };
 
     return (
-        <View className="mt-2.4 w-full">
-            <View className="pb-1.8 flex-row justify-around">
-                <Text className="font-pRegular text-lg text-mediumGray">Reps</Text>
-                <Text className="font-pRegular text-lg text-mediumGray">Sets</Text>
-                <Text className="font-pRegular text-lg text-mediumGray">
+        <View className="mt-1.6 w-full">
+            <View className="pb-1.2 flex-row justify-around">
+                <Text className="font-pRegular text-lg text-mediumGray w-[30%] text-center">
+                    Reps
+                </Text>
+                <Text className="font-pRegular text-lg text-mediumGray w-[30%] text-center">
+                    Sets
+                </Text>
+                <Text className="font-pRegular text-lg text-mediumGray w-[30%] text-center">
                     Weight
                 </Text>
             </View>
-            {/* Reps Picker */}
-            <View className="flex-row justify-around bg-swamp rounded-[8px]">
+
+            <View className="flex-row justify-around bg-swamp rounded-lg overflow-hidden">
+                {/* Reps Picker */}
                 <View className="w-[30%] h-[200px]">
                     <Picker
                         selectedValue={parameters.Reps}
                         onValueChange={(value) => onChange({ Reps: value })}
-                        style={{ color: "white" }}
-                        itemStyle={{ color: "white", fontSize: 16 }}
+                        style={{ color: "white", backgroundColor: "transparent" }}
+                        itemStyle={{ color: "white", fontSize: 18, height: 200 }}
                     >
                         {repsItems.map((rep) => (
                             <Picker.Item
@@ -64,8 +69,8 @@ export default function ExerciseInfoPicker({ onChange, parameters }: ExerciseInf
                     <Picker
                         selectedValue={parameters.Sets}
                         onValueChange={(value) => onChange({ Sets: value })}
-                        style={{ color: "white" }}
-                        itemStyle={{ color: "white", fontSize: 16 }}
+                        style={{ color: "white", backgroundColor: "transparent" }}
+                        itemStyle={{ color: "white", fontSize: 18, height: 200 }}
                     >
                         {setsItems.map((set) => (
                             <Picker.Item
@@ -87,8 +92,8 @@ export default function ExerciseInfoPicker({ onChange, parameters }: ExerciseInf
                                 onChange({ Weight: weightsItems[index] });
                             }
                         }}
-                        style={{ color: "white" }}
-                        itemStyle={{ color: "white", fontSize: 16 }}
+                        style={{ color: "white", backgroundColor: "transparent" }}
+                        itemStyle={{ color: "white", fontSize: 18, height: 200 }}
                     >
                         {weightsItems.map((weight, index) => (
                             <Picker.Item
@@ -103,4 +108,4 @@ export default function ExerciseInfoPicker({ onChange, parameters }: ExerciseInf
             </View>
         </View>
     );
-};
+}

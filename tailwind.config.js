@@ -20,7 +20,7 @@ module.exports = {
           DEFAULT: "#FF9C01",
           100: "#FF9001",
           200: "#FF8E01",
-        }
+        },
 
       },
       fontFamily: {

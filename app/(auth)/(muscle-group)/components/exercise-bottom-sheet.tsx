@@ -1,11 +1,10 @@
-
 import FitButton from "@/components/buttons/fit-button";
 import { useTrainingStore } from "@/hooks/use-trainings-store";
 import { MuscleGroupExerciseDTO, TrainingSetCommandDTO, Weight } from "@/state/endpoints/api.schemas";
 import { useUser } from "@clerk/clerk-expo";
 import BottomSheet, { BottomSheetBackdrop, BottomSheetView } from "@gorhom/bottom-sheet";
 import React, { forwardRef, useCallback, useMemo, useState } from "react";
-import { Alert, Image, Text, TouchableOpacity } from "react-native";
+import { Alert, Image, Text, TouchableOpacity, View } from "react-native";
 import ExerciseInfoPicker from "./exercise-information-picker";
 import ExerciseStatistics from "./exercise-statistics";
 
@@ -84,11 +83,11 @@ const ExerciseBottomSheetComponent = forwardRef<Ref, Props>(
             setRepsSetsWeight((prev) => ({ ...prev, ...updatedParameters }));
         };
 
-        const snapPoints = useMemo(() => ["40%", "90%", "80%"], []);
+        const snapPoints = useMemo(() => ["20%", "60%"], []);
         const renderBackdrop = useCallback(
             (props: any) => (
                 <BottomSheetBackdrop
-                    appearsOnIndex={1}
+                    appearsOnIndex={0}
                     disappearsOnIndex={-1}
                     {...props}
                 />
@@ -101,61 +100,59 @@ const ExerciseBottomSheetComponent = forwardRef<Ref, Props>(
                 ref={ref}
                 index={-1}
                 snapPoints={snapPoints}
-                handleIndicatorStyle={{ backgroundColor: "transparent" }}
-                backgroundStyle={{ backgroundColor: "transparent" }}
+                handleIndicatorStyle={{ backgroundColor: "#666666", width: 40, height: 4 }}
+                backgroundStyle={{ backgroundColor: "#2C2C2C" }}
                 backdropComponent={renderBackdrop}
+                enablePanDownToClose={true}
             >
-                <BottomSheetView className="bg-[#2C2C2C] flex-1">
-                    <BottomSheetView className="px-1.6 py-0.8 w-full h-full">
-                        <Image
-                            className="w-full h-[180px]"
-                            source={{ uri: props.exercise.imageUrl }}
-                            resizeMode="contain"
+                <BottomSheetView className="flex-1 bg-[#2C2C2C] px-1.6 pt-0.8 pb-2.4">
+                    <Image
+                        className="w-full h-[180px] mb-1.2"
+                        source={{ uri: props.exercise.imageUrl }}
+                        resizeMode="contain"
+                    />
+                    <Text className="text-2xl font-pText text-white mb-1.2 text-center">
+                        {props.exercise.name}
+                    </Text>
+
+                    <ExerciseStatistics
+                        exerciseId={props.exercise.id}
+                        resultType="latest"
+                    />
+                    <ExerciseStatistics
+                        exerciseId={props.exercise.id}
+                        resultType="best"
+                    />
+
+                    <ExerciseInfoPicker
+                        parameters={repsSetsWeight}
+                        onChange={handleParametersChange}
+                    />
+
+                    <View className="flex-row justify-between items-center mt-2 gap-1.2">
+                        <TouchableOpacity
+                            onPress={props.onClose}
+                            className="flex-1 py-[13px] rounded-lg bg-transparent border border-gray"
+                            disabled={isLoading}
+                        >
+                            <Text className="text-center text-white text-lg font-pRegular">
+                                Cancel
+                            </Text>
+                        </TouchableOpacity>
+
+                        <FitButton
+                            title="Add to workout"
+                            isLoading={isLoading}
+                            containerStyles="flex-1"
+                            buttonStyles={{
+                                paddingVertical: 13,
+                                paddingHorizontal: 0,
+                                borderRadius: 8,
+                                width: '100%',
+                            }}
+                            handlePress={onAddWorkoutToLocalStorage}
                         />
-                        <Text className="mt-[15px] mb-[8px] font-pText text-white text-[24px]">
-                            {props.exercise.name}
-                        </Text>
-
-                        <BottomSheetView className="mb-4">
-                            <ExerciseStatistics
-                                exerciseId={props.exercise.id}
-                                resultType="best"
-                            />
-                            <ExerciseStatistics
-                                exerciseId={props.exercise.id}
-                                resultType="latest"
-                            />
-                        </BottomSheetView>
-
-                        <ExerciseInfoPicker
-                            parameters={repsSetsWeight}
-                            onChange={handleParametersChange}
-                        />
-
-                        <BottomSheetView className="mt-2 flex-row justify-between items-center">
-                            <TouchableOpacity
-                                onPress={props.onClose}
-                                className="rounded-lg bg-transparent border border-gray"
-                                disabled={isLoading}
-                            >
-                                <Text className="py-[13px] px-[38px] text-center text-white text-[16px] font-pText">
-                                    Cancel
-                                </Text>
-                            </TouchableOpacity>
-
-                            <FitButton
-                                title={"Add to workout"}
-                                isLoading={isLoading}
-                                buttonStyles={{
-                                    paddingVertical: 12,
-                                    paddingHorizontal: 38,
-                                    borderRadius: 8,
-                                }}
-                                containerStyles="ml-[22px]"
-                                handlePress={onAddWorkoutToLocalStorage}
-                            />
-                        </BottomSheetView>
-                    </BottomSheetView>
+                    </View>
                 </BottomSheetView>
             </BottomSheet>
         );
