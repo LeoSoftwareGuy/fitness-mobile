@@ -81,6 +81,8 @@ export default function ExerciseHistoryScreen() {
         latest: "Latest Sessions",
     }[timePeriod];
 
+    const hasHistory = exerciseHistory?.sets && exerciseHistory.sets.length > 0;
+
     return (
         <ImageBackground source={images.logo} className="my-0 py-0 px-2.5 flex-1">
             <SafeAreaView className="flex-1">
@@ -115,7 +117,7 @@ export default function ExerciseHistoryScreen() {
                     {timePeriodLabel}
                 </Text>
 
-                {exerciseHistory?.sets && exerciseHistory.sets.length > 0 ? (
+                {hasHistory ? (
                     <FlatList
                         data={exerciseHistory.sets}
                         renderItem={renderExerciseSet}
@@ -123,9 +125,14 @@ export default function ExerciseHistoryScreen() {
                         contentContainerClassName="py-5"
                     />
                 ) : (
-                    <Text className="mt-5 text-center text-lg text-gray-400">
-                        No exercise history found for this period.
-                    </Text>
+                    <View className="flex-1 justify-center items-center">
+                        <Text className="text-center text-lg text-gray-400">
+                            No exercise history found for this period.
+                        </Text>
+                        <Text className="mt-2 text-center text-sm text-gray-500">
+                            Start tracking your workouts to see your progress!
+                        </Text>
+                    </View>
                 )}
             </SafeAreaView>
         </ImageBackground>
