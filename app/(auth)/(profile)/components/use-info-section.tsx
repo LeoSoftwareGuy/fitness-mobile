@@ -2,31 +2,30 @@ import { router } from "expo-router";
 import { Text, TouchableOpacity, View } from "react-native";
 
 interface UserInfoSectionProps {
-    firstName: string;
-    lastName: string;
     email: string;
 }
 
-export default function UserInfoSection({ firstName, lastName, email }: UserInfoSectionProps) {
+export default function UserInfoSection({ email }: UserInfoSectionProps) {
     return (
-        <View className="w-full bg-gray-800 rounded-lg p-4 mb-6">
-            <View className="flex-row justify-between items-center py-3 border-b border-gray-700">
-                <Text className="text-gray-400">Name</Text>
-                <Text className="text-white font-pMedium">
-                    {firstName} {lastName}
-                </Text>
+        <View className="w-full mb-3">
+            <View className="mb-4">
+                <Text className="text-white font-pText text-base mb-2">Email</Text>
+                <View className="bg-[#2C2C2C] rounded-lg px-2 py-2.5">
+                    <Text className="text-gray font-pRegular text-base">{email}</Text>
+                </View>
             </View>
-            <View className="flex-row justify-between items-center py-3 border-b border-gray-700">
-                <Text className="text-gray-400">Email</Text>
-                <Text className="text-white">{email}</Text>
+
+            <View>
+                <Text className="text-white font-pText text-base mb-2">Password</Text>
+                <TouchableOpacity
+                    className="px-2 py-2 flex-row justify-between items-center bg-[#2C2C2C] rounded-lg"
+                    onPress={() => router.push("/(auth)/forgot")}
+                    activeOpacity={0.7}
+                >
+                    <Text className="text-gray font-pRegular text-base">••••••••</Text>
+                    <Text className="text-emerald font-pMedium text-base">Reset →</Text>
+                </TouchableOpacity>
             </View>
-            <TouchableOpacity
-                className="flex-row justify-between items-center py-3"
-                onPress={() => router.push("/(auth)/forgot")}
-            >
-                <Text className="text-gray-400">Password</Text>
-                <Text className="text-emerald">Reset →</Text>
-            </TouchableOpacity>
         </View>
     );
 }

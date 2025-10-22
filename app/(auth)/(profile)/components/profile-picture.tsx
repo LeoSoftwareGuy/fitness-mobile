@@ -7,10 +7,10 @@ interface ProfilePictureProps {
 
 export default function ProfilePicture({ imageUrl, onPress }: ProfilePictureProps) {
     return (
-        <>
+        <View className="items-center mb-6">
             <TouchableOpacity
                 onPress={onPress}
-                className="mb-6 w-32 h-32 rounded-full bg-gray-700 justify-center items-center border-2 border-emerald overflow-hidden"
+                className="w-[200px] h-[200px] rounded-full bg-[#2C2C2C] justify-center items-center border-4 border-emerald overflow-hidden mb-4"
             >
                 {imageUrl ? (
                     <Image
@@ -20,15 +20,15 @@ export default function ProfilePicture({ imageUrl, onPress }: ProfilePictureProp
                     />
                 ) : (
                     <View className="items-center">
-                        <Text className="text-4xl text-gray-400 mb-2">📷</Text>
-                        <Text className="text-xs text-gray-400">Add Photo</Text>
+                        <Text className="text-6xl mb-2">📷</Text>
+                        <Text className="text-sm text-gray font-pRegular">Add Photo</Text>
                     </View>
                 )}
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={onPress} className="mb-8">
-                <Text className="text-emerald text-sm">Change profile picture</Text>
+            <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
+                <Text className="text-emerald text-base font-pRegular">Change profile picture</Text>
             </TouchableOpacity>
-        </>
+        </View>
     );
 }

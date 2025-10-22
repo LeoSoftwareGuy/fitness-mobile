@@ -1,4 +1,4 @@
-import FormField from "@/components/forms/form-field";
+import ProfileField from "@/components/forms/profile-field";
 import { Gender, Weight } from "@/state/endpoints/api.schemas";
 import { View } from "react-native";
 import AgeSelect from "./age-select";
@@ -29,20 +29,18 @@ export default function ProfileFormFields({
 }: ProfileFormFieldsProps) {
     return (
         <View className="w-full">
-            <FormField
-                title="First Name"
+            <ProfileField
+                title="Name"
                 value={firstName}
                 handleChangeText={(e: string) => onUpdate({ firstName: e })}
-                otherStyles="mb-4"
-                placehorder="First Name"
+                placehorder="Enter name"
             />
 
-            <FormField
-                title="Last Name"
+            <ProfileField
+                title="Surname"
                 value={lastName}
                 handleChangeText={(e: string) => onUpdate({ lastName: e })}
-                otherStyles="mb-4"
-                placehorder="Last Name"
+                placehorder="Enter surname"
             />
 
             <CountrySelect

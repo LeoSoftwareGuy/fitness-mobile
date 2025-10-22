@@ -61,7 +61,7 @@ export default function ProfileScreen() {
         >
             <SafeAreaView className="flex-1">
                 <ScrollView contentContainerClassName="pb-10">
-                    <View className="my-0 items-center py-0 px-2.5">
+                    <View className="px-2 items-center ">
                         <ProfileHeader />
 
                         <ProfilePicture
@@ -69,15 +69,7 @@ export default function ProfileScreen() {
                             onPress={pickImage}
                         />
 
-                        <UserInfoSection
-                            firstName={form.firstName}
-                            lastName={form.lastName}
-                            email={user?.primaryEmailAddress?.emailAddress || ""}
-                        />
-
-                        <Text className="text-white text-xl font-pText mb-4 self-start">
-                            Edit Profile Information
-                        </Text>
+                        <UserInfoSection email={user?.primaryEmailAddress?.emailAddress || ""} />
 
                         <ProfileFormFields
                             firstName={form.firstName}

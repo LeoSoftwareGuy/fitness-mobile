@@ -16,39 +16,44 @@ export default function HeightWeightInput({
     onWeightChange,
 }: HeightWeightInputProps) {
     return (
-        <View className="mt-4 w-full">
-            <View className="mb-4">
-                <Text className="mb-2 font-pText text-base text-white">
+        <View className="w-full">
+            <View className="mb-2">
+                <Text className="text-white font-pText text-base mb-2">
                     Height (cm)
                 </Text>
-                <TextInput
-                    className="px-4 py-3 w-full bg-gray-800 rounded-lg text-white font-pRegular"
-                    keyboardType="numeric"
-                    placeholder="Enter height in cm"
-                    placeholderTextColor="#9CA3AF"
-                    value={height?.toString() || ""}
-                    onChangeText={(text) => {
-                        const value = parseInt(text) || 0;
-                        onHeightChange(value);
-                    }}
-                />
+                <View className="bg-[#2C2C2C] rounded-lg px-2 py-2.5">
+                    <TextInput
+                        className="text-white font-pRegular text-base"
+                        keyboardType="numeric"
+                        placeholder="Enter height"
+                        placeholderTextColor="#666666"
+                        value={height && height > 0 ? height.toString() : ""}
+                        onChangeText={(text) => {
+                            const value = parseInt(text) || 0;
+                            onHeightChange(value);
+                        }}
+                    />
+                </View>
+
             </View>
 
-            <View className="mb-4">
-                <Text className="mb-2 font-pText text-base text-white">
+            <View className="mb-2">
+                <Text className="text-white font-pText text-base mb-2">
                     Weight (kg)
                 </Text>
-                <TextInput
-                    className="px-4 py-3 w-full bg-gray-800 rounded-lg text-white font-pRegular"
-                    keyboardType="numeric"
-                    placeholder="Enter weight in kg"
-                    placeholderTextColor="#9CA3AF"
-                    value={weight?.value?.toString() || ""}
-                    onChangeText={(text) => {
-                        const value = parseFloat(text) || 0;
-                        onWeightChange({ value, unit: "kg" });
-                    }}
-                />
+                <View className="bg-[#2C2C2C] rounded-lg px-2 py-2.5">
+                    <TextInput
+                        className="text-white font-pRegular text-base"
+                        keyboardType="numeric"
+                        placeholder="Enter weight"
+                        placeholderTextColor="#666666"
+                        value={weight?.value && weight.value > 0 ? weight.value.toString() : ""}
+                        onChangeText={(text) => {
+                            const value = parseFloat(text) || 0;
+                            onWeightChange({ value, unit: "kg" });
+                        }}
+                    />
+                </View>
             </View>
         </View>
     );

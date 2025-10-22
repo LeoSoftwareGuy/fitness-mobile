@@ -7,9 +7,7 @@ interface AgeSelectProps {
 }
 
 export default function AgeSelect({ age, onAgeChange }: AgeSelectProps) {
-
     const handleAgeInput = (input: string) => {
-        // Allow only numbers or empty string
         if (
             /^\d*$/.test(input) &&
             (input === "" || (parseInt(input, 10) >= 1 && parseInt(input, 10) <= 200))
@@ -19,36 +17,48 @@ export default function AgeSelect({ age, onAgeChange }: AgeSelectProps) {
     };
 
     const incrementAge = useCallback(() => {
-        const ageNumber = age === "" ? 0 : parseInt(age, 10);
+        const ageNumber = age === "" || age === "0" ? 0 : parseInt(age, 10);
         if (ageNumber < 200) {
             onAgeChange((ageNumber + 1).toString());
         }
     }, [age]);
 
     const decrementAge = useCallback(() => {
-        const ageNumber = age === "" ? 1 : parseInt(age, 10);
+        const ageNumber = age === "" || age === "0" ? 1 : parseInt(age, 10);
         if (ageNumber > 1) {
             onAgeChange((ageNumber - 1).toString());
         }
     }, [age]);
 
     return (
-        <View className="my-4 items-start">
-            <Text className="text-white text-base mb-2">Age</Text>
-            <View className="flex-row items-center bg-gray-500 rounded-lg">
-                <TouchableOpacity onPress={decrementAge} className="py-3 px-4">
-                    <Text className="text-white text-lg">-</Text>
+        <View className="mb-2.5">
+            <Text className="text-white font-pText text-base mb-2">Age</Text>
+            <View className="flex-row items-center bg-[#2C2C2C] rounded-lg overflow-hidden">
+                <TouchableOpacity
+                    onPress={decrementAge}
+                    className="py-2 px-3 active:bg-[#1C1C1C]"
+                    activeOpacity={0.7}
+                >
+                    <Text className="text-emerald text-2xl font-pBold">-</Text>
                 </TouchableOpacity>
-                <TextInput
-                    className="flex-1 py-3 text-center text-base text-white"
-                    value={age}
-                    keyboardType="numeric"
-                    placeholder="Enter Age"
-                    placeholderTextColor="white"
-                    onChangeText={handleAgeInput}
-                />
-                <TouchableOpacity onPress={incrementAge} className="py-3 px-4">
-                    <Text className="text-white text-lg">+</Text>
+
+                <View className="flex-1 items-center">
+                    <TextInput
+                        className="text-center text-xl text-white font-pMedium w-full"
+                        value={age === "0" ? "" : age}
+                        keyboardType="numeric"
+                        placeholder="Enter Age"
+                        placeholderTextColor="#666666"
+                        onChangeText={handleAgeInput}
+                    />
+                </View>
+
+                <TouchableOpacity
+                    onPress={incrementAge}
+                    className="py-2 px-3 active:bg-[#1C1C1C]"
+                    activeOpacity={0.7}
+                >
+                    <Text className="text-emerald text-2xl font-pBold">+</Text>
                 </TouchableOpacity>
             </View>
         </View>

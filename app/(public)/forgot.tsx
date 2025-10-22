@@ -78,7 +78,7 @@ export default function ForgotScreen() {
                 />
 
                 <FitButton
-                  title="Send reset email"
+                  title="Send email"
                   handlePress={onRequestReset}
                   containerStyles="w-full mt-[80px]"
                 />

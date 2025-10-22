@@ -1,31 +1,38 @@
 import { Gender } from "@/state/endpoints/api.schemas";
 import { Text, TouchableOpacity, View } from "react-native";
 
-interface GenederSelectProps {
+interface GenderSelectProps {
     selectedGender: Gender;
     onGenderChange: (gender: Gender) => void;
 }
 
-export default function GenderSelect({ selectedGender, onGenderChange }: GenederSelectProps) {
+export default function GenderSelect({ selectedGender, onGenderChange }: GenderSelectProps) {
     return (
-        <View className="mt-2 w-full">
-            <Text className="mb-2 text-base text-white">Gender</Text>
-            <View className="flex-row justify-between">
+        <View className="mb-3">
+            <Text className="text-white font-pText text-base mb-2">Gender</Text>
+            <View className="flex-row gap-3">
                 <TouchableOpacity
-                    className={`px-3 py-3 items-center rounded-[20px] ${
-                        selectedGender === Gender.NUMBER_0 ? "bg-emerald" : "bg-gray-500"
-                    }`}
+                    className={`flex-1 py-4 items-center rounded-lg ${selectedGender === Gender.NUMBER_0 ? "bg-emerald" : "bg-[#2C2C2C]"
+                        }`}
                     onPress={() => onGenderChange(Gender.NUMBER_0)}
+                    activeOpacity={0.8}
                 >
-                    <Text className="text-white text-base">Female</Text>
+                    <Text className={`font-pMedium text-base ${selectedGender === Gender.NUMBER_0 ? "text-white" : "text-gray"
+                        }`}>
+                        Female
+                    </Text>
                 </TouchableOpacity>
+
                 <TouchableOpacity
-                    className={`px-3 py-3 items-center rounded-[20px] ${
-                        selectedGender === Gender.NUMBER_1 ? "bg-emerald" : "bg-gray-500"
-                    }`}
+                    className={`flex-1 py-4 items-center rounded-lg ${selectedGender === Gender.NUMBER_1 ? "bg-emerald" : "bg-[#2C2C2C]"
+                        }`}
                     onPress={() => onGenderChange(Gender.NUMBER_1)}
+                    activeOpacity={0.8}
                 >
-                    <Text className="text-white text-base">Male</Text>
+                    <Text className={`font-pMedium text-base ${selectedGender === Gender.NUMBER_1 ? "text-white" : "text-gray"
+                        }`}>
+                        Male
+                    </Text>
                 </TouchableOpacity>
             </View>
         </View>
