@@ -43,6 +43,11 @@ export default function ProfileFormFields({
                 placehorder="Enter surname"
             />
 
+            <GenderSelect
+                selectedGender={gender}
+                onGenderChange={(e: Gender) => onUpdate({ gender: e })}
+            />
+
             <CountrySelect
                 onChange={(e: CountrySelectValue) => onUpdate({ nationality: e.value })}
                 value={nationality ? {
@@ -57,11 +62,6 @@ export default function ProfileFormFields({
             <AgeSelect
                 age={age.toString()}
                 onAgeChange={(e: string) => onUpdate({ age: parseInt(e) || 18 })}
-            />
-
-            <GenderSelect
-                selectedGender={gender}
-                onGenderChange={(e: Gender) => onUpdate({ gender: e })}
             />
 
             <HeightWeightInput

@@ -1,6 +1,7 @@
 import { Gender, Weight } from "@/state/endpoints/api.schemas";
 import { useGetUsersBioInfo, useUpdateUserBio } from "@/state/endpoints/auth";
 import { useAuth, useUser } from "@clerk/clerk-expo";
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
@@ -19,6 +20,7 @@ export function useProfileForm() {
     const { user, isLoaded } = useUser();
     const { isSignedIn } = useAuth();
     const [isLoadingData, setIsLoadingData] = useState(true);
+    const queryClient = useQueryClient();
 
     const { data: savedUserInfo, isLoading } = useGetUsersBioInfo({
         query: {
@@ -56,7 +58,6 @@ export function useProfileForm() {
                 profileImageUrl: user?.imageUrl,
             });
         } catch (error) {
-            console.error("Error loading user data:", error);
             setForm({
                 firstName: user?.firstName || "",
                 lastName: user?.lastName || "",
@@ -74,7 +75,11 @@ export function useProfileForm() {
 
     const { mutateAsync, isPending } = useUpdateUserBio({
         mutation: {
-            onSuccess: () => { },
+            onSuccess: async () => {
+                await queryClient.invalidateQueries({ queryKey: ['getUsersBioInfo'] });
+
+                await user?.reload();
+            },
             onError: (error: any) => {
                 Alert.alert("Error", error?.message || "Failed to update profile");
             }

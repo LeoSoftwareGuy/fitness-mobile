@@ -1,6 +1,6 @@
 import { Weight } from "@/state/endpoints/api.schemas";
-import React from "react";
-import { Text, TextInput, View } from "react-native";
+import Slider from "@react-native-community/slider";
+import { Text, View } from "react-native";
 
 interface HeightWeightInputProps {
     height?: number;
@@ -15,45 +15,45 @@ export default function HeightWeightInput({
     onHeightChange,
     onWeightChange,
 }: HeightWeightInputProps) {
+    const heightValue = height && height > 0 ? height : 170;
+    const weightValue = weight?.value && weight.value > 0 ? weight.value : 70;
+
     return (
         <View className="w-full">
-            <View className="mb-2">
-                <Text className="text-white font-pText text-base mb-2">
-                    Height (cm)
-                </Text>
-                <View className="bg-[#2C2C2C] rounded-lg px-2 py-2.5">
-                    <TextInput
-                        className="text-white font-pRegular text-base"
-                        keyboardType="numeric"
-                        placeholder="Enter height"
-                        placeholderTextColor="#666666"
-                        value={height && height > 0 ? height.toString() : ""}
-                        onChangeText={(text) => {
-                            const value = parseInt(text) || 0;
-                            onHeightChange(value);
-                        }}
-                    />
+            <View className="mb-6">
+                <View className="flex-row justify-between items-center mb-2">
+                    <Text className="text-white font-pText text-base">Height</Text>
+                    <Text className="text-emerald font-pBold text-xl">{heightValue} cm</Text>
                 </View>
-
+                <Slider
+                    style={{ width: "100%", height: 40 }}
+                    minimumValue={140}
+                    maximumValue={220}
+                    step={1}
+                    value={heightValue}
+                    onValueChange={(value) => onHeightChange(value)}
+                    minimumTrackTintColor="#006F52"
+                    maximumTrackTintColor="#2C2C2C"
+                    thumbTintColor="#2AB38E"
+                />
             </View>
 
-            <View className="mb-2">
-                <Text className="text-white font-pText text-base mb-2">
-                    Weight (kg)
-                </Text>
-                <View className="bg-[#2C2C2C] rounded-lg px-2 py-2.5">
-                    <TextInput
-                        className="text-white font-pRegular text-base"
-                        keyboardType="numeric"
-                        placeholder="Enter weight"
-                        placeholderTextColor="#666666"
-                        value={weight?.value && weight.value > 0 ? weight.value.toString() : ""}
-                        onChangeText={(text) => {
-                            const value = parseFloat(text) || 0;
-                            onWeightChange({ value, unit: "kg" });
-                        }}
-                    />
+            <View className="mb-3">
+                <View className="flex-row justify-between items-center mb-2">
+                    <Text className="text-white font-pText text-base">Weight</Text>
+                    <Text className="text-emerald font-pBold text-xl">{weightValue} kg</Text>
                 </View>
+                <Slider
+                    style={{ width: "100%", height: 40 }}
+                    minimumValue={40}
+                    maximumValue={200}
+                    step={0.5}
+                    value={weightValue}
+                    onValueChange={(value) => onWeightChange({ value, unit: "kg" })}
+                    minimumTrackTintColor="#006F52"
+                    maximumTrackTintColor="#2C2C2C"
+                    thumbTintColor="#2AB38E"
+                />
             </View>
         </View>
     );

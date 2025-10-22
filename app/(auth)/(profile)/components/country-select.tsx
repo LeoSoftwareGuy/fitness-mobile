@@ -42,7 +42,7 @@ export default function CountrySelect({ value, onChange }: CountrySelectProps) {
                     itemStyle={{
                         color: "white",
                         fontSize: 16,
-                        height: 150
+                        height: 170
                     }}
                 >
                     <Picker.Item

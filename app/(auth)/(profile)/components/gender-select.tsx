@@ -10,29 +10,34 @@ export default function GenderSelect({ selectedGender, onGenderChange }: GenderS
     return (
         <View className="mb-3">
             <Text className="text-white font-pText text-base mb-2">Gender</Text>
-            <View className="flex-row gap-3">
+
+            <View className="flex-row items-center gap-6">
+                {/* Female Option */}
                 <TouchableOpacity
-                    className={`flex-1 py-4 items-center rounded-lg ${selectedGender === Gender.NUMBER_0 ? "bg-emerald" : "bg-[#2C2C2C]"
-                        }`}
+                    className="flex-row items-center"
                     onPress={() => onGenderChange(Gender.NUMBER_0)}
-                    activeOpacity={0.8}
+                    activeOpacity={0.7}
                 >
-                    <Text className={`font-pMedium text-base ${selectedGender === Gender.NUMBER_0 ? "text-white" : "text-gray"
-                        }`}>
-                        Female
-                    </Text>
+                    <View className="w-3 h-3 rounded-full border-2 border-emerald items-center justify-center mr-1">
+                        {selectedGender === Gender.NUMBER_0 && (
+                            <View className="w-2.5 h-2.5 rounded-full bg-emerald" />
+                        )}
+                    </View>
+                    <Text className="text-white font-pRegular text-base">Female</Text>
                 </TouchableOpacity>
 
+                {/* Male Option */}
                 <TouchableOpacity
-                    className={`flex-1 py-4 items-center rounded-lg ${selectedGender === Gender.NUMBER_1 ? "bg-emerald" : "bg-[#2C2C2C]"
-                        }`}
+                    className="flex-row items-center"
                     onPress={() => onGenderChange(Gender.NUMBER_1)}
-                    activeOpacity={0.8}
+                    activeOpacity={0.7}
                 >
-                    <Text className={`font-pMedium text-base ${selectedGender === Gender.NUMBER_1 ? "text-white" : "text-gray"
-                        }`}>
-                        Male
-                    </Text>
+                    <View className="w-3 h-3 rounded-full border-2 border-emerald items-center justify-center mr-1">
+                        {selectedGender === Gender.NUMBER_1 && (
+                            <View className="w-3 h-3 rounded-full bg-emerald" />
+                        )}
+                    </View>
+                    <Text className="text-white font-pRegular text-base">Male</Text>
                 </TouchableOpacity>
             </View>
         </View>
