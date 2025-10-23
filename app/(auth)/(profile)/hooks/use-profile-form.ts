@@ -1,5 +1,5 @@
 import { Gender, Weight } from "@/state/endpoints/api.schemas";
-import { useGetUsersBioInfo, useUpdateUserBio } from "@/state/endpoints/auth";
+import { getGetUsersBioInfoQueryKey, useGetUsersBioInfo, useUpdateUserBio } from "@/state/endpoints/auth";
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -76,9 +76,10 @@ export function useProfileForm() {
     const { mutateAsync, isPending } = useUpdateUserBio({
         mutation: {
             onSuccess: async () => {
-                await queryClient.invalidateQueries({ queryKey: ['getUsersBioInfo'] });
+                await queryClient.invalidateQueries({ queryKey: getGetUsersBioInfoQueryKey(), refetchType: "active" });
 
                 await user?.reload();
+                Alert.alert("Profile was updated successfully");
             },
             onError: (error: any) => {
                 Alert.alert("Error", error?.message || "Failed to update profile");
