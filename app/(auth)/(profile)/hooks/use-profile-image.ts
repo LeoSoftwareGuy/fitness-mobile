@@ -2,7 +2,7 @@ import { useUser } from "@clerk/clerk-expo";
 import * as ImagePicker from "expo-image-picker";
 import { Alert } from "react-native";
 
-export function useProfileImage(onImageUpdate: (uri: string) => void) {
+export default function useProfileImage(onImageUpdate: (uri: string) => void) {
     const { user } = useUser();
 
     const pickImage = async () => {

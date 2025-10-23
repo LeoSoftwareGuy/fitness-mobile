@@ -16,7 +16,7 @@ export interface ProfileFormState {
     profileImageUrl?: string;
 }
 
-export function useProfileForm() {
+export default function useProfileForm() {
     const { user, isLoaded } = useUser();
     const { isSignedIn } = useAuth();
     const [isLoadingData, setIsLoadingData] = useState(true);

@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useCallback, useRef, useState } from "react";
 import {
     ActivityIndicator,
@@ -6,6 +6,7 @@ import {
     ImageBackground,
     ListRenderItem,
     Text,
+    TouchableOpacity,
     View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -69,9 +70,15 @@ export default function MuscleGroupScreen() {
     return (
         <ImageBackground source={images.logo} className="my-0 py-0 px-2.5 flex-1">
             <SafeAreaView className="flex-1">
-                <Text className=" mt-3 text-center font-pText text-xl text-white">
-                    {muscleGroup?.name}
-                </Text>
+                <View className="my-2 flex-row justify-between items-center">
+                    <TouchableOpacity onPress={() => router.back()}>
+                        <Text className="text-white text-base">← Back</Text>
+                    </TouchableOpacity>
+
+                    <Text className="pr-3 font-pText text-xl text-white text-center flex-1">
+                        {muscleGroup?.name}
+                    </Text>
+                </View>
 
                 <FlatList
                     data={muscleGroup?.exercises ?? []}

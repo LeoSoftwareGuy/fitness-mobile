@@ -8,8 +8,9 @@ import ProfileFormFields from "./components/profile-form-fields";
 import ProfileHeader from "./components/profile-header";
 import ProfilePicture from "./components/profile-picture";
 import UserInfoSection from "./components/use-info-section";
-import { useProfileForm } from "./hooks/use-profile-form";
-import { useProfileImage } from "./hooks/use-profile-image";
+import useProfileForm from "./hooks/use-profile-form";
+import useProfileImage from "./hooks/use-profile-image";
+
 
 export default function ProfileScreen() {
     const { signOut } = useAuth();

@@ -1,4 +1,3 @@
-
 import FitButton from "@/components/buttons/fit-button";
 import { icons, images } from "@/constants";
 import { TrainingSetWithDetails, useTrainingStore } from "@/hooks/use-trainings-store";
@@ -69,20 +68,23 @@ export default function TodaysWorkoutScreen() {
 
 
     const renderExerciseGroup: ListRenderItem<ExerciseGroup> = ({ item }) => (
-        <View className="mb-6 p-4 bg-[#2C2C2C] rounded-xl">
-            <View className="mb-3 flex-row items-center">
-                <Text className="flex-1 font-pText text-lg text-white">
-                    {item.exerciseName}
+        <View className="mx-2 mb-1.8 px-1.8 py-1.5 bg-white/5 rounded-xl">
+            <View className="mb-1.2 flex-row justify-between items-start">
+                <Text className="flex-1 font-pRegular text-base text-white">
+                    {item.exerciseName} ({item.sets.length} sets)
                 </Text>
+                <TouchableOpacity>
+                    <Text className="font-pRegular text-xs text-darkGray">change</Text>
+                </TouchableOpacity>
             </View>
 
-            <View className="flex-row flex-wrap gap-2">
+            <View className="flex-row flex-wrap gap-0.8">
                 {item.sets.map((set, index) => (
                     <View
                         key={index}
-                        className="px-4 py-2 bg-[#3C3C3C] rounded-full"
+                        className="px-1.6 py-0.8 bg-[#3C3C3C] rounded-full"
                     >
-                        <Text className="font-pText text-sm text-white">
+                        <Text className="font-pRegular text-xs text-white">
                             {set.reps} × {set.weight.value === 0 ? "BW" : `${set.weight.value}${set.weight.unit}`}
                         </Text>
                     </View>
@@ -92,62 +94,59 @@ export default function TodaysWorkoutScreen() {
     );
 
     return (
-        <ImageBackground source={images.logo} className="my-0 py-0 px-1 flex-1">
+        <ImageBackground source={images.logo} className="flex-1">
             <SafeAreaView className="flex-1">
                 {!currentTraining || groupedExercises.length === 0 ? (
                     <View className="flex-1">
-                        <View className="py-2.5 flex-row items-center">
-                            <TouchableOpacity onPress={() => router.back()}>
+                        <View className="px-2 pt-1.5">
+                            <TouchableOpacity onPress={() => router.replace('/home')}>
                                 <Image
                                     source={icons.cross}
                                     resizeMode="contain"
-                                    className="w-6 h-6"
+                                    className="w-2.4 h-2.4"
                                 />
                             </TouchableOpacity>
-                            <Text className="flex-1 text-center font-pText text-xl text-white">
+                        </View>
+                        <View className="flex-1 justify-center items-center px-3">
+                            <Text className="text-center font-pText text-xl text-white mb-1.5">
                                 Today's workout
                             </Text>
-                        </View>
-                        <View className="px-8 flex-1 justify-center items-center">
-                            <Text className="text-center text-2xl font-pText text-gray">
+                            <Text className="text-center text-lg font-pRegular text-gray">
                                 Haven't trained yet? Get your ass to the gym.
                             </Text>
                         </View>
                     </View>
                 ) : (
-                    <FlatList
-                        data={groupedExercises}
-                        renderItem={renderExerciseGroup}
-                        keyExtractor={(item, index) => `${item.exerciseName}-${index}`}
-                        contentContainerClassName="py-5"
-                        ListHeaderComponent={
-                            <View className="mb-4 py-2.5 flex-row items-center">
-                                <TouchableOpacity onPress={() => router.back()}>
-                                    <Image
-                                        source={icons.cross}
-                                        resizeMode="contain"
-                                        className="w-6 h-6"
-                                    />
-                                </TouchableOpacity>
-                                <Text className="flex-1 text-center font-pText text-xl text-white">
-                                    Today's workout
-                                </Text>
-                            </View>
-                        }
-                        ListFooterComponent={
+                    <View className="flex-1">
+                        <View className="px-2 py-1.5 flex-row justify-between items-center mb-1">
+                            <TouchableOpacity onPress={() => router.back()}>
+                                <Text className="text-white text-sm font-pRegular">← Back</Text>
+                            </TouchableOpacity>
+
+                            <Text className="font-pText text-xl text-white absolute left-0 right-0 text-center">
+                                Todays workout
+                            </Text>
+                        </View>
+                        <FlatList
+                            data={groupedExercises}
+                            renderItem={renderExerciseGroup}
+                            keyExtractor={(item, index) => `${item.exerciseName}-${index}`}
+                            contentContainerStyle={{ paddingBottom: 20 }}
+                        />
+                        <View className="px-2 pb-2">
                             <FitButton
                                 title="Save today's workout"
                                 isLoading={isPending}
                                 handlePress={handleOnSubmit}
-                                containerStyles="mt-[70px]"
+                                containerStyles=""
                                 buttonStyles={{
                                     paddingVertical: 17,
                                     paddingHorizontal: 38,
                                     borderRadius: 7,
                                 }}
                             />
-                        }
-                    />
+                        </View>
+                    </View>
                 )}
             </SafeAreaView>
         </ImageBackground>
