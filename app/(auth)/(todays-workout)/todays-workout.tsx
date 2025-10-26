@@ -1,5 +1,5 @@
 import FitButton from "@/components/buttons/fit-button";
-import { icons, images } from "@/constants";
+import { images } from "@/constants";
 import { TrainingSetWithDetails, useTrainingStore } from "@/hooks/use-trainings-store";
 import { useCreateTraining } from "@/state/endpoints/trainings";
 import { router } from "expo-router";
@@ -7,7 +7,6 @@ import React, { useMemo } from "react";
 import {
     Alert,
     FlatList,
-    Image,
     ImageBackground,
     ListRenderItem,
     Text,
@@ -97,20 +96,17 @@ export default function TodaysWorkoutScreen() {
         <ImageBackground source={images.logo} className="flex-1">
             <SafeAreaView className="flex-1">
                 {!currentTraining || groupedExercises.length === 0 ? (
+
                     <View className="flex-1">
-                        <View className="px-2 pt-1.5">
-                            <TouchableOpacity onPress={() => router.replace('/home')}>
-                                <Image
-                                    source={icons.cross}
-                                    resizeMode="contain"
-                                    className="w-2.4 h-2.4"
-                                />
+                        <View className="px-2 pt-1.5 flex-row justify-between items-center mb-1">
+                            <TouchableOpacity onPress={() => router.replace("/")}>
+                                <Text className="text-white text-sm font-pRegular">← Back</Text>
                             </TouchableOpacity>
-                        </View>
-                        <View className="flex-1 justify-center items-center px-3">
-                            <Text className="text-center font-pText text-xl text-white mb-1.5">
+                            <Text className=" flex-1 text-center font-pText text-xl text-white">
                                 Today's workout
                             </Text>
+                        </View>
+                        <View className="flex-1 justify-center items-center px-3">
                             <Text className="text-center text-lg font-pRegular text-gray">
                                 Haven't trained yet? Get your ass to the gym.
                             </Text>
@@ -118,13 +114,12 @@ export default function TodaysWorkoutScreen() {
                     </View>
                 ) : (
                     <View className="flex-1">
-                        <View className="px-2 py-1.5 flex-row justify-between items-center mb-1">
-                            <TouchableOpacity onPress={() => router.back()}>
+                        <View className="mb-1 px-2 pt-1.5 flex-row justify-between items-center">
+                            <TouchableOpacity onPress={() => router.replace("/")}>
                                 <Text className="text-white text-sm font-pRegular">← Back</Text>
                             </TouchableOpacity>
-
-                            <Text className="font-pText text-xl text-white absolute left-0 right-0 text-center">
-                                Todays workout
+                            <Text className="flex-1 text-center font-pText text-xl text-white">
+                                Today's workout
                             </Text>
                         </View>
                         <FlatList
@@ -149,6 +144,6 @@ export default function TodaysWorkoutScreen() {
                     </View>
                 )}
             </SafeAreaView>
-        </ImageBackground>
+        </ImageBackground >
     );
 };
