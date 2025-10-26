@@ -13,9 +13,9 @@ export default function PerformanceStatisticsView({ title, data }: PerformanceSt
             colors={["rgba(107, 107, 107, 0.1)", "rgba(107, 107, 107, 0.6)"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
-            className="mr-[16px] rounded-lg"
+            className="mr-[16px] rounded-xl"
         >
-            <View className="w-[110px] h-[87px]">
+            <View className="w-[110px] h-[87px] rounded-xl">
                 <Text className=" text-white font-pText text-center text-[45px] ">
                     {data}
                 </Text>

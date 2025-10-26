@@ -1,8 +1,7 @@
-
 import { FindMuscleGroupsResponse } from "@/state/endpoints/api.schemas";
 import { useFindMuscleGroups } from "@/state/endpoints/muscle-groups";
 import { router } from "expo-router";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -25,9 +24,13 @@ export default function ExerciseHistoryList() {
 
   const muscleGroups = muscleGroupsResponse?.items ?? [];
 
-  const [chosenMuscleGroupId, setChosenMuscleGroupId] = useState<string | null>(
-    muscleGroups[0]?.id ?? null
-  );
+  const [chosenMuscleGroupId, setChosenMuscleGroupId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (muscleGroups.length > 0 && !chosenMuscleGroupId) {
+      setChosenMuscleGroupId(muscleGroups[0].id);
+    }
+  }, [muscleGroups, chosenMuscleGroupId]);
 
   const selectedExercises = useMemo(() => {
     if (!chosenMuscleGroupId) return [];
@@ -67,26 +70,26 @@ export default function ExerciseHistoryList() {
   }
 
   return (
-    <View className="mt-[30px] w-full">
-      <Text className="mb-5 font-pText text-white text-lg">Exercises</Text>
+    <View className="mt-2 w-full">
+      <Text className="mb-2 font-pText text-white text-lg">Exercises</Text>
 
       <FlatList
         data={muscleGroups}
         renderItem={renderMuscleGroupButton}
         horizontal
         keyExtractor={(item) => item.id}
-        contentContainerClassName="gap-2.5"
+        contentContainerClassName="gap-1"
         showsHorizontalScrollIndicator={false}
       />
 
-      <View className="mt-10 w-full">
+      <View className="mt-4 w-full">
         {selectedExercises.map((exercise) => (
           <TouchableOpacity
             key={exercise.id}
             onPress={() => router.push(`/`)}
-            className="border-t-[0.2px] border-b-[0.2px] border-[#9A9A9A]"
+            className="border-b border-darkGray/30 py-1.5"
           >
-            <Text className="py-[15px] font-pRegular text-[17px] text-white">
+            <Text className="font-pRegular text-[17px] text-white">
               {exercise.name}
             </Text>
           </TouchableOpacity>

@@ -1,9 +1,9 @@
 import { useFindPerformanceStatsSuspense } from "@/state/endpoints/statistics";
 import React, { useState } from "react";
 import { ActivityIndicator, Text, View } from "react-native";
+import ExerciseHistoryList from "./exercise-history-list";
 import PerformanceStatisticsView from "./performance-statistics-box";
 import PerformanceStatisticsButton from "./performance-statistics-button";
-
 
 interface TimePeriod {
     title: string,
@@ -11,7 +11,6 @@ interface TimePeriod {
 }
 
 export default function PerformanceStatistics() {
-
     const periods: TimePeriod[] = [
         { title: 'Week', value: 'week' },
         { title: 'Month', value: 'month' },
@@ -23,7 +22,7 @@ export default function PerformanceStatistics() {
 
     if (isLoading) {
         return (
-            <View className="flex-1 justify-center align-middle">
+            <View className="flex-1 justify-center items-center">
                 <ActivityIndicator size="large" color="#ffffff" />
                 <Text className="mt-1 text-white">Loading...</Text>
             </View>
@@ -32,7 +31,7 @@ export default function PerformanceStatistics() {
 
     if (error) {
         return (
-            <View className="flex-1 justify-center align-middle">
+            <View className="flex-1 justify-center items-center">
                 <Text className="mt-1 text-red-500">
                     Failed to load data. Please try again.
                 </Text>
@@ -41,12 +40,12 @@ export default function PerformanceStatistics() {
     }
 
     return (
-        <View className="mt-[32px] w-full">
-            <View className="w-full flex-row">
-                <Text className="mr-[10px] text-lg text-white font-pText">
-                    Statistics
+        <View className="mt-3.2 w-full">
+            <View className="w-full flex-row items-center">
+                <Text className="mr-1 text-lg text-white font-pText">
+                    Period
                 </Text>
-                <View className="flex-1 flex-row">
+                <View className="flex-1 flex-row gap-1.5">
                     {periods.map((period) => (
                         <PerformanceStatisticsButton
                             key={period.value}
@@ -58,11 +57,13 @@ export default function PerformanceStatistics() {
                 </View>
             </View>
 
-            <View className="mt-[20px] w-full flex-row">
+            <View className="mt-2 w-full flex-row gap-1.5">
                 <PerformanceStatisticsView title={"Sessions Done"} data={stats.sessionsDone} />
                 <PerformanceStatisticsView title={"Exercises Done"} data={stats.exercisesDone} />
                 <PerformanceStatisticsView title={"Muscle Groups"} data={stats.muscleGroupsDone} />
             </View>
+
+            <ExerciseHistoryList />
         </View>
     );
 };

@@ -39,7 +39,7 @@ export default function StatisticsScreen() {
                 </ScrollView>
             </SafeAreaView>
 
-            <Text className="text-center font-pText text-xl text-white">
+            <Text className="my-2 text-center font-pText text-xl text-white">
                 Analyze your workout
             </Text>
             <PerformanceStatistics />
