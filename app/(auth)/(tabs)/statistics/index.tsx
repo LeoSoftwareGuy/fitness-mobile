@@ -19,7 +19,7 @@ export default function StatisticsScreen() {
                                 className="mt-5 mx-auto"
                             />
                         </TouchableOpacity>
-                        <View className="flex-row items-center space-x-1">
+                        <View className="flex-row items-center justify-between gap-1">
                             <TouchableOpacity onPress={() => router.push("/(auth)/sign-in")}>
                                 <Image
                                     source={icons.dumbel}

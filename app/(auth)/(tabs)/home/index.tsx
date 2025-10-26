@@ -25,7 +25,7 @@ export default function HomeScreen() {
         <ImageBackground source={images.logo} className="flex-1 my-0 py-0 px-2.5">
             <SafeAreaView edges={["left", "right"]}>
                 <ScrollView className="my-0 w-full">
-                    <View className="px-2 w-full flex-row justify-between items-center">
+                    <View className="mb-2 px-2 w-full flex-row justify-between items-center">
                         <TouchableOpacity onPress={() => router.push("/(calendar)/calendar")}>
                             <Image
                                 source={icons.calendar}
@@ -33,7 +33,7 @@ export default function HomeScreen() {
                                 className="mt-5 mx-auto"
                             />
                         </TouchableOpacity>
-                        <View className="flex-row items-center space-x-3">
+                        <View className="flex-row items-center justify-between gap-1">
                             <TouchableOpacity onPress={() => router.push("/(todays-workout)/todays-workout")}>
                                 <Image
                                     source={icons.dumbel}
