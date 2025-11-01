@@ -17,7 +17,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import ExerciseSetsByDateComponent from "./components/exercise-sets-by-date";
 import TimePeriodSelector from "./components/time-period-selector";
 
-export type TimePeriod = "week" | "month" | "3months" | "year" | "best" | "latest";
+export type TimePeriod = "week" | "month" | "3months";
 
 export default function ExerciseHistoryScreen() {
     const params = useLocalSearchParams<{ id?: string | string[] }>();
@@ -50,7 +50,7 @@ export default function ExerciseHistoryScreen() {
         return (
             <View className="flex-1 justify-center items-center bg-primary">
                 <ActivityIndicator size="large" color="#fff" />
-                <Text className="mt-2.5 text-white">Preparing Exercise History…</Text>
+                <Text className="mt-0.5 text-white">Preparing Exercise History…</Text>
             </View>
         );
     }
@@ -59,7 +59,7 @@ export default function ExerciseHistoryScreen() {
         return (
             <View className="flex-1 justify-center items-center bg-primary">
                 <ActivityIndicator size="large" color="#fff" />
-                <Text className="mt-2.5 text-white">Loading Exercise History...</Text>
+                <Text className="mt-0.5 text-white">Loading Exercise History...</Text>
             </View>
         );
     }
@@ -76,22 +76,19 @@ export default function ExerciseHistoryScreen() {
         week: "Last Week",
         month: "Last Month",
         "3months": "Last 3 Months",
-        year: "Last Year",
-        best: "Best Performances",
-        latest: "Latest Sessions",
     }[timePeriod];
 
     const hasHistory = exerciseHistory?.sets && exerciseHistory.sets.length > 0;
 
     return (
-        <ImageBackground source={images.logo} className="my-0 py-0 px-2.5 flex-1">
+        <ImageBackground source={images.logo} className="flex-1 px-1">
             <SafeAreaView className="flex-1">
-                <View className="py-10 pb-2.5 flex-row items-center">
+                <View className="pt-2 pb-1 flex-row items-center">
                     <TouchableOpacity onPress={() => router.back()}>
                         <Image
                             source={icons.leftArrow}
                             resizeMode="contain"
-                            className="w-6 h-6"
+                            className="w-2.5 h-2.5"
                             style={{ tintColor: "white" }}
                         />
                     </TouchableOpacity>
@@ -101,11 +98,13 @@ export default function ExerciseHistoryScreen() {
                 </View>
 
                 {exerciseHistory?.exerciseImageUrl ? (
-                    <Image
-                        source={{ uri: exerciseHistory.exerciseImageUrl }}
-                        resizeMode="contain"
-                        className="my-9 w-full h-48 rounded-lg"
-                    />
+                    <View className="bg-white rounded-lg overflow-hidden my-3">
+                        <Image
+                            source={{ uri: exerciseHistory.exerciseImageUrl }}
+                            resizeMode="contain"
+                            className="w-full h-20"
+                        />
+                    </View>
                 ) : null}
 
                 <TimePeriodSelector
@@ -113,7 +112,7 @@ export default function ExerciseHistoryScreen() {
                     onSelectPeriod={setTimePeriod}
                 />
 
-                <Text className="mt-5 font-pText text-xl text-white">
+                <Text className="my-2 font-pText text-lg text-white">
                     {timePeriodLabel}
                 </Text>
 
@@ -122,14 +121,15 @@ export default function ExerciseHistoryScreen() {
                         data={exerciseHistory.sets}
                         renderItem={renderExerciseSet}
                         keyExtractor={(item, index) => `${item.date}-${index}`}
-                        contentContainerClassName="py-5"
+                        contentContainerClassName="pb-2"
+                        showsVerticalScrollIndicator={false}
                     />
                 ) : (
                     <View className="flex-1 justify-center items-center">
-                        <Text className="text-center text-lg text-gray-400">
+                        <Text className="text-center text-base text-gray-400">
                             No exercise history found for this period.
                         </Text>
-                        <Text className="mt-2 text-center text-sm text-gray-500">
+                        <Text className="mt-1 text-center text-sm text-gray-500">
                             Start tracking your workouts to see your progress!
                         </Text>
                     </View>

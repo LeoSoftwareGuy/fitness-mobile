@@ -7,32 +7,35 @@ interface ExerciseSetsByDateComponentProps {
     setsInfo: SetHistory[];
 }
 
-export default function ExerciseSetsByDateComponent({ date, setsInfo, }: ExerciseSetsByDateComponentProps) {
+export default function ExerciseSetsByDateComponent({
+    date,
+    setsInfo,
+}: ExerciseSetsByDateComponentProps) {
 
     const formattedDate = date
-        ? new Date(date).toLocaleDateString("en-US", {
+        ? new Date(date).toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "2-digit",
             year: "numeric",
-            month: "short",
-            day: "numeric",
         })
         : "Unknown Date";
 
     return (
-        <View className="mb-6 p-4 bg-[#2C2C2C] rounded-xl">
-            <Text className="mb-3 font-pText text-lg text-white">
+        <View className="mb-1.5 p-1.5 bg-[#3A3A3A] rounded-xl">
+            <Text className="mb-1 font-pText text-base text-white">
                 {formattedDate}
             </Text>
 
-            <View className="flex-row flex-wrap gap-2">
+            <View className="flex-row flex-wrap gap-0.5">
                 {setsInfo.map((set, index) => (
                     <View
                         key={index}
-                        className="px-4 py-2 bg-[#3C3C3C] rounded-full"
+                        className="px-2 py-1 bg-[#2A2A2A] rounded-lg"
                     >
                         <Text className="font-pText text-sm text-white">
                             {set.reps} × {set.weight.value === 0
                                 ? "BW"
-                                : `${set.weight.value}${set.weight.unit}`}
+                                : `${set.weight.value} ${set.weight.unit}`}
                         </Text>
                     </View>
                 ))}

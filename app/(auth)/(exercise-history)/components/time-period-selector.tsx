@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { TimePeriod } from "../[id]";
 
 interface TimePeriodSelectorProps {
@@ -7,42 +7,38 @@ interface TimePeriodSelectorProps {
     onSelectPeriod: (period: TimePeriod) => void;
 }
 
-export default function TimePeriodSelector({ selectedPeriod, onSelectPeriod, }: TimePeriodSelectorProps) {
+export default function TimePeriodSelector({
+    selectedPeriod,
+    onSelectPeriod,
+}: TimePeriodSelectorProps) {
 
     const periods: { label: string; value: TimePeriod }[] = [
         { label: "Week", value: "week" },
         { label: "Month", value: "month" },
         { label: "3 Months", value: "3months" },
-        { label: "Year", value: "year" },
-        { label: "Best", value: "best" },
-        { label: "Latest", value: "latest" },
     ];
 
     return (
-        <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerClassName="gap-2"
-        >
+        <View className="flex-row justify-between">
             {periods.map((period) => (
                 <TouchableOpacity
                     key={period.value}
                     onPress={() => onSelectPeriod(period.value)}
-                    className={`px-4 py-2 rounded-lg ${selectedPeriod === period.value
+                    className={`flex-1 mx-0.2 py-1.2 rounded-lg items-center ${selectedPeriod === period.value
                         ? "bg-secondary"
-                        : "bg-gray-700"
+                        : "bg-transparent"
                         }`}
                 >
                     <Text
-                        className={`font-pText text-sm ${selectedPeriod === period.value
+                        className={`font-pText text-base ${selectedPeriod === period.value
                             ? "text-white"
-                            : "text-gray-400"
+                            : "text-white"
                             }`}
                     >
                         {period.label}
                     </Text>
                 </TouchableOpacity>
             ))}
-        </ScrollView>
+        </View>
     );
 }

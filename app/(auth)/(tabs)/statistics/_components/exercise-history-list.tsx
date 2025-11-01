@@ -86,7 +86,7 @@ export default function ExerciseHistoryList() {
         {selectedExercises.map((exercise) => (
           <TouchableOpacity
             key={exercise.id}
-            onPress={() => router.push(`/`)}
+            onPress={() => router.push(`/(auth)/(exercise-history)/${exercise.id}`)}
             className="border-b border-darkGray/30 py-1.5"
           >
             <Text className="font-pRegular text-[17px] text-white">

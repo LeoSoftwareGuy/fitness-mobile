@@ -1,4 +1,4 @@
-/** @type {import('tailwindcss').Config} */
+\/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     "./App.tsx",
@@ -11,8 +11,7 @@ module.exports = {
         primary: "#131313",
         emerald: '#006F52',
         lightEmerald: "#2AB38E",
-        swamp: '#05231B',
-        gray: '#767676',
+        swamp: '#05231B', gray: '#767676',
         darkGray: '#9A9A9A',
         mediumGray: "#A9A9A9",
         grayForStats: "#696F6D",
