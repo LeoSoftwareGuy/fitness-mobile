@@ -1,44 +1,99 @@
 import FitButton from "@/components/buttons/fit-button";
 import { useTrainingStore } from "@/hooks/use-trainings-store";
-import { MuscleGroupExerciseDTO, TrainingSetCommandDTO, Weight } from "@/state/endpoints/api.schemas";
+import { MuscleGroupExerciseDTO, MuscleGroupType, TrainingSetCommandDTO, Weight } from "@/state/endpoints/api.schemas";
 import { useUser } from "@clerk/clerk-expo";
 import BottomSheet, { BottomSheetBackdrop, BottomSheetView } from "@gorhom/bottom-sheet";
-import React, { forwardRef, useCallback, useMemo, useState } from "react";
+import React, { forwardRef, useCallback, useEffect, useMemo, useState } from "react";
 import { Alert, Image, Text, TouchableOpacity, View } from "react-native";
 import ExerciseInfoPicker from "./exercise-information-picker";
 import ExerciseStatistics from "./exercise-statistics";
 
 interface Props {
     exercise: MuscleGroupExerciseDTO;
+    muscleGroupType: MuscleGroupType;
     onClose: () => void;
 }
 export interface ExerciseParameters {
     ExerciseId: string;
-    Reps: number;
-    Weight: Weight;
+    MuscleGroupType: MuscleGroupType;
     Sets: number;
+    Reps?: number;
+    Weight?: Weight;
+    Pace?: number;
+    Duration?: number;
+    Elevation?: number;
 }
 type Ref = BottomSheet;
 
+const createDefaultParameters = (
+    exerciseId: string,
+    muscleGroupType: MuscleGroupType
+): ExerciseParameters => {
+    if (muscleGroupType === MuscleGroupType.NUMBER_3) {
+        return {
+            ExerciseId: exerciseId,
+            MuscleGroupType: muscleGroupType,
+            Sets: 1,
+            Pace: 8,
+            Duration: 30,
+            Elevation: 0
+        };
+    }
+
+    return {
+        ExerciseId: exerciseId,
+        MuscleGroupType: muscleGroupType,
+        Sets: 1,
+        Reps: 10,
+        Weight: { value: 0, unit: "bodyweight" }
+    };
+};
+
 const ExerciseBottomSheetComponent = forwardRef<Ref, Props>(
     (props, ref) => {
-        const [repsSetsWeight, setRepsSetsWeight] = useState<ExerciseParameters>({
-            ExerciseId: props.exercise.id,
-            Reps: 1,
-            Sets: 1,
-            Weight: { value: 0, unit: "kg" },
-        });
+        const [repsSetsWeight, setRepsSetsWeight] = useState<ExerciseParameters>(
+            createDefaultParameters(props.exercise.id, props.muscleGroupType)
+        );
+
+        useEffect(() => {
+            setRepsSetsWeight(createDefaultParameters(props.exercise.id, props.muscleGroupType));
+        }, [props.exercise.id, props.muscleGroupType]);
 
         const addExerciseSets = useTrainingStore((state) => state.addExerciseSets);
         const initializeTraining = useTrainingStore((state) => state.initializeTraining);
         const currentTraining = useTrainingStore((state) => state.currentTraining);
-        const { user, isLoaded } = useUser();
+        const { user } = useUser();
         const [isLoading, setIsLoading] = useState(false);
+        const isCardio = repsSetsWeight.MuscleGroupType === MuscleGroupType.NUMBER_3;
 
         const onAddWorkoutToLocalStorage = useCallback(() => {
             if (!user?.id) {
                 Alert.alert("Error", "User not authenticated");
                 return;
+            }
+
+            if (isCardio) {
+                if (!repsSetsWeight.Pace || repsSetsWeight.Pace <= 0) {
+                    Alert.alert("Missing pace", "Please provide a pace greater than 0.");
+                    return;
+                }
+                if (!repsSetsWeight.Duration || repsSetsWeight.Duration <= 0) {
+                    Alert.alert("Missing duration", "Please provide a duration greater than 0.");
+                    return;
+                }
+                if (repsSetsWeight.Elevation === undefined || repsSetsWeight.Elevation < 0) {
+                    Alert.alert("Missing elevation", "Please provide a non-negative elevation.");
+                    return;
+                }
+            } else {
+                if (!repsSetsWeight.Reps || repsSetsWeight.Reps <= 0) {
+                    Alert.alert("Missing reps", "Please provide repetitions greater than 0.");
+                    return;
+                }
+                if (!repsSetsWeight.Weight) {
+                    Alert.alert("Missing weight", "Please select a weight value.");
+                    return;
+                }
             }
 
             setIsLoading(true);
@@ -50,23 +105,28 @@ const ExerciseBottomSheetComponent = forwardRef<Ref, Props>(
 
                 const exerciseSets: TrainingSetCommandDTO[] = Array.from(
                     { length: repsSetsWeight.Sets },
-                    () => ({
-                        reps: repsSetsWeight.Reps,
-                        weight: repsSetsWeight.Weight,
-                        exerciseId: repsSetsWeight.ExerciseId,
-                    })
+                    () => {
+                        const durationSeconds = isCardio && repsSetsWeight.Duration
+                            ? Math.round(repsSetsWeight.Duration * 60)
+                            : undefined;
+
+                        return {
+                            exerciseId: repsSetsWeight.ExerciseId,
+                            muscleGroupType: repsSetsWeight.MuscleGroupType,
+                            reps: isCardio ? undefined : repsSetsWeight.Reps,
+                            weight: isCardio ? undefined : repsSetsWeight.Weight,
+                            pace: isCardio ? repsSetsWeight.Pace : undefined,
+                            duration: durationSeconds,
+                            elevation: isCardio ? repsSetsWeight.Elevation : undefined
+                        };
+                    }
                 );
 
                 addExerciseSets(exerciseSets, props.exercise.name);
 
                 Alert.alert("Success", "Exercise added to workout!");
 
-                setRepsSetsWeight({
-                    ExerciseId: props.exercise.id,
-                    Reps: 1,
-                    Sets: 1,
-                    Weight: { value: 0, unit: "kg" },
-                });
+                setRepsSetsWeight(createDefaultParameters(props.exercise.id, props.muscleGroupType));
 
                 props.onClose();
             } catch (error) {
@@ -75,7 +135,17 @@ const ExerciseBottomSheetComponent = forwardRef<Ref, Props>(
             } finally {
                 setIsLoading(false);
             }
-        }, [repsSetsWeight, props.exercise, addExerciseSets, currentTraining, initializeTraining, user, props.onClose]);
+        }, [
+            repsSetsWeight,
+            props.exercise,
+            props.muscleGroupType,
+            addExerciseSets,
+            currentTraining,
+            initializeTraining,
+            user,
+            props.onClose,
+            isCardio
+        ]);
 
         const handleParametersChange = (
             updatedParameters: Partial<ExerciseParameters>

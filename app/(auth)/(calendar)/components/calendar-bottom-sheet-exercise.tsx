@@ -11,13 +11,11 @@ interface BottomSheetUniqueExerciseProps {
 export default function CalendarBottomSheetExercise({ uniqueExercise }: BottomSheetUniqueExerciseProps) {
 
   const renderItem: ListRenderItem<ExerciseSetDTO> = ({ item }) => (
-    <BottomSheetExerciseInfo
-      reps={item.reps || 0}
-      weight={item.weight}
-    />
+    <BottomSheetExerciseInfo set={item} />
   );
 
-  const keyExtractor = (item: ExerciseSetDTO, index: number) => `${item.id}-${index}`;
+  const keyExtractor = (item: ExerciseSetDTO, index: number) =>
+    `${item.id ?? uniqueExercise.id}-${index}`;
 
   return (
     <View className="mb-1.2 mx-1.5">

@@ -12,7 +12,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import images from "@/constants/images";
-import { MuscleGroupExerciseDTO } from "@/state/endpoints/api.schemas";
+import { MuscleGroupExerciseDTO, MuscleGroupType } from "@/state/endpoints/api.schemas";
 import { useGetMuscleGroupById } from "@/state/endpoints/muscle-groups";
 import BottomSheet from "@gorhom/bottom-sheet";
 import ExerciseComponent from "./components/exercise";
@@ -94,6 +94,7 @@ export default function MuscleGroupScreen() {
                 <ExerciseBottomSheetComponent
                     ref={bottomSheetRef}
                     exercise={selectedExercise}
+                    muscleGroupType={muscleGroup?.type ?? MuscleGroupType.NUMBER_1}
                     onClose={closeBottomSheet}
                 />
             )}
