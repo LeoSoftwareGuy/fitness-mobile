@@ -1,5 +1,6 @@
 {
   "expo": {
+    "backgroundColor": "#151515",
     "name": "fitness-mobile",
     "slug": "fitness-mobile",
     "version": "1.0.0",
@@ -9,11 +10,12 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
+      "backgroundColor": "#151515",
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#151515",
         "foregroundImage": "./assets/icons/android-icon-foreground.png",
         "backgroundImage": "./assets/icons/android-icon-background.png",
         "monochromeImage": "./assets/icons/android-icon-monochrome.png"
@@ -33,9 +35,9 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
+          "backgroundColor": "#151515",
           "dark": {
-            "backgroundColor": "#000000"
+            "backgroundColor": "#151515"
           }
         }
       ]
