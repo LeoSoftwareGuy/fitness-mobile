@@ -2,12 +2,11 @@ import { ExerciseGroupDTO, TrainingDayDTO } from "@/state/endpoints/api.schemas"
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
-  BottomSheetFlatList,
-  BottomSheetView,
+  BottomSheetFlatList
 } from "@gorhom/bottom-sheet";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { forwardRef, useCallback, useMemo } from "react";
-import { ListRenderItem, Text } from "react-native";
+import { ListRenderItem, Text, View } from "react-native";
 import CalendarBottomSheetExercise from "./calendar-bottom-sheet-exercise";
 
 interface Props {
@@ -31,12 +30,12 @@ const CalendarBottomSheet = forwardRef<Ref, Props>((props, ref) => {
     return Object.values(grouped).flat();
   }, [props.training.exercises]);
 
-  const snapPoints = useMemo(() => ["40%", "60%", "80%"], []);
+  const snapPoints = useMemo(() => ["50%", "75%", "90%"], []);
 
   const renderBackdrop = useCallback(
     (backdropProps: BottomSheetBackdropProps) => (
       <BottomSheetBackdrop
-        appearsOnIndex={0}
+        appearsOnIndex={1}
         disappearsOnIndex={-1}
         {...backdropProps}
       />
@@ -53,34 +52,37 @@ const CalendarBottomSheet = forwardRef<Ref, Props>((props, ref) => {
   return (
     <BottomSheet
       ref={ref}
-      index={-1}
+      index={0}
       snapPoints={snapPoints}
-      handleIndicatorStyle={{ backgroundColor: "transparent" }}
+      handleIndicatorStyle={{ backgroundColor: "#fff", width: 40, height: 4 }}
       backgroundStyle={{ backgroundColor: "transparent" }}
       backdropComponent={renderBackdrop}
       enablePanDownToClose
       onClose={props.onClose}
     >
-      <LinearGradient
-        colors={["#05251C", "#0E6149"]}
-        className="rounded-t-2xl pb-1.5"
-      >
-        <BottomSheetView className="px-1.5 pt-2 flex-row items-center">
-          <Text className="text-sm font-pRegular text-white">
-            {props.title}
-          </Text>
-          <Text className="ml-2 text-xl font-pText text-white">
-            Workout day
-          </Text>
-        </BottomSheetView>
-      </LinearGradient>
+      <View className="flex-1 overflow-hidden rounded-t-2xl">
+        <LinearGradient
+          colors={["#05251C", "#0E6149"]}
+          style={{ paddingBottom: 4 }}
+        >
+          <View className="px-2 pt-1.5 flex-row items-center">
+            <Text className="text-base font-pRegular text-white">
+              {props.title}
+            </Text>
+            <Text className="ml-2.5 text-2xl font-pText text-white">
+              Workout day
+            </Text>
+          </View>
+        </LinearGradient>
 
-      <BottomSheetFlatList
-        data={allUniqueExercises}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-        contentContainerClassName="bg-primary pt-2 pb-2"
-      />
+        <BottomSheetFlatList
+          data={allUniqueExercises}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+          contentContainerClassName="bg-primary pt-1.5 pb-2"
+          style={{ backgroundColor: "#131313" }}
+        />
+      </View>
     </BottomSheet>
   );
 });

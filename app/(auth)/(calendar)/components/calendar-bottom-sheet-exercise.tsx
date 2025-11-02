@@ -1,8 +1,7 @@
 import { ExerciseGroupDTO, ExerciseSetDTO } from "@/state/endpoints/api.schemas";
-import { BottomSheetFlatList, BottomSheetView } from "@gorhom/bottom-sheet";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import { ListRenderItem, Text } from "react-native";
+import { FlatList, ListRenderItem, Text, View } from "react-native";
 import BottomSheetExerciseInfo from "./calendar-bottom-sheet-exercise-info";
 
 interface BottomSheetUniqueExerciseProps {
@@ -18,26 +17,30 @@ export default function CalendarBottomSheetExercise({ uniqueExercise }: BottomSh
     />
   );
 
-  const keyExtractor = (item: ExerciseSetDTO) => item.id;
+  const keyExtractor = (item: ExerciseSetDTO, index: number) => `${item.id}-${index}`;
 
   return (
-    <BottomSheetView className="mb-1.5 mx-1.5 bg-transparent rounded-xl">
+    <View className="mb-1.2 mx-1.5">
       <LinearGradient
-        colors={["rgba(42, 179, 142, 0.15)", "rgba(42, 179, 142, 0.4)"]}
-        className="rounded-xl"
+        colors={["rgba(107, 107, 107, 0.1)", "rgba(107, 107, 107, 0.6)"]}
+        style={{ borderRadius: 10, overflow: 'hidden' }}
       >
-        <Text className="px-1 pt-1 pb-0.5 font-pText text-xs text-white">
+        <Text className="px-1.5 pt-1.2 pb-0.8 font-pText text-sm text-white">
           {uniqueExercise.name}
         </Text>
-        <BottomSheetFlatList
+        <FlatList
           data={uniqueExercise.exerciseSets}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerClassName="px-1 pb-1 gap-0.5"
+          contentContainerStyle={{
+            paddingHorizontal: 15,
+            paddingBottom: 12,
+            gap: 8
+          }}
         />
       </LinearGradient>
-    </BottomSheetView>
+    </View>
   );
 }
