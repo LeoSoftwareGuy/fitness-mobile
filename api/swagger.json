@@ -1576,7 +1576,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/trainings/{id}/sets/{setId}": {
       "put": {
         "tags": [
           "Trainings"
@@ -1585,6 +1587,15 @@
         "parameters": [
           {
             "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "setId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1674,9 +1685,7 @@
             }
           }
         }
-      }
-    },
-    "/api/trainings/{id}/sets/{setId}": {
+      },
       "delete": {
         "tags": [
           "Trainings"
@@ -1885,9 +1894,8 @@
       "CreateTrainingSetRequest": {
         "required": [
           "exerciseId",
-          "reps",
-          "trainingId",
-          "weight"
+          "muscleGroupType",
+          "trainingId"
         ],
         "type": "object",
         "properties": {
@@ -1895,12 +1903,31 @@
             "type": "string",
             "format": "uuid"
           },
+          "muscleGroupType": {
+            "$ref": "#/components/schemas/MuscleGroupType"
+          },
           "reps": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "weight": {
             "$ref": "#/components/schemas/Weight"
+          },
+          "pace": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "elevation": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
           },
           "trainingId": {
             "type": "string",
@@ -1958,21 +1985,37 @@
         "additionalProperties": false
       },
       "ExerciseSetDTO": {
-        "required": [
-          "weight"
-        ],
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
             "format": "uuid"
           },
+          "muscleGroupType": {
+            "$ref": "#/components/schemas/MuscleGroupType"
+          },
           "reps": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "weight": {
             "$ref": "#/components/schemas/Weight"
+          },
+          "pace": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "elevation": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2537,8 +2580,7 @@
       "TrainingSetCommandDTO": {
         "required": [
           "exerciseId",
-          "reps",
-          "weight"
+          "muscleGroupType"
         ],
         "type": "object",
         "properties": {
@@ -2546,12 +2588,31 @@
             "type": "string",
             "format": "uuid"
           },
+          "muscleGroupType": {
+            "$ref": "#/components/schemas/MuscleGroupType"
+          },
           "reps": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "weight": {
             "$ref": "#/components/schemas/Weight"
+          },
+          "pace": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "elevation": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2560,9 +2621,8 @@
         "required": [
           "exerciseId",
           "id",
-          "reps",
-          "trainingId",
-          "weight"
+          "muscleGroupType",
+          "trainingId"
         ],
         "type": "object",
         "properties": {
@@ -2578,12 +2638,31 @@
             "type": "string",
             "format": "uuid"
           },
+          "muscleGroupType": {
+            "$ref": "#/components/schemas/MuscleGroupType"
+          },
           "reps": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "weight": {
             "$ref": "#/components/schemas/Weight"
+          },
+          "pace": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "elevation": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2631,9 +2710,9 @@
       "UpdateTrainingSetRequest": {
         "required": [
           "exerciseId",
-          "reps",
+          "muscleGroupType",
           "trainingId",
-          "weight"
+          "trainingSetId"
         ],
         "type": "object",
         "properties": {
@@ -2641,14 +2720,37 @@
             "type": "string",
             "format": "uuid"
           },
+          "muscleGroupType": {
+            "$ref": "#/components/schemas/MuscleGroupType"
+          },
           "reps": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "weight": {
             "$ref": "#/components/schemas/Weight"
           },
+          "pace": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "elevation": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
           "trainingId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "trainingSetId": {
             "type": "string",
             "format": "uuid"
           }

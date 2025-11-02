@@ -1466,10 +1466,11 @@ export const useCreateTrainingSet = <
 };
 export const updateTrainingSet = (
   id: string,
+  setId: string,
   updateTrainingSetRequest: UpdateTrainingSetRequest,
 ) => {
   return customInstance<UpdateTrainingSetResponse>({
-    url: `/api/trainings/${id}/sets`,
+    url: `/api/trainings/${id}/sets/${setId}`,
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     data: updateTrainingSetRequest,
@@ -1483,13 +1484,13 @@ export const getUpdateTrainingSetMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof updateTrainingSet>>,
     TError,
-    { id: string; data: UpdateTrainingSetRequest },
+    { id: string; setId: string; data: UpdateTrainingSetRequest },
     TContext
   >;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof updateTrainingSet>>,
   TError,
-  { id: string; data: UpdateTrainingSetRequest },
+  { id: string; setId: string; data: UpdateTrainingSetRequest },
   TContext
 > => {
   const mutationKey = ["updateTrainingSet"];
@@ -1503,11 +1504,11 @@ export const getUpdateTrainingSetMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof updateTrainingSet>>,
-    { id: string; data: UpdateTrainingSetRequest }
+    { id: string; setId: string; data: UpdateTrainingSetRequest }
   > = (props) => {
-    const { id, data } = props ?? {};
+    const { id, setId, data } = props ?? {};
 
-    return updateTrainingSet(id, data);
+    return updateTrainingSet(id, setId, data);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -1529,7 +1530,7 @@ export const useUpdateTrainingSet = <
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof updateTrainingSet>>,
       TError,
-      { id: string; data: UpdateTrainingSetRequest },
+      { id: string; setId: string; data: UpdateTrainingSetRequest },
       TContext
     >;
   },
@@ -1537,7 +1538,7 @@ export const useUpdateTrainingSet = <
 ): UseMutationResult<
   Awaited<ReturnType<typeof updateTrainingSet>>,
   TError,
-  { id: string; data: UpdateTrainingSetRequest },
+  { id: string; setId: string; data: UpdateTrainingSetRequest },
   TContext
 > => {
   const mutationOptions = getUpdateTrainingSetMutationOptions(options);

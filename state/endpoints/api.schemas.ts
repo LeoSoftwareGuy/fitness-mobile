@@ -51,8 +51,16 @@ export type CreateTrainingResponse = {
 
 export type CreateTrainingSetRequest = {
   exerciseId: string;
-  reps: number;
-  weight: Weight;
+  muscleGroupType: MuscleGroupType;
+  /** @nullable */
+  reps?: number | null;
+  weight?: Weight;
+  /** @nullable */
+  pace?: number | null;
+  /** @nullable */
+  duration?: number | null;
+  /** @nullable */
+  elevation?: number | null;
   trainingId: string;
 };
 
@@ -72,8 +80,16 @@ export type ExerciseGroupDTO = {
 
 export type ExerciseSetDTO = {
   id?: string;
-  reps?: number;
-  weight: Weight;
+  muscleGroupType?: MuscleGroupType;
+  /** @nullable */
+  reps?: number | null;
+  weight?: Weight;
+  /** @nullable */
+  pace?: number | null;
+  /** @nullable */
+  duration?: number | null;
+  /** @nullable */
+  elevation?: number | null;
 };
 
 export type ExerciseSetsByDate = {
@@ -256,16 +272,32 @@ export type TrainingDayDTO = {
 
 export type TrainingSetCommandDTO = {
   exerciseId: string;
-  reps: number;
-  weight: Weight;
+  muscleGroupType: MuscleGroupType;
+  /** @nullable */
+  reps?: number | null;
+  weight?: Weight;
+  /** @nullable */
+  pace?: number | null;
+  /** @nullable */
+  duration?: number | null;
+  /** @nullable */
+  elevation?: number | null;
 };
 
 export type TrainingSetDTO = {
   id: string;
   exerciseId: string;
   trainingId: string;
-  reps: number;
-  weight: Weight;
+  muscleGroupType: MuscleGroupType;
+  /** @nullable */
+  reps?: number | null;
+  weight?: Weight;
+  /** @nullable */
+  pace?: number | null;
+  /** @nullable */
+  duration?: number | null;
+  /** @nullable */
+  elevation?: number | null;
 };
 
 export type UpdateMuscleGroupRequest = {
@@ -283,9 +315,18 @@ export type UpdateMuscleGroupResponse = {
 
 export type UpdateTrainingSetRequest = {
   exerciseId: string;
-  reps: number;
-  weight: Weight;
+  muscleGroupType: MuscleGroupType;
+  /** @nullable */
+  reps?: number | null;
+  weight?: Weight;
+  /** @nullable */
+  pace?: number | null;
+  /** @nullable */
+  duration?: number | null;
+  /** @nullable */
+  elevation?: number | null;
   trainingId: string;
+  trainingSetId: string;
 };
 
 export type UpdateTrainingSetResponse = {
