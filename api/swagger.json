@@ -1410,7 +1410,7 @@
         "operationId": "FindTrainingsForCalendar",
         "parameters": [
           {
-            "name": "userId",
+            "name": "userEmail",
             "in": "query",
             "required": true,
             "schema": {

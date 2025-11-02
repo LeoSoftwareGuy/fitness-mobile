@@ -1,4 +1,3 @@
-// CalendarBottomSheet.tsx
 import { ExerciseGroupDTO, TrainingDayDTO } from "@/state/endpoints/api.schemas";
 import BottomSheet, {
   BottomSheetBackdrop,
@@ -21,7 +20,6 @@ type Ref = BottomSheet;
 
 const CalendarBottomSheet = forwardRef<Ref, Props>((props, ref) => {
   const allUniqueExercises = useMemo(() => {
-    // Group by muscle group, then flatten
     const grouped = props.training.exercises.reduce((acc, exercise) => {
       if (!acc[exercise.muscleGroupName]) {
         acc[exercise.muscleGroupName] = [];
@@ -63,24 +61,25 @@ const CalendarBottomSheet = forwardRef<Ref, Props>((props, ref) => {
       enablePanDownToClose
       onClose={props.onClose}
     >
-      {/* Header with Gradient */}
-      <LinearGradient colors={["#05251C", "#0E6149"]} className="pb-[30px] rounded">
-        <BottomSheetView className="px-[10px] pt-6 flex-row items-center">
-          <Text className="pl-3 text-base font-normal leading-5 text-white font-pRegular">
+      <LinearGradient
+        colors={["#05251C", "#0E6149"]}
+        className="rounded-t-2xl pb-1.5"
+      >
+        <BottomSheetView className="px-1.5 pt-2 flex-row items-center">
+          <Text className="text-sm font-pRegular text-white">
             {props.title}
           </Text>
-          <Text className="pl-4 text-2xl font-normal leading-6 text-white font-pText">
+          <Text className="ml-2 text-xl font-pText text-white">
             Workout day
           </Text>
         </BottomSheetView>
       </LinearGradient>
 
-      {/* FlatList with Dark Background */}
       <BottomSheetFlatList
         data={allUniqueExercises}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
-        contentContainerClassName="bg-[#131313] py-5"
+        contentContainerClassName="bg-primary pt-2 pb-2"
       />
     </BottomSheet>
   );

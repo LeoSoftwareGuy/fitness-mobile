@@ -1,9 +1,8 @@
-
 import ErrorMessage from "@/components/error-message";
 import LoadingIndicator from "@/components/loading-indicator";
 import { TrainingDayDTO } from "@/state/endpoints/api.schemas";
 import { useFindTrainingsForCalendar } from "@/state/endpoints/trainings";
-import { useUser } from "@clerk/clerk-expo";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 import BottomSheet from "@gorhom/bottom-sheet";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ScrollView } from "react-native";
@@ -13,6 +12,7 @@ import CalendarBottomSheet from "./components/calendar-bottom-sheet";
 
 export default function CalendarScreen() {
     const { user, isLoaded } = useUser();
+    const { isSignedIn } = useAuth();
     const [currentMonth, setCurrentMonth] = useState<number>(new Date().getMonth() + 1);
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
@@ -26,14 +26,15 @@ export default function CalendarScreen() {
         error,
     } = useFindTrainingsForCalendar(
         {
-            userId: user?.id || '',
+            userEmail: user?.emailAddresses[0].emailAddress || '',
             year: currentYear,
             month: currentMonth,
         },
         {
             query: {
                 staleTime: 5 * 60 * 1000,
-                enabled: !!user?.id && currentMonth >= 1 && currentMonth <= 12,
+                enabled: isSignedIn && isLoaded,
+                retry: false,
             },
         }
     );
@@ -41,7 +42,7 @@ export default function CalendarScreen() {
     const bottomSheetRef = useRef<BottomSheet>(null);
 
     const date = selectedTraining
-        ? `${selectedTraining.trainedAtDay}.${selectedTraining.trainedAtMonth}.${selectedTraining.trainedAtYear}`
+        ? `${String(selectedTraining.trainedAtDay).padStart(2, "0")}.${String(selectedTraining.trainedAtMonth).padStart(2, "0")}.${String(selectedTraining.trainedAtYear).slice(-2)}`
         : "";
 
     const expandBottomSheet = useCallback(() => {
@@ -93,7 +94,7 @@ export default function CalendarScreen() {
 
     return (
         <>
-            <SafeAreaView className="h-full bg-primary">
+            <SafeAreaView className="flex-1 bg-primary">
                 {isLoading ? (
                     <LoadingIndicator />
                 ) : error ? (
@@ -103,16 +104,18 @@ export default function CalendarScreen() {
                         <Calendar
                             theme={{
                                 calendarBackground: "transparent",
-                                textSectionTitleColor: "#ffffff",
+                                textSectionTitleColor: "#A9A9A9",
                                 selectedDayBackgroundColor: "#2AB38E",
                                 selectedDayTextColor: "#ffffff",
                                 todayTextColor: "#2AB38E",
                                 dayTextColor: "#ffffff",
                                 textDisabledColor: "transparent",
                                 monthTextColor: "#2AB38E",
-                                textMonthFontSize: 20,
+                                textMonthFontSize: 18,
                                 arrowColor: "#ffffff",
-                                textMonthFontFamily: "font-pRegular",
+                                textDayFontSize: 14,
+                                textMonthFontFamily: "Righteous-Regular",
+                                textDayFontFamily: "Roboto-Regular",
                             }}
                             disableMonthChange={false}
                             current={`${currentYear}-${String(currentMonth).padStart(2, "0")}-01`}

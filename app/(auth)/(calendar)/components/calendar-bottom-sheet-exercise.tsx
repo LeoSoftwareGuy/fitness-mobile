@@ -21,12 +21,12 @@ export default function CalendarBottomSheetExercise({ uniqueExercise }: BottomSh
   const keyExtractor = (item: ExerciseSetDTO) => item.id;
 
   return (
-    <BottomSheetView className="mb-4 ml-[15px] min-h-[80px] bg-transparent rounded-[15px] self-start">
+    <BottomSheetView className="mb-1.5 mx-1.5 bg-transparent rounded-xl">
       <LinearGradient
-        colors={["rgba(107, 107, 107, 0.1)", "rgba(107, 107, 107, 0.6)"]}
+        colors={["rgba(42, 179, 142, 0.15)", "rgba(42, 179, 142, 0.4)"]}
         className="rounded-xl"
       >
-        <Text className="pl-2 pt-2 pb-2 font-pText text-xs leading-[22px] font-normal text-white">
+        <Text className="px-1 pt-1 pb-0.5 font-pText text-xs text-white">
           {uniqueExercise.name}
         </Text>
         <BottomSheetFlatList
@@ -35,9 +35,9 @@ export default function CalendarBottomSheetExercise({ uniqueExercise }: BottomSh
           keyExtractor={keyExtractor}
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerClassName="px-[9px] pb-[9px] flex-row gap-2"
+          contentContainerClassName="px-1 pb-1 gap-0.5"
         />
       </LinearGradient>
     </BottomSheetView>
   );
-};
+}

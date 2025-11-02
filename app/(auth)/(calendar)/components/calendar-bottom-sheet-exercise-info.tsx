@@ -10,10 +10,10 @@ interface BottomSheetExerciseInfoProps {
 
 export default function BottomSheetExerciseInfo({ reps, weight }: BottomSheetExerciseInfoProps) {
   return (
-    <BottomSheetView className="mb-1 px-1.5 w-[100px] h-[30px] rounded-[25px] bg-[#e0e0e0] justify-center items-center">
-      <Text className='font-pText text-[12px] leading-[22px] font-normal'>
-        {reps} x {weight.value} {weight.unit}
+    <BottomSheetView className="px-1 py-0.5 rounded-lg bg-[#2A2A2A] justify-center items-center">
+      <Text className='font-pText text-xs text-white'>
+        {reps} x {weight.value === 0 ? "BW" : `${weight.value} ${weight.unit}`}
       </Text>
     </BottomSheetView>
   );
-};
+}

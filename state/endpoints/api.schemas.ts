@@ -378,7 +378,7 @@ export type FindTrainingsParams = {
 };
 
 export type FindTrainingsForCalendarParams = {
-  userId: string;
+  userEmail: string;
   year?: number;
   month?: number;
 };
