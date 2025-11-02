@@ -196,6 +196,7 @@ const ExerciseBottomSheetComponent = forwardRef<Ref, Props>(
 
                     <ExerciseInfoPicker
                         parameters={repsSetsWeight}
+                        muscleGroupType={props.muscleGroupType}
                         onChange={handleParametersChange}
                     />
 

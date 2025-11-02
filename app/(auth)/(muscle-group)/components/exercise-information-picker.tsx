@@ -1,7 +1,8 @@
 import { MuscleGroupType, Weight } from "@/state/endpoints/api.schemas";
 import { Picker } from "@react-native-picker/picker";
+import Slider from "@react-native-community/slider";
 import React from "react";
-import { Text, TextInput, View } from "react-native";
+import { Text, View } from "react-native";
 import { ExerciseParameters } from "./exercise-bottom-sheet";
 
 interface ExerciseInfoPickerProps {
@@ -37,16 +38,10 @@ export default function ExerciseInfoPicker({ onChange, parameters, muscleGroupTy
         weightsItems.findIndex((w) => isWeightEqual(w, currentWeight))
     );
 
-    const handleNumericChange = (value: string, key: "Pace" | "Duration" | "Elevation") => {
-        if (value.trim().length === 0) {
-            onChange({ [key]: undefined });
-            return;
-        }
-
-        const normalizedValue = value.replace(",", ".");
-        const parsed = Number(normalizedValue);
-        onChange({ [key]: Number.isFinite(parsed) ? parsed : undefined });
-    };
+    const paceValue = parameters.Pace ?? 8;
+    const durationValue = parameters.Duration ?? 30;
+    const elevationValue = parameters.Elevation ?? 0;
+    const setsValue = parameters.Sets ?? 1;
 
     if (isCardio) {
         return (
@@ -55,76 +50,81 @@ export default function ExerciseInfoPicker({ onChange, parameters, muscleGroupTy
                     Cardio details
                 </Text>
 
-                <View className="flex-row gap-1.2">
-                    <View className="flex-1">
-                        <Text className="font-pRegular text-sm text-mediumGray mb-0.6">
-                            Pace (km/h)
-                        </Text>
-                        <TextInput
-                            className="rounded-lg bg-swamp px-1.2 py-0.8 text-white font-pRegular"
-                            keyboardType="numeric"
-                            inputMode="decimal"
-                            value={parameters.Pace !== undefined ? String(parameters.Pace) : ""}
-                            placeholder="e.g. 8.5"
-                            placeholderTextColor="#9CA3AF"
-                            onChangeText={(value) => handleNumericChange(value, "Pace")}
-                        />
+                <View className="mb-4">
+                    <View className="flex-row justify-between items-center mb-1">
+                        <Text className="font-pRegular text-sm text-mediumGray">Pace</Text>
+                        <Text className="font-pText text-white text-base">{paceValue.toFixed(1)} km/h</Text>
                     </View>
-
-                    <View className="flex-1">
-                        <Text className="font-pRegular text-sm text-mediumGray mb-0.6">
-                            Duration (min)
-                        </Text>
-                        <TextInput
-                            className="rounded-lg bg-swamp px-1.2 py-0.8 text-white font-pRegular"
-                            keyboardType="numeric"
-                            inputMode="decimal"
-                            value={parameters.Duration !== undefined ? String(parameters.Duration) : ""}
-                            placeholder="e.g. 30"
-                            placeholderTextColor="#9CA3AF"
-                            onChangeText={(value) => handleNumericChange(value, "Duration")}
-                        />
-                    </View>
+                    <Slider
+                        style={{ width: "100%", height: 40 }}
+                        minimumValue={3}
+                        maximumValue={22}
+                        step={0.5}
+                        value={paceValue}
+                        onValueChange={(value) => onChange({ Pace: Number(value.toFixed(1)) })}
+                        minimumTrackTintColor="#006F52"
+                        maximumTrackTintColor="#2C2C2C"
+                        thumbTintColor="#2AB38E"
+                    />
                 </View>
 
-                <View className="flex-row gap-1.2 mt-1.2">
-                    <View className="flex-1">
-                        <Text className="font-pRegular text-sm text-mediumGray mb-0.6">
-                            Elevation (m)
-                        </Text>
-                        <TextInput
-                            className="rounded-lg bg-swamp px-1.2 py-0.8 text-white font-pRegular"
-                            keyboardType="numeric"
-                            inputMode="decimal"
-                            value={parameters.Elevation !== undefined ? String(parameters.Elevation) : ""}
-                            placeholder="e.g. 150"
-                            placeholderTextColor="#9CA3AF"
-                            onChangeText={(value) => handleNumericChange(value, "Elevation")}
-                        />
+                <View className="mb-4">
+                    <View className="flex-row justify-between items-center mb-1">
+                        <Text className="font-pRegular text-sm text-mediumGray">Duration</Text>
+                        <Text className="font-pText text-white text-base">{Math.round(durationValue)} min</Text>
                     </View>
-                    <View className="flex-1">
-                        <Text className="font-pRegular text-sm text-mediumGray mb-0.6 text-center">
-                            Sets
-                        </Text>
-                        <View className="h-[200px] rounded-lg bg-swamp overflow-hidden">
-                            <Picker
-                                selectedValue={parameters.Sets}
-                                onValueChange={(value) => onChange({ Sets: value })}
-                                style={{ color: "white", backgroundColor: "transparent" }}
-                                itemStyle={{ color: "white", fontSize: 18, height: 200 }}
-                            >
-                                {setsItems.map((set) => (
-                                    <Picker.Item
-                                        key={set}
-                                        label={`${set}`}
-                                        value={set}
-                                        color="white"
-                                    />
-                                ))}
-                            </Picker>
-                        </View>
-                    </View>
+                    <Slider
+                        style={{ width: "100%", height: 40 }}
+                        minimumValue={5}
+                        maximumValue={180}
+                        step={1}
+                        value={durationValue}
+                        onValueChange={(value) => onChange({ Duration: Math.round(value) })}
+                        minimumTrackTintColor="#006F52"
+                        maximumTrackTintColor="#2C2C2C"
+                        thumbTintColor="#2AB38E"
+                    />
                 </View>
+
+                <View className="mb-4">
+                    <View className="flex-row justify-between items-center mb-1">
+                        <Text className="font-pRegular text-sm text-mediumGray">Elevation</Text>
+                        <Text className="font-pText text-white text-base">{Math.round(elevationValue)} m</Text>
+                    </View>
+                    <Slider
+                        style={{ width: "100%", height: 40 }}
+                        minimumValue={0}
+                        maximumValue={1000}
+                        step={10}
+                        value={elevationValue}
+                        onValueChange={(value) => onChange({ Elevation: Math.round(value) })}
+                        minimumTrackTintColor="#006F52"
+                        maximumTrackTintColor="#2C2C2C"
+                        thumbTintColor="#2AB38E"
+                    />
+                </View>
+
+                <View className="mb-2">
+                    <View className="flex-row justify-between items-center mb-1">
+                        <Text className="font-pRegular text-sm text-mediumGray">Sets</Text>
+                        <Text className="font-pText text-white text-base">{setsValue}</Text>
+                    </View>
+                    <Slider
+                        style={{ width: "100%", height: 40 }}
+                        minimumValue={1}
+                        maximumValue={10}
+                        step={1}
+                        value={setsValue}
+                        onValueChange={(value) => onChange({ Sets: Math.round(value) })}
+                        minimumTrackTintColor="#006F52"
+                        maximumTrackTintColor="#2C2C2C"
+                        thumbTintColor="#2AB38E"
+                    />
+                </View>
+
+                <Text className="text-center text-xs text-mediumGray mt-1">
+                    Cardio metrics are stored per set and converted to seconds automatically.
+                </Text>
             </View>
         );
     }
