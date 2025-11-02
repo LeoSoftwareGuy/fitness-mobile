@@ -5,13 +5,13 @@ import React from "react";
 const ProfileLayout = () => {
     return (
         <>
-            <Stack>
-                <Stack.Screen
-                    name="profile"
-                    options={{
-                        headerShown: false,
-                    }}
-                />
+            <Stack
+                screenOptions={{
+                    headerShown: false,
+                    animation: "fade",
+                }}
+            >
+                <Stack.Screen name="profile" />
             </Stack>
             <StatusBar backgroundColor="#00000" style="dark" />
         </>

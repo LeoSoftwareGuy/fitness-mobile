@@ -5,13 +5,13 @@ import React from "react";
 export default function todaysWorkoutLayout() {
     return (
         <>
-            <Stack>
-                <Stack.Screen
-                    name="todays-workout"
-                    options={{
-                        headerShown: false,
-                    }}
-                />
+            <Stack
+                screenOptions={{
+                    headerShown: false,
+                    animation: "fade",
+                }}
+            >
+                <Stack.Screen name="todays-workout" />
             </Stack>
             <StatusBar backgroundColor="#00000" style="dark" />
         </>

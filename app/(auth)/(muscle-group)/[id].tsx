@@ -1,7 +1,6 @@
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useCallback, useRef, useState } from "react";
 import {
-    ActivityIndicator,
     FlatList,
     ImageBackground,
     ListRenderItem,
@@ -11,6 +10,9 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+
+import Skeleton from "@/components/skeletons/skeleton";
+import SkeletonCard from "@/components/skeletons/skeleton-card";
 import images from "@/constants/images";
 import { MuscleGroupExerciseDTO, MuscleGroupType } from "@/state/endpoints/api.schemas";
 import { useGetMuscleGroupById } from "@/state/endpoints/muscle-groups";
@@ -52,10 +54,20 @@ export default function MuscleGroupScreen() {
 
     if (isLoading) {
         return (
-            <View className="flex-1 justify-center items-center bg-primary">
-                <ActivityIndicator size="large" color="#ffffff" />
-                <Text className="mt-2.5 text-white">Loading exercises...</Text>
-            </View>
+            <ImageBackground source={images.logo} className="my-0 py-0 px-2.5 flex-1">
+                <SafeAreaView className="flex-1">
+                    <View className="my-2 flex-row justify-between items-center">
+                        <Skeleton height={24} className="w-16" />
+                        <Skeleton height={24} className="w-32" />
+                    </View>
+
+                    <View className="flex-row flex-wrap justify-between gap-y-2">
+                        {Array.from({ length: 6 }).map((_, index) => (
+                            <SkeletonCard key={`exercise-skeleton-${index}`} lines={2} className="w-[48%]" />
+                        ))}
+                    </View>
+                </SafeAreaView>
+            </ImageBackground>
         );
     }
 

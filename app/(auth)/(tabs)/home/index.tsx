@@ -1,3 +1,6 @@
+
+import Skeleton from "@/components/skeletons/skeleton";
+import SkeletonCard from "@/components/skeletons/skeleton-card";
 import { icons, images } from "@/constants";
 import { useTrainingStore } from "@/hooks/use-trainings-store";
 import { MuscleGroupType } from "@/state/endpoints/api.schemas";
@@ -54,9 +57,22 @@ export default function HomeScreen() {
                     <DateSlider />
 
                     {isLoading ? (
-                        <View className="flex-1 justify-center items-center">
-                            <Text className="text-white text-center">Loading muscle groups...</Text>
-                        </View>
+                        <>
+                            {["Upper", "Lower", "Cardio"].map((section) => (
+                                <View key={section} className="my-1 min-h-[160px]">
+                                    <Skeleton height={20} className="w-24 mb-2 rounded-md" />
+                                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                                        {Array.from({ length: 3 }).map((_, index) => (
+                                            <SkeletonCard
+                                                key={`${section}-skeleton-${index}`}
+                                                lines={1}
+                                                className="mr-3 w-[140px]"
+                                            />
+                                        ))}
+                                    </ScrollView>
+                                </View>
+                            ))}
+                        </>
                     ) : muscleGroups?.totalItemCount === 0 ? (
                         <View className="flex-1 justify-center items-center">
                             <Text className="text-white text-center">No muscle groups available.</Text>

@@ -26,10 +26,12 @@ const TabIcon = ({ icon, color }: TabIconProps) => {
 export default function TabLayout() {
   return (
     <Tabs
+      detachInactiveScreens={false}
       screenOptions={{
         tabBarShowLabel: false,
         tabBarActiveTintColor: "#006F52",
         tabBarInactiveTintColor: "#C4C4C4",
+        sceneStyle: { backgroundColor: "#040F13" },
         tabBarStyle: {
           position: "absolute",
           backgroundColor: "#293240",

@@ -1,7 +1,9 @@
+
+import Skeleton from "@/components/skeletons/skeleton";
 import { useGetExerciseHistory } from "@/state/endpoints/statistics";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useMemo } from "react";
-import { ActivityIndicator, Text, View } from "react-native";
+import { Text, View } from "react-native";
 
 interface ExerciseStatisticsProps {
     resultType: "best" | "latest";
@@ -45,8 +47,8 @@ export default function ExerciseStatistics({ resultType, exerciseId }: ExerciseS
 
     if (isLoading) {
         return (
-            <View className="py-2 items-center">
-                <ActivityIndicator size="small" color="#ffffff" />
+            <View className="mt-0.8">
+                <Skeleton height={76} className="rounded-lg" />
             </View>
         );
     }

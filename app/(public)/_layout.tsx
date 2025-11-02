@@ -5,26 +5,15 @@ import React from "react";
 const AuthLayout = () => {
   return (
     <>
-      <Stack>
-        <Stack.Screen
-          name="sign-in"
-          options={{
-            headerShown: false,
-          }}
-        />
-
-        <Stack.Screen
-          name="register"
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="forgot"
-          options={{
-            headerShown: false,
-          }}
-        />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          animation: "fade",
+        }}
+      >
+        <Stack.Screen name="sign-in" />
+        <Stack.Screen name="register" />
+        <Stack.Screen name="forgot" />
       </Stack>
 
       <StatusBar backgroundColor="#00000" style="dark" />

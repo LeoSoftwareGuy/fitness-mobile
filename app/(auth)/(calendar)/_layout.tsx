@@ -5,13 +5,13 @@ import React from "react";
 const CalendarLayout = () => {
   return (
     <>
-      <Stack>
-        <Stack.Screen
-          name="calendar"
-          options={{
-            headerShown: false,
-          }}
-        />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          animation: "fade",
+        }}
+      >
+        <Stack.Screen name="calendar" />
       </Stack>
       <StatusBar backgroundColor="#00000" style="dark" />
     </>
