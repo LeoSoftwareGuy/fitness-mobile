@@ -7,7 +7,7 @@ const CalendarLayout = () => {
     <>
       <Stack>
         <Stack.Screen
-          name="calendarScreen"
+          name="calendar"
           options={{
             headerShown: false,
           }}
