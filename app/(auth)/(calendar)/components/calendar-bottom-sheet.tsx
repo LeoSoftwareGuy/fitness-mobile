@@ -30,7 +30,7 @@ const CalendarBottomSheet = forwardRef<Ref, Props>((props, ref) => {
     return Object.values(grouped).flat();
   }, [props.training.exercises]);
 
-  const snapPoints = useMemo(() => ["50%", "75%", "90%"], []);
+  const snapPoints = useMemo(() => ["40%", "60%", "80%"], []);
 
   const renderBackdrop = useCallback(
     (backdropProps: BottomSheetBackdropProps) => (
@@ -65,14 +65,9 @@ const CalendarBottomSheet = forwardRef<Ref, Props>((props, ref) => {
           colors={["#05251C", "#0E6149"]}
           style={{ paddingBottom: 4 }}
         >
-          <View className="px-2 pt-1.5 flex-row items-center">
-            <Text className="text-base font-pRegular text-white">
-              {props.title}
-            </Text>
-            <Text className="ml-2.5 text-2xl font-pText text-white">
-              Workout day
-            </Text>
-          </View>
+          <Text className="py-1 text-center  text-2xl font-pText text-white">
+            Workout day
+          </Text>
         </LinearGradient>
 
         <BottomSheetFlatList
