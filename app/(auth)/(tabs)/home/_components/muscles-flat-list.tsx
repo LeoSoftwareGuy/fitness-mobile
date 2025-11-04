@@ -1,8 +1,8 @@
 import { FindMuscleGroupsResponse } from "@/state/endpoints/api.schemas";
 import React from "react";
 import { Text, View } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
 import MuscleFlatListItem from "./muscles-flat-list-item";
+import { FlashList } from "@shopify/flash-list";
 
 interface MusclesFlatListComponentProps {
     muscleGroups: FindMuscleGroupsResponse[] | undefined;
@@ -18,12 +18,13 @@ export default function MusclesFlatListComponent({ muscleGroups, title }: Muscle
             <Text className="mb-1 font-pText text-[16px] text-white">
                 {title} body
             </Text>
-            <FlatList
+            <FlashList
                 data={muscleGroups}
                 renderItem={({ item }) => <MuscleFlatListItem muscleGroup={item} />}
                 keyExtractor={(item) => item.id}
                 className="py-1"
                 horizontal
+                estimatedItemSize={150}
                 showsHorizontalScrollIndicator={false}
             />
         </View>

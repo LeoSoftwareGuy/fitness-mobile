@@ -4,13 +4,12 @@ import { router } from "expo-router";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
-  FlatList,
-  ListRenderItem,
   Text,
   TouchableOpacity,
   View
 } from "react-native";
 import PerformanceStatisticsButton from "./performance-statistics-button";
+import { FlashList, ListRenderItem } from "@shopify/flash-list";
 
 export default function ExerciseHistoryList() {
   const {
@@ -73,10 +72,11 @@ export default function ExerciseHistoryList() {
     <View className="mt-2 w-full">
       <Text className="mb-2 font-pText text-white text-lg">Exercises</Text>
 
-      <FlatList
+      <FlashList
         data={muscleGroups}
         renderItem={renderMuscleGroupButton}
         horizontal
+        estimatedItemSize={110}
         keyExtractor={(item) => item.id}
         contentContainerClassName="gap-1"
         showsHorizontalScrollIndicator={false}

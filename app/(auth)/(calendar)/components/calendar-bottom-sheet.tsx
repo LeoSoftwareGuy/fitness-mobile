@@ -2,12 +2,13 @@ import { ExerciseGroupDTO, TrainingDayDTO } from "@/state/endpoints/api.schemas"
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
-  BottomSheetFlatList
+  BottomSheetFlashList
 } from "@gorhom/bottom-sheet";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { forwardRef, useCallback, useMemo } from "react";
-import { ListRenderItem, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import CalendarBottomSheetExercise from "./calendar-bottom-sheet-exercise";
+import { ListRenderItem } from "@shopify/flash-list";
 
 interface Props {
   title: string;
@@ -70,9 +71,10 @@ const CalendarBottomSheet = forwardRef<Ref, Props>((props, ref) => {
           </Text>
         </LinearGradient>
 
-        <BottomSheetFlatList
+        <BottomSheetFlashList
           data={allUniqueExercises}
           renderItem={renderItem}
+          estimatedItemSize={160}
           keyExtractor={keyExtractor}
           contentContainerClassName="bg-primary pt-1.5 pb-2"
           style={{ backgroundColor: "#131313" }}

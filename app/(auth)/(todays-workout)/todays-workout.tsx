@@ -7,14 +7,13 @@ import { router } from "expo-router";
 import React, { useMemo } from "react";
 import {
     Alert,
-    FlatList,
     ImageBackground,
-    ListRenderItem,
     Text,
     TouchableOpacity,
     View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { FlashList, ListRenderItem } from "@shopify/flash-list";
 
 interface ExerciseGroup {
     exerciseName: string;
@@ -145,10 +144,11 @@ export default function TodaysWorkoutScreen() {
                                 Today's workout
                             </Text>
                         </View>
-                        <FlatList
+                        <FlashList
                             data={groupedExercises}
                             renderItem={renderExerciseGroup}
                             keyExtractor={(item, index) => `${item.exerciseName}-${index}`}
+                            estimatedItemSize={120}
                             contentContainerStyle={{ paddingBottom: 20 }}
                         />
                         <View className="px-2 pb-2">

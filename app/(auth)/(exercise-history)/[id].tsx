@@ -5,10 +5,8 @@ import { router, useLocalSearchParams } from "expo-router";
 import React, { useMemo, useState } from "react";
 import {
     ActivityIndicator,
-    FlatList,
     Image,
     ImageBackground,
-    ListRenderItem,
     Text,
     TouchableOpacity,
     View,
@@ -16,6 +14,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import ExerciseSetsByDateComponent from "./components/exercise-sets-by-date";
 import TimePeriodSelector from "./components/time-period-selector";
+import { FlashList, ListRenderItem } from "@shopify/flash-list";
 
 export type TimePeriod = "week" | "month" | "3months";
 
@@ -117,9 +116,10 @@ export default function ExerciseHistoryScreen() {
                 </Text>
 
                 {hasHistory ? (
-                    <FlatList
+                    <FlashList
                         data={exerciseHistory.sets}
                         renderItem={renderExerciseSet}
+                        estimatedItemSize={140}
                         keyExtractor={(item, index) => `${item.date}-${index}`}
                         contentContainerClassName="pb-2"
                         showsVerticalScrollIndicator={false}

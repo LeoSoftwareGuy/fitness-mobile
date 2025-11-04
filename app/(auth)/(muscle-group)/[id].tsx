@@ -1,9 +1,7 @@
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useCallback, useRef, useState } from "react";
 import {
-    FlatList,
     ImageBackground,
-    ListRenderItem,
     Text,
     TouchableOpacity,
     View
@@ -19,6 +17,7 @@ import { useGetMuscleGroupById } from "@/state/endpoints/muscle-groups";
 import BottomSheet from "@gorhom/bottom-sheet";
 import ExerciseComponent from "./components/exercise";
 import ExerciseBottomSheetComponent from "./components/exercise-bottom-sheet";
+import { FlashList, ListRenderItem } from "@shopify/flash-list";
 
 export default function MuscleGroupScreen() {
     const { id } = useLocalSearchParams();
@@ -92,13 +91,13 @@ export default function MuscleGroupScreen() {
                     </Text>
                 </View>
 
-                <FlatList
+                <FlashList
                     data={muscleGroup?.exercises ?? []}
                     renderItem={renderExercise}
+                    estimatedItemSize={180}
                     keyExtractor={(item) => item.id}
                     numColumns={2}
                     contentContainerClassName="py-2"
-                    columnWrapperClassName="gap-2"
                 />
             </SafeAreaView>
 
