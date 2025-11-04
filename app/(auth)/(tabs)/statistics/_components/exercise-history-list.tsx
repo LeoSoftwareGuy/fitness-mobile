@@ -82,18 +82,24 @@ export default function ExerciseHistoryList() {
         showsHorizontalScrollIndicator={false}
       />
 
-      <View className="mt-4 w-full">
-        {selectedExercises.map((exercise) => (
-          <TouchableOpacity
-            key={exercise.id}
-            onPress={() => router.push(`/(auth)/(exercise-history)/${exercise.id}`)}
-            className="border-b border-darkGray/30 py-1.5"
-          >
-            <Text className="font-pRegular text-[17px] text-white">
-              {exercise.name}
-            </Text>
-          </TouchableOpacity>
-        ))}
+      <View className="mt-4 w-full flex-1">
+        <FlatList
+          data={selectedExercises}
+          renderItem={({ item: exercise }) => (
+            <TouchableOpacity
+              key={exercise.id}
+              onPress={() => router.push(`/(auth)/(exercise-history)/${exercise.id}`)}
+              className="border-b border-darkGray/30 py-1.5"
+            >
+              <Text className="font-pRegular text-[17px] text-white">
+                {exercise.name}
+              </Text>
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item) => item.id}
+          showsVerticalScrollIndicator={false}
+          contentContainerClassName="pb-4"
+        />
       </View>
     </View>
   );
