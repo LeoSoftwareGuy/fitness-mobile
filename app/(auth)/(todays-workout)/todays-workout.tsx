@@ -1,5 +1,5 @@
 import FitButton from "@/components/buttons/fit-button";
-import { images } from "@/constants";
+import { icons, images } from "@/constants";
 import { TrainingSetWithDetails, useTrainingStore } from "@/hooks/use-trainings-store";
 import { MuscleGroupType } from "@/state/endpoints/api.schemas";
 import { useCreateTraining } from "@/state/endpoints/trainings";
@@ -8,6 +8,7 @@ import React, { useMemo } from "react";
 import {
     Alert,
     FlatList,
+    Image,
     ImageBackground,
     ListRenderItem,
     Text,
@@ -121,14 +122,19 @@ export default function TodaysWorkoutScreen() {
                 {!currentTraining || groupedExercises.length === 0 ? (
 
                     <View className="flex-1">
-                        <View className="px-2 pt-1.5 flex-row justify-between items-center mb-1">
-                            <TouchableOpacity onPress={() => router.replace("/")}>
-                                <Text className="text-white text-sm font-pRegular">← Back</Text>
+                        <View className="mb-1 px-2 pt-1.5">
+                            <TouchableOpacity onPress={() => router.back()}>
+                                <Image
+                                    source={icons.cross}
+                                    resizeMode="contain"
+                                    tintColor="#2AB38E"
+                                    className="mx-2 mb-2"
+                                />
                             </TouchableOpacity>
-                            <Text className=" flex-1 text-center font-pText text-xl text-white">
-                                Today's workout
-                            </Text>
                         </View>
+                        <Text className="text-center font-pText text-xl text-white">
+                            Today's workout
+                        </Text>
                         <View className="flex-1 justify-center items-center px-3">
                             <Text className="text-center text-lg font-pRegular text-gray">
                                 Haven't trained yet? Get your ass to the gym.

@@ -19,7 +19,7 @@ export default function TimePeriodSelector({
     ];
 
     return (
-        <View className="flex-row justify-between">
+        <View className="mt-2 flex-row justify-between">
             {periods.map((period) => (
                 <TouchableOpacity
                     key={period.value}

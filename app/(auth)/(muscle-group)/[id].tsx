@@ -2,6 +2,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import React, { useCallback, useRef, useState } from "react";
 import {
     FlatList,
+    Image,
     ImageBackground,
     ListRenderItem,
     Text,
@@ -13,6 +14,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import Skeleton from "@/components/skeletons/skeleton";
 import SkeletonCard from "@/components/skeletons/skeleton-card";
+import icons from "@/constants/icons";
 import images from "@/constants/images";
 import { MuscleGroupExerciseDTO, MuscleGroupType } from "@/state/endpoints/api.schemas";
 import { useGetMuscleGroupById } from "@/state/endpoints/muscle-groups";
@@ -82,16 +84,19 @@ export default function MuscleGroupScreen() {
     return (
         <ImageBackground source={images.logo} className="my-0 py-0 px-2.5 flex-1">
             <SafeAreaView className="flex-1">
-                <View className="my-2 flex-row justify-between items-center">
+                <View className="my-2 flex-row items-center">
                     <TouchableOpacity onPress={() => router.back()}>
-                        <Text className="text-white text-base">← Back</Text>
+                        <Image
+                            source={icons.cross}
+                            resizeMode="contain"
+                            tintColor="#2AB38E"
+                            className="mx-2"
+                        />
                     </TouchableOpacity>
-
-                    <Text className="pr-3 font-pText text-xl text-white text-center flex-1">
-                        {muscleGroup?.name}
-                    </Text>
                 </View>
-
+                <Text className="font-pText text-xl text-white text-center">
+                    {muscleGroup?.name}
+                </Text>
                 <FlatList
                     data={muscleGroup?.exercises ?? []}
                     renderItem={renderExercise}
