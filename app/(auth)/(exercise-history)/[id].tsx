@@ -1,6 +1,7 @@
 import { icons, images } from "@/constants";
 import { ExerciseSetsByDate } from "@/state/endpoints/api.schemas";
 import { useGetExerciseHistory } from "@/state/endpoints/statistics";
+import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useMemo, useState } from "react";
 import {
@@ -14,7 +15,6 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import ExerciseSetsByDateComponent from "./components/exercise-sets-by-date";
 import TimePeriodSelector from "./components/time-period-selector";
-import { FlashList, ListRenderItem } from "@shopify/flash-list";
 
 export type TimePeriod = "week" | "month" | "3months";
 
@@ -120,7 +120,6 @@ export default function ExerciseHistoryScreen() {
                     <FlashList
                         data={exerciseHistory.sets}
                         renderItem={renderExerciseSet}
-                        estimatedItemSize={140}
                         keyExtractor={(item, index) => `${item.date}-${index}`}
                         contentContainerClassName="py-2"
                         showsVerticalScrollIndicator={false}

@@ -8,6 +8,7 @@ import { router } from "expo-router";
 import React, { useMemo } from "react";
 import {
     Alert,
+    Image,
     ImageBackground,
     Text,
     TouchableOpacity,
@@ -153,7 +154,6 @@ export default function TodaysWorkoutScreen() {
                             data={groupedExercises}
                             renderItem={renderExerciseGroup}
                             keyExtractor={(item, index) => `${item.exerciseName}-${index}`}
-                            estimatedItemSize={120}
                             contentContainerStyle={{ paddingBottom: 20 }}
                         />
                         <View className="px-2 pb-2">

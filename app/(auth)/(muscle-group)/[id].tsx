@@ -83,7 +83,7 @@ export default function MuscleGroupScreen() {
     return (
         <ImageBackground source={images.logo} className="my-0 py-0 px-2.5 flex-1">
             <SafeAreaView className="flex-1">
-                <View className="my-2 flex-row items-center">
+                <View className="my-1 flex-row items-center">
                     <TouchableOpacity onPress={() => router.back()}>
                         <Image
                             source={icons.cross}
@@ -92,15 +92,17 @@ export default function MuscleGroupScreen() {
                             className="mx-2"
                         />
                     </TouchableOpacity>
-                </View>
 
+                </View>
+                <Text className="font-pText text-xl text-white text-center">
+                    {muscleGroup?.name}
+                </Text>
                 <FlashList
                     data={muscleGroup?.exercises ?? []}
                     renderItem={renderExercise}
-                    estimatedItemSize={180}
                     keyExtractor={(item) => item.id}
                     numColumns={2}
-                    contentContainerClassName="py-2"
+                    className="py-2"
                 />
             </SafeAreaView>
 

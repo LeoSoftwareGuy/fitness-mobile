@@ -1,5 +1,6 @@
 import { FindMuscleGroupsResponse } from "@/state/endpoints/api.schemas";
 import { useFindMuscleGroups } from "@/state/endpoints/muscle-groups";
+import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { router } from "expo-router";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
@@ -9,7 +10,6 @@ import {
   View
 } from "react-native";
 import PerformanceStatisticsButton from "./performance-statistics-button";
-import { FlashList, ListRenderItem } from "@shopify/flash-list";
 
 export default function ExerciseHistoryList() {
   const {
@@ -76,7 +76,6 @@ export default function ExerciseHistoryList() {
         data={muscleGroups}
         renderItem={renderMuscleGroupButton}
         horizontal
-        estimatedItemSize={110}
         keyExtractor={(item) => item.id}
         contentContainerClassName="gap-1"
         showsHorizontalScrollIndicator={false}

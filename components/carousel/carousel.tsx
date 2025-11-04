@@ -4,9 +4,9 @@ import {
     View,
 } from 'react-native';
 
+import { FlashList, FlashListRef, ListRenderItem, ViewToken } from '@shopify/flash-list';
 import CarouselPaginator from './carousel-paginator';
 import CarouselSlide from './carousel-slide';
-import { FlashList, ListRenderItem, ViewToken } from '@shopify/flash-list';
 
 interface CarouselProps<T extends CarouselSlide> {
     data: T[];
@@ -37,7 +37,7 @@ export default function Carousel<T extends CarouselSlide>({
 }: CarouselProps<T>) {
     const scrollX = useRef(new Animated.Value(0)).current;
     const [currentIndex, setCurrentIndex] = useState(0);
-    const flatListRef = useRef<FlashList<T>>(null);
+    const flatListRef = useRef<FlashListRef<T>>(null);
 
     // Auto scroll functionality
     React.useEffect(() => {
@@ -52,7 +52,7 @@ export default function Carousel<T extends CarouselSlide>({
     }, [autoScroll, autoScrollInterval, currentIndex, data.length]);
 
     const viewableItemsChanged = useCallback(
-        ({ viewableItems }: { viewableItems: Array<ViewToken> }) => {
+        ({ viewableItems }: { viewableItems: Array<ViewToken<any>> }) => {
             const visibleItem = viewableItems[0];
             if (visibleItem?.index !== null && visibleItem?.index !== undefined) {
                 setCurrentIndex(visibleItem.index);
@@ -74,7 +74,6 @@ export default function Carousel<T extends CarouselSlide>({
                 ref={flatListRef}
                 data={data}
                 renderItem={renderItem}
-                estimatedItemSize={300}
                 keyExtractor={(item) => item.id.toString()}
                 horizontal // horizontal scrolling
                 pagingEnabled // snap to each slide

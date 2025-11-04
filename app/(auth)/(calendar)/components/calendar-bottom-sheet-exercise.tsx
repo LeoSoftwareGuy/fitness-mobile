@@ -1,9 +1,9 @@
 import { ExerciseGroupDTO, ExerciseSetDTO } from "@/state/endpoints/api.schemas";
+import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { Text, View } from "react-native";
 import BottomSheetExerciseInfo from "./calendar-bottom-sheet-exercise-info";
-import { FlashList, ListRenderItem } from "@shopify/flash-list";
 
 interface BottomSheetUniqueExerciseProps {
   uniqueExercise: ExerciseGroupDTO;
@@ -31,7 +31,6 @@ export default function CalendarBottomSheetExercise({ uniqueExercise }: BottomSh
           data={uniqueExercise.exerciseSets}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
-          estimatedItemSize={120}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{

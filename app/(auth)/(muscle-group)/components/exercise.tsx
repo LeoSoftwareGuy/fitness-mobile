@@ -9,7 +9,7 @@ interface ExerciseComponentProps {
 
 export default function ExerciseComponent({ exercise, onClick }: ExerciseComponentProps) {
     return (
-        <TouchableOpacity onPress={onClick} className="mb-4 w-3/6 h-[125px]">
+        <TouchableOpacity onPress={onClick} className="mb-4 w-5/6 h-[125px]">
             <Image
                 className="w-full h-[88px]"
                 source={{ uri: exercise.imageUrl }}
