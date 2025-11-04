@@ -1,6 +1,6 @@
 import { useFindPerformanceStatsSuspense } from "@/state/endpoints/statistics";
 import React, { useState } from "react";
-import { ActivityIndicator, Text, View } from "react-native";
+import { ActivityIndicator, ScrollView, Text, View } from "react-native";
 import ExerciseHistoryList from "./exercise-history-list";
 import PerformanceStatisticsView from "./performance-statistics-box";
 import PerformanceStatisticsButton from "./performance-statistics-button";
@@ -18,9 +18,9 @@ export default function PerformanceStatistics() {
     ]
     const [timePeriod, setTimePeriod] = useState<TimePeriod>(periods[0]);
 
-    const { data: stats, error, isLoading } = useFindPerformanceStatsSuspense({ timeInterval: timePeriod.value });
+    const { data: stats, error, isLoading, isFetching } = useFindPerformanceStatsSuspense({ timeInterval: timePeriod.value });
 
-    if (isLoading) {
+    if (isLoading && !stats) {
         return (
             <View className="flex-1 justify-center items-center">
                 <ActivityIndicator size="large" color="#ffffff" />
@@ -38,32 +38,36 @@ export default function PerformanceStatistics() {
             </View>
         );
     }
-
     return (
-        <View className="mt-3.2 w-full">
-            <View className="w-full flex-row items-center">
-                <Text className="mr-1 text-lg text-white font-pText">
-                    Period
-                </Text>
-                <View className="flex-1 flex-row gap-1.5">
-                    {periods.map((period) => (
-                        <PerformanceStatisticsButton
-                            key={period.value}
-                            title={period.title}
-                            onClick={() => setTimePeriod(period)}
-                            isSelected={timePeriod.value === period.value}
-                        />
-                    ))}
+        <ScrollView className="flex-1 w-full" showsVerticalScrollIndicator={false}>
+            <View className="mt-3.2 w-full">
+                <View className="w-full flex-row items-center">
+                    <Text className="mr-1 text-lg text-white font-pText">
+                        Period
+                    </Text>
+                    <View className="flex-1 flex-row gap-1.5">
+                        {periods.map((period) => (
+                            <PerformanceStatisticsButton
+                                key={period.value}
+                                title={period.title}
+                                onClick={() => setTimePeriod(period)}
+                                isSelected={timePeriod.value === period.value}
+                            />
+                        ))}
+                    </View>
+                    {isFetching && (
+                        <ActivityIndicator size="small" color="#2AB38E" className="ml-2" />
+                    )}
                 </View>
-            </View>
 
-            <View className="mt-2 w-full flex-row gap-1.5">
-                <PerformanceStatisticsView title={"Sessions Done"} data={stats.sessionsDone} />
-                <PerformanceStatisticsView title={"Exercises Done"} data={stats.exercisesDone} />
-                <PerformanceStatisticsView title={"Muscle Groups"} data={stats.muscleGroupsDone} />
-            </View>
+                <View className="mt-2 w-full flex-row gap-1.5">
+                    <PerformanceStatisticsView title={"Sessions Done"} data={stats?.sessionsDone ?? 0} />
+                    <PerformanceStatisticsView title={"Exercises Done"} data={stats?.exercisesDone ?? 0} />
+                    <PerformanceStatisticsView title={"Muscle Groups"} data={stats?.muscleGroupsDone ?? 0} />
+                </View>
 
-            <ExerciseHistoryList />
-        </View>
+                <ExerciseHistoryList />
+            </View>
+        </ScrollView>
     );
 };
