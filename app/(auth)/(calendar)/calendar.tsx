@@ -1,11 +1,13 @@
 import ErrorMessage from "@/components/error-message";
 import LoadingIndicator from "@/components/loading-indicator";
+import icons from "@/constants/icons";
 import { TrainingDayDTO } from "@/state/endpoints/api.schemas";
 import { useFindTrainingsForCalendar } from "@/state/endpoints/trainings";
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import BottomSheet from "@gorhom/bottom-sheet";
+import { router } from "expo-router";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { ScrollView } from "react-native";
+import { Image, ScrollView, TouchableOpacity, View } from "react-native";
 import { Calendar, DateData } from "react-native-calendars";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CalendarBottomSheet from "./components/calendar-bottom-sheet";
@@ -101,39 +103,50 @@ export default function CalendarScreen() {
                     <ErrorMessage message="Failed to load trainings. Please try again." />
                 ) : (
                     <ScrollView>
-                        <Calendar
-                            theme={{
-                                calendarBackground: "transparent",
-                                textSectionTitleColor: "#A9A9A9",
-                                selectedDayBackgroundColor: "#2AB38E",
-                                selectedDayTextColor: "#ffffff",
-                                todayTextColor: "#2AB38E",
-                                dayTextColor: "#ffffff",
-                                textDisabledColor: "transparent",
-                                monthTextColor: "#2AB38E",
-                                textMonthFontSize: 18,
-                                arrowColor: "#ffffff",
-                                textDayFontSize: 14,
-                                textMonthFontFamily: "Righteous-Regular",
-                                textDayFontFamily: "Roboto-Regular",
-                            }}
-                            disableMonthChange={false}
-                            current={`${currentYear}-${String(currentMonth).padStart(2, "0")}-01`}
-                            enableSwipeMonths={true}
-                            onDayPress={(day: DateData) => {
-                                if (markedDates[day.dateString]) {
-                                    selectTrainingDay(day);
-                                }
-                            }}
-                            onMonthChange={(month: DateData) => {
-                                setCurrentMonth(month.month);
-                                setCurrentYear(month.year);
-                                setSelected("");
-                                setSelectedTraining(null);
-                                closeBottomSheet();
-                            }}
-                            markedDates={{ ...markedDates }}
-                        />
+                        <View>
+                            <TouchableOpacity onPress={() => router.back()}>
+                                <Image
+                                    source={icons.cross}
+                                    resizeMode="contain"
+                                    tintColor="#2AB38E"
+                                    className="mx-2 mb-2"
+                                />
+                            </TouchableOpacity>
+                            <Calendar
+                                theme={{
+                                    calendarBackground: "transparent",
+                                    textSectionTitleColor: "#A9A9A9",
+                                    selectedDayBackgroundColor: "#2AB38E",
+                                    selectedDayTextColor: "#ffffff",
+                                    todayTextColor: "#2AB38E",
+                                    dayTextColor: "#ffffff",
+                                    textDisabledColor: "transparent",
+                                    monthTextColor: "#2AB38E",
+                                    textMonthFontSize: 18,
+                                    arrowColor: "#ffffff",
+                                    textDayFontSize: 14,
+                                    textMonthFontFamily: "Righteous-Regular",
+                                    textDayFontFamily: "Roboto-Regular",
+                                }}
+                                disableMonthChange={false}
+                                current={`${currentYear}-${String(currentMonth).padStart(2, "0")}-01`}
+                                enableSwipeMonths={true}
+                                onDayPress={(day: DateData) => {
+                                    if (markedDates[day.dateString]) {
+                                        selectTrainingDay(day);
+                                    }
+                                }}
+                                onMonthChange={(month: DateData) => {
+                                    setCurrentMonth(month.month);
+                                    setCurrentYear(month.year);
+                                    setSelected("");
+                                    setSelectedTraining(null);
+                                    closeBottomSheet();
+                                }}
+                                markedDates={{ ...markedDates }}
+                            />
+                        </View>
+
                     </ScrollView>
                 )}
 

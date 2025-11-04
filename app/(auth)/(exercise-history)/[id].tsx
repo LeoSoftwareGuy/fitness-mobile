@@ -82,22 +82,23 @@ export default function ExerciseHistoryScreen() {
     return (
         <ImageBackground source={images.logo} className="flex-1 px-1">
             <SafeAreaView className="flex-1">
-                <View className="pt-2 pb-1 flex-row items-center">
+                <View className="px-2 pt-1.5">
                     <TouchableOpacity onPress={() => router.back()}>
                         <Image
-                            source={icons.leftArrow}
+                            source={icons.cross}
                             resizeMode="contain"
-                            className="w-2.5 h-2.5"
-                            style={{ tintColor: "white" }}
+                            tintColor="#2AB38E"
+                            className="mx-2 mb-2"
                         />
                     </TouchableOpacity>
-                    <Text className="flex-1 text-center font-pText text-xl text-white">
-                        {exerciseHistory?.exerciseName || "Exercise Stats"}
-                    </Text>
                 </View>
 
+                <Text className="text-center font-pText text-xl text-white">
+                    {exerciseHistory?.exerciseName || "Exercise Stats"}
+                </Text>
+
                 {exerciseHistory?.exerciseImageUrl ? (
-                    <View className="bg-white rounded-lg overflow-hidden my-3">
+                    <View className="bg-white rounded-lg overflow-hidden my-2">
                         <Image
                             source={{ uri: exerciseHistory.exerciseImageUrl }}
                             resizeMode="contain"
@@ -111,7 +112,7 @@ export default function ExerciseHistoryScreen() {
                     onSelectPeriod={setTimePeriod}
                 />
 
-                <Text className="my-2 font-pText text-lg text-white">
+                <Text className="mt-4 px-2 font-pText text-lg text-white">
                     {timePeriodLabel}
                 </Text>
 
@@ -121,16 +122,13 @@ export default function ExerciseHistoryScreen() {
                         renderItem={renderExerciseSet}
                         estimatedItemSize={140}
                         keyExtractor={(item, index) => `${item.date}-${index}`}
-                        contentContainerClassName="pb-2"
+                        contentContainerClassName="py-2"
                         showsVerticalScrollIndicator={false}
                     />
                 ) : (
                     <View className="flex-1 justify-center items-center">
-                        <Text className="text-center text-base text-gray-400">
-                            No exercise history found for this period.
-                        </Text>
-                        <Text className="mt-1 text-center text-sm text-gray-500">
-                            Start tracking your workouts to see your progress!
+                        <Text className="text-center text-lg font-pRegular text-gray">
+                            No exercise history found for this period
                         </Text>
                     </View>
                 )}

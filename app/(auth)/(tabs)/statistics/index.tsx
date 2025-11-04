@@ -20,14 +20,14 @@ export default function StatisticsScreen() {
                             />
                         </TouchableOpacity>
                         <View className="flex-row items-center justify-between gap-1">
-                            <TouchableOpacity onPress={() => router.push("/(auth)/sign-in")}>
+                            <TouchableOpacity onPress={() => router.push("/(todays-workout)/todays-workout")}>
                                 <Image
                                     source={icons.dumbel}
                                     resizeMode="contain"
                                     className="mt-5 mx-auto"
                                 />
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => router.push("/(auth)/sign-in")}>
+                            <TouchableOpacity onPress={() => router.push("/(profile)/profile")}>
                                 <Image
                                     source={icons.bio}
                                     resizeMode="contain"
