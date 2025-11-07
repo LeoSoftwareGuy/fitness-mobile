@@ -10,7 +10,7 @@ interface MusclesFlatListItemProps {
 export default function MusclesFlatListItem({ muscleGroup }: MusclesFlatListItemProps) {
   return (
     <TouchableOpacity
-      className={`mr-2 w-[230px] h-[103px]`}
+      className="w-[230px] h-[130px]"
       onPress={() => router.push(`/(muscle-group)/${muscleGroup.id}`)}
     >
       <ImageBackground
@@ -25,4 +25,4 @@ export default function MusclesFlatListItem({ muscleGroup }: MusclesFlatListItem
       </ImageBackground>
     </TouchableOpacity>
   );
-};
+}

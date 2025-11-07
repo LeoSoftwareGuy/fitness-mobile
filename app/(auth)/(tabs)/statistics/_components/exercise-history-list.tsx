@@ -41,12 +41,14 @@ export default function ExerciseHistoryList() {
     setChosenMuscleGroupId(id);
   }, []);
 
-  const renderMuscleGroupButton: ListRenderItem<FindMuscleGroupsResponse> = ({ item }) => (
-    <PerformanceStatisticsButton
-      title={item.name}
-      onClick={() => selectMuscleGroup(item.id)}
-      isSelected={chosenMuscleGroupId === item.id}
-    />
+  const renderMuscleGroupButton: ListRenderItem<FindMuscleGroupsResponse> = ({ item, index }) => (
+    <View className={index < muscleGroups.length - 1 ? "mr-1.5" : ""}>
+      <PerformanceStatisticsButton
+        title={item.name}
+        onClick={() => selectMuscleGroup(item.id)}
+        isSelected={chosenMuscleGroupId === item.id}
+      />
+    </View>
   );
 
   if (isLoading) {
@@ -77,7 +79,6 @@ export default function ExerciseHistoryList() {
         renderItem={renderMuscleGroupButton}
         horizontal
         keyExtractor={(item) => item.id}
-        contentContainerClassName="gap-1"
         showsHorizontalScrollIndicator={false}
       />
 

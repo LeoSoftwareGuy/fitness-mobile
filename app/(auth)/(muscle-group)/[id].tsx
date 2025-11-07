@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-
 import Skeleton from "@/components/skeletons/skeleton";
 import SkeletonCard from "@/components/skeletons/skeleton-card";
 import icons from "@/constants/icons";
@@ -92,7 +91,6 @@ export default function MuscleGroupScreen() {
                             className="mx-2"
                         />
                     </TouchableOpacity>
-
                 </View>
                 <Text className="font-pText text-xl text-white text-center">
                     {muscleGroup?.name}
@@ -102,7 +100,6 @@ export default function MuscleGroupScreen() {
                     renderItem={renderExercise}
                     keyExtractor={(item) => item.id}
                     numColumns={2}
-                    className="py-2"
                 />
             </SafeAreaView>
 
