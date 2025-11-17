@@ -6,6 +6,7 @@ const infiniteOperationNames = [
   'FindTrainings',
   'FindTrainingsForCalendar',
   'FindPerformanceStats',
+  'FindNutritionIntakes',
 ];
 
 export default defineConfig({

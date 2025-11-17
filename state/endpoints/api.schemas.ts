@@ -39,6 +39,33 @@ export type CreateMuscleGroupResponse = {
   id: string;
 };
 
+export type CreateNutritionIntakeRequest = {
+  /** @minimum 0 */
+  protein: number;
+  /** @minimum 0 */
+  carbohydrates: number;
+  /** @minimum 0 */
+  fats: number;
+  /** @minimum 0 */
+  calories: number;
+  /** @nullable */
+  consumedAt?: Date | null;
+  /**
+   * @maxLength 200
+   * @nullable
+   */
+  mealName?: string | null;
+  /**
+   * @maxLength 50
+   * @nullable
+   */
+  source?: string | null;
+};
+
+export type CreateNutritionIntakeResponse = {
+  id?: string;
+};
+
 export type CreateTrainingRequest = {
   trained: Date;
   /** @nullable */
@@ -134,6 +161,29 @@ export type FindMuscleGroupsResponsePagedResponse = {
   items: FindMuscleGroupsResponse[];
 };
 
+export type FindNutritionIntakesResponse = {
+  id: string;
+  /** @minLength 1 */
+  userEmail: string;
+  consumedAt: Date;
+  protein: number;
+  carbohydrates: number;
+  fats: number;
+  calories: number;
+  /** @nullable */
+  mealName?: string | null;
+  /** @nullable */
+  source?: string | null;
+};
+
+export type FindNutritionIntakesResponsePagedResponse = {
+  page: number;
+  pageSize: number;
+  pageCount: number;
+  totalItemCount: number;
+  items: FindNutritionIntakesResponse[];
+};
+
 export type FindPerformanceStatisticsResponse = {
   sessionsDone: number;
   exercisesDone: number;
@@ -196,6 +246,21 @@ export type GetMuscleGroupExerciseByIdResponse = {
   imageUrl: string;
   /** @nullable */
   size?: string | null;
+};
+
+export type GetNutritionIntakeByIdResponse = {
+  id: string;
+  /** @minLength 1 */
+  userEmail: string;
+  consumedAt: Date;
+  protein: number;
+  carbohydrates: number;
+  fats: number;
+  calories: number;
+  /** @nullable */
+  mealName?: string | null;
+  /** @nullable */
+  source?: string | null;
 };
 
 export type GetTrainingByIdResponse = {
@@ -313,6 +378,34 @@ export type UpdateMuscleGroupResponse = {
   id: string;
 };
 
+export type UpdateNutritionIntakeRequest = {
+  intakeId: string;
+  /** @minimum 0 */
+  protein: number;
+  /** @minimum 0 */
+  carbohydrates: number;
+  /** @minimum 0 */
+  fats: number;
+  /** @minimum 0 */
+  calories: number;
+  /** @nullable */
+  consumedAt?: Date | null;
+  /**
+   * @maxLength 200
+   * @nullable
+   */
+  mealName?: string | null;
+  /**
+   * @maxLength 50
+   * @nullable
+   */
+  source?: string | null;
+};
+
+export type UpdateNutritionIntakeResponse = {
+  id?: string;
+};
+
 export type UpdateTrainingSetRequest = {
   exerciseId: string;
   muscleGroupType: MuscleGroupType;
@@ -391,6 +484,17 @@ export type FindMuscleGroupsParams = {
 
 export type FindMuscleGroupExercisesParams = {
   muscleGroupId?: string;
+  page?: number;
+  pageSize?: number;
+  sortBy?: string;
+  ascending?: boolean;
+  all?: boolean;
+};
+
+export type FindNutritionIntakesParams = {
+  consumedOn?: Date;
+  from?: Date;
+  to?: Date;
   page?: number;
   pageSize?: number;
   sortBy?: string;

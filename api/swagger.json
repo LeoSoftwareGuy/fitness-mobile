@@ -945,6 +945,307 @@
         }
       }
     },
+    "/api/nutrition-intakes": {
+      "get": {
+        "tags": [
+          "NutritionIntakes"
+        ],
+        "operationId": "FindNutritionIntakes",
+        "parameters": [
+          {
+            "name": "consumedOn",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ascending",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "all",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindNutritionIntakesResponsePagedResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindNutritionIntakesResponsePagedResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindNutritionIntakesResponsePagedResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "NutritionIntakes"
+        ],
+        "operationId": "CreateNutritionIntake",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNutritionIntakeRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNutritionIntakeRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNutritionIntakeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateNutritionIntakeResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateNutritionIntakeResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateNutritionIntakeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Content",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nutrition-intakes/{id}": {
+      "get": {
+        "tags": [
+          "NutritionIntakes"
+        ],
+        "operationId": "GetNutritionIntakeById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetNutritionIntakeByIdResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetNutritionIntakeByIdResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetNutritionIntakeByIdResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "NutritionIntakes"
+        ],
+        "operationId": "UpdateNutritionIntake",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateNutritionIntakeRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateNutritionIntakeRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateNutritionIntakeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateNutritionIntakeResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateNutritionIntakeResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateNutritionIntakeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Content",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "NutritionIntakes"
+        ],
+        "operationId": "DeleteNutritionIntake",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/stats": {
       "get": {
         "tags": [
@@ -1861,6 +2162,63 @@
         },
         "additionalProperties": false
       },
+      "CreateNutritionIntakeRequest": {
+        "required": [
+          "calories",
+          "carbohydrates",
+          "fats",
+          "protein"
+        ],
+        "type": "object",
+        "properties": {
+          "protein": {
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "carbohydrates": {
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "fats": {
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "calories": {
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "consumedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "mealName": {
+            "maxLength": 200,
+            "type": "string",
+            "nullable": true
+          },
+          "source": {
+            "maxLength": 50,
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateNutritionIntakeResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateTrainingRequest": {
         "required": [
           "trained"
@@ -2168,6 +2526,92 @@
         },
         "additionalProperties": false
       },
+      "FindNutritionIntakesResponse": {
+        "required": [
+          "calories",
+          "carbohydrates",
+          "consumedAt",
+          "fats",
+          "id",
+          "protein",
+          "userEmail"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userEmail": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "consumedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "protein": {
+            "type": "number",
+            "format": "double"
+          },
+          "carbohydrates": {
+            "type": "number",
+            "format": "double"
+          },
+          "fats": {
+            "type": "number",
+            "format": "double"
+          },
+          "calories": {
+            "type": "number",
+            "format": "double"
+          },
+          "mealName": {
+            "type": "string",
+            "nullable": true
+          },
+          "source": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FindNutritionIntakesResponsePagedResponse": {
+        "required": [
+          "items",
+          "page",
+          "pageCount",
+          "pageSize",
+          "totalItemCount"
+        ],
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pageCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalItemCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FindNutritionIntakesResponse"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
       "FindPerformanceStatisticsResponse": {
         "required": [
           "exercisesDone",
@@ -2369,6 +2813,57 @@
             "type": "string"
           },
           "size": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetNutritionIntakeByIdResponse": {
+        "required": [
+          "calories",
+          "carbohydrates",
+          "consumedAt",
+          "fats",
+          "id",
+          "protein",
+          "userEmail"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userEmail": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "consumedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "protein": {
+            "type": "number",
+            "format": "double"
+          },
+          "carbohydrates": {
+            "type": "number",
+            "format": "double"
+          },
+          "fats": {
+            "type": "number",
+            "format": "double"
+          },
+          "calories": {
+            "type": "number",
+            "format": "double"
+          },
+          "mealName": {
+            "type": "string",
+            "nullable": true
+          },
+          "source": {
             "type": "string",
             "nullable": true
           }
@@ -2698,6 +3193,68 @@
         "required": [
           "id"
         ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateNutritionIntakeRequest": {
+        "required": [
+          "calories",
+          "carbohydrates",
+          "fats",
+          "intakeId",
+          "protein"
+        ],
+        "type": "object",
+        "properties": {
+          "intakeId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "protein": {
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "carbohydrates": {
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "fats": {
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "calories": {
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "consumedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "mealName": {
+            "maxLength": 200,
+            "type": "string",
+            "nullable": true
+          },
+          "source": {
+            "maxLength": 50,
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateNutritionIntakeResponse": {
         "type": "object",
         "properties": {
           "id": {
