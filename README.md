@@ -10,6 +10,8 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npm install
    ```
 
+   > **Windows tip:** If you install dependencies inside WSL but run Expo from PowerShell, Metro can crash with `EACCES: permission denied, lstat ...node_modules\tailwindcss\node_modules\.bin\yaml`. Running `npm install` (or `npm run postinstall`) executes `scripts/fix-windows-bin.js`, which replaces the problematic symlink with a portable JS shim.
+
 2. Start the app
 
    ```bash
